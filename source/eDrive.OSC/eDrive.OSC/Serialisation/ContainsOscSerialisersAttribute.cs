@@ -1,0 +1,16 @@
+#region
+
+using System;
+
+#endregion
+
+namespace eDrive.Osc.Serialisation
+{
+    /// <summary>
+    ///     Marks the assembly as containing custom osc serialisers
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Assembly, Inherited = false, AllowMultiple = false)]
+    public sealed class ContainsOscSerialisersAttribute : Attribute
+    {
+    }
+}
