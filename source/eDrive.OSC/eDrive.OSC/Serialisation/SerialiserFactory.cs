@@ -68,6 +68,31 @@ namespace eDrive.Osc.Serialisation
             ByteArraySerialiser = new ByteArraySerialiser();
         }
 
+		public static void LoadSerialiser(TypeInfo source){
+			if (source == null) {
+				throw new ArgumentNullException ("source");
+			}
+			s_supported = null;
+			Scan(source);
+		}
+
+		public static void LoadSerialisers(IEnumerable<TypeInfo> sources){
+			if (sources == null) {
+				throw new ArgumentNullException ("sources");
+			}
+			s_supported = null;
+			foreach (var source in sources) {
+				Scan(source);
+			}
+		}
+
+		public static void LoadSerialisers(params TypeInfo[] sources){
+			if (sources == null) {
+				throw new ArgumentNullException ("sources");
+			}
+			LoadSerialisers ((IEnumerable<TypeInfo>)sources);
+		}
+
 		public static void LoadSerialisersFromAssembly(Assembly source){
 			if (source == null) {
 				throw new ArgumentNullException ("source");
@@ -290,38 +315,42 @@ namespace eDrive.Osc.Serialisation
             return GetSerialiser(type) as IOscTypeSerialiser<T>;
         }
 
+		private static void Scan(TypeInfo tInfo)
+		{
+			var attr = tInfo.GetCustomAttribute<CustomOscSerialiserAttribute> ();
+			if (attr != null) {
+				try
+				{
+					var instance = Activator.CreateInstance(tInfo.AsType()) as IOscTypeSerialiser;
+					if (instance != null)
+					{
+						if (attr.TypeTag != ' ')
+						{
+							s_tag2Serialiser[attr.TypeTag] = instance;
+						}
+
+						if (attr.Type != null)
+						{
+							s_type2Serialiser[attr.Type] = instance;
+						}
+					}
+				}
+				catch
+				{
+				}
+			}
+		}
 
         private static void Scan(Assembly loadedAssembly)
         {
             var marked = loadedAssembly.GetCustomAttribute<ContainsOscSerialisersAttribute>();
             if (marked != null)
             {
-				var types = from t in loadedAssembly.ExportedTypes.Select(et => et.GetTypeInfo())
-					let attr = t.GetCustomAttribute<CustomOscSerialiserAttribute>()
-                            where attr != null
-                            select new {Tag = attr.TypeTag, attr.Type, Serialiser = t};
-
+				var types = loadedAssembly.ExportedTypes.Select(et => et.GetTypeInfo());
+					
                 foreach (var source in types)
                 {
-                    try
-                    {
-						var instance = Activator.CreateInstance(source.Serialiser.AsType()) as IOscTypeSerialiser;
-                        if (instance != null)
-                        {
-                            if (source.Tag != ' ')
-                            {
-                                s_tag2Serialiser[source.Tag] = instance;
-                            }
-
-                            if (source.Type != null)
-                            {
-                                s_type2Serialiser[source.Type] = instance;
-                            }
-                        }
-                    }
-                    catch
-                    {
-                    }
+					Scan (source);
                 }
             }
         }
