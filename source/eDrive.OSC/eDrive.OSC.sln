@@ -3,12 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDrive.OSC", "eDrive.OSC\eDrive.OSC.csproj", "{CBC3534D-CB85-4299-AFF9-C63DAF404C1E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDrive.OSC.Tests", "eDrive.OSC.Tests\eDrive.OSC.Tests.csproj", "{0BE56A82-F87E-4E53-9374-068AAD978AA1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0BE56A82-F87E-4E53-9374-068AAD978AA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BE56A82-F87E-4E53-9374-068AAD978AA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BE56A82-F87E-4E53-9374-068AAD978AA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BE56A82-F87E-4E53-9374-068AAD978AA1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CBC3534D-CB85-4299-AFF9-C63DAF404C1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CBC3534D-CB85-4299-AFF9-C63DAF404C1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBC3534D-CB85-4299-AFF9-C63DAF404C1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
