@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 
 // Information about this assembly is defined by the following attributes.
 // Change them to the values specific to your project.
+using eDrive.Osc.Serialisation;
 
 [assembly: AssemblyTitle ("eDrive.OSC")]
 [assembly: AssemblyDescription ("")]
@@ -25,3 +26,4 @@ using System.Runtime.CompilerServices;
 //[assembly: AssemblyDelaySign(false)]
 //[assembly: AssemblyKeyFile("")]
 
+[assembly: ContainsOscSerialisersAttribute]
