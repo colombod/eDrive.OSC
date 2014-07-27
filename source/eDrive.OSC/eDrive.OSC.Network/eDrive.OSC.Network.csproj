@@ -41,10 +41,14 @@
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\packages\Rx-PlatformServices.2.2.5\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MyClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="NamedPipes\OscInboundNamedPipeStream.cs" />
+    <Compile Include="NamedPipes\OscOutboundNamedPipeStream.cs" />
   </ItemGroup>
   <Import Project="..\eDirve.OSC.Network.Shared\eDirve.OSC.Network.Shared.projitems" Label="Shared" Condition="Exists('..\eDirve.OSC.Network.Shared\eDirve.OSC.Network.Shared.projitems')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -60,5 +64,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="NamedPipes\" />
   </ItemGroup>
 </Project>

@@ -31,7 +31,6 @@ namespace System.Drawing
 				throw new NotImplementedException ();
 			}
 		}
-		#endregion
 
 		public static Color FromArgb (int red, int green, int blue)
 		{

@@ -67,11 +67,34 @@
     <Compile Include="Attributes\OscBodyPartAttribute.cs" />
     <Compile Include="Assert.cs" />
     <Compile Include="Utility.cs" />
+    <Compile Include="Serialisation\Json\BooleanValueSerialiser.cs" />
+    <Compile Include="Serialisation\Json\ByteArraySerialiser.cs" />
+    <Compile Include="Serialisation\Json\CharSerialiser.cs" />
+    <Compile Include="Serialisation\Json\DoubleSerialiser.cs" />
+    <Compile Include="Serialisation\Json\FalseBooleanValueDeserialiser.cs" />
+    <Compile Include="Serialisation\Json\FloatSerialiser.cs" />
+    <Compile Include="Serialisation\Json\GuidSerialiser.cs" />
+    <Compile Include="Serialisation\Json\IntSerialiser.cs" />
+    <Compile Include="Serialisation\Json\IOscTypeJsonSerialiser.cs" />
+    <Compile Include="Serialisation\Json\JsonSerialiserFactory.cs" />
+    <Compile Include="Serialisation\Json\LongSerialiser.cs" />
+    <Compile Include="Serialisation\Json\NilSerialiser.cs" />
+    <Compile Include="Serialisation\Json\OscColourSerialiser.cs" />
+    <Compile Include="Serialisation\Json\OscMidiSerialiser.cs" />
+    <Compile Include="Serialisation\Json\OscTimeTagSerialiser.cs" />
+    <Compile Include="Serialisation\Json\OscTypeJsonSerialiser.cs" />
+    <Compile Include="Serialisation\Json\StringSerialiser.cs" />
+    <Compile Include="Serialisation\Json\SymbolSerialiser.cs" />
+    <Compile Include="Serialisation\Json\TrueBooleanValueDeserialiser.cs" />
+    <Compile Include="Serialisation\Json\VersionSerialiser.cs" />
+    <Compile Include="Serialisation\Json\CustomOscJSonSerialiserAttribute.cs" />
+    <Compile Include="Serialisation\Json\ContainsOscJSonSerialisersAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Serialisation\" />
     <Folder Include="Attributes\" />
+    <Folder Include="Serialisation\Json\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -82,4 +105,12 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>

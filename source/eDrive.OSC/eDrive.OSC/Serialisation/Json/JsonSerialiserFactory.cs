@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using eDrive.Osc.Serialisation;
 
-namespace eDrive.Osc.Serialisation
+namespace eDrive.Osc.Serialisation.Json
 {
     /// <summary>
     ///     Osc Serialiser Factory;
     /// </summary>
-    public static class SerialiserFactory
+    public static class JsonSerialiserFactory
     {
         /// <summary>
         ///     The beginning character in an Osc message type tag.
@@ -45,25 +46,25 @@ namespace eDrive.Osc.Serialisation
         /// </summary>
         public const char ArrayClose = ']';
 
-        private static readonly IOscTypeSerialiser[] s_tag2Serialiser;
-        private static readonly Dictionary<Type, IOscTypeSerialiser> s_type2Serialiser;
+        private static readonly IOscTypeJsonSerialiser[] s_tag2Serialiser;
+        private static readonly Dictionary<Type, IOscTypeJsonSerialiser> s_type2Serialiser;
         private static string s_supported;
 
         /// <summary>
         ///     Initializes the <see cref="SerialiserFactory" /> class.
         /// </summary>
-        static SerialiserFactory()
+        static JsonSerialiserFactory()
         {
-            s_type2Serialiser = new Dictionary<Type, IOscTypeSerialiser>();
-            s_tag2Serialiser = new IOscTypeSerialiser[256];     
-
+            s_type2Serialiser = new Dictionary<Type, IOscTypeJsonSerialiser>();
+            s_tag2Serialiser = new IOscTypeJsonSerialiser[256];
+           
             NilSerialiser = new NilSerialiser();
             StringSerialiser = new StringSerialiser();
             TimeTagSerialiser = new OscTimeTagSerialiser();
             IntSerialiser = new IntSerialiser();
             ByteArraySerialiser = new ByteArraySerialiser();
 
-			var src = typeof(SerialiserFactory).GetTypeInfo ().Assembly;
+			var src = typeof(JsonSerialiserFactory).GetTypeInfo ().Assembly;
 			LoadSerialisersFromAssembly (src);
         }
 
@@ -141,6 +142,7 @@ namespace eDrive.Osc.Serialisation
 			}
 			LoadSerialisersFromAssemblies((IEnumerable<Assembly>)sources);
 		}
+
         /// <summary>
         ///     Gets the byte array serialiser.
         /// </summary>
@@ -210,7 +212,7 @@ namespace eDrive.Osc.Serialisation
             }
             else
             {
-				if (!tInfo.IsValueType
+                if (!tInfo.IsValueType
                     && Equals(value, default(T)))
                 {
                     typeTag += NilSerialiser.Tag;
@@ -218,7 +220,7 @@ namespace eDrive.Osc.Serialisation
 
                 else if (t == value.GetType())
                 {
-					if (tInfo.IsValueType
+                    if (tInfo.IsValueType
                         || !Equals(value, default(T)))
                     {
                         var sed = GetSerialiser<T>();
@@ -272,12 +274,13 @@ namespace eDrive.Osc.Serialisation
             return s_supported;
         }
 
+
         /// <summary>
         ///     Gets the serialiser.
         /// </summary>
         /// <param name="typeTag">The type tag.</param>
         /// <returns></returns>
-        public static IOscTypeSerialiser GetSerialiser(char typeTag)
+        public static IOscTypeJsonSerialiser GetSerialiser(char typeTag)
         {
             return s_tag2Serialiser[typeTag];
         }
@@ -287,7 +290,7 @@ namespace eDrive.Osc.Serialisation
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns></returns>
-        public static IOscTypeSerialiser GetSerialiser(Type type)
+        public static IOscTypeJsonSerialiser GetSerialiser(Type type)
         {
             return s_type2Serialiser[type];
         }
@@ -297,7 +300,7 @@ namespace eDrive.Osc.Serialisation
         /// </summary>
         /// <param name="source">The source.</param>
         /// <returns></returns>
-        public static IOscTypeSerialiser GetSerialiser(object source)
+        public static IOscTypeJsonSerialiser GetSerialiser(object source)
         {
             return (source == null ? NilSerialiser : GetSerialiser(source.GetType()));
         }
@@ -308,7 +311,7 @@ namespace eDrive.Osc.Serialisation
         /// <typeparam name="T"></typeparam>
         /// <param name="source">The source.</param>
         /// <returns></returns>
-        public static IOscTypeSerialiser<T> GetSerialiser<T>(T source)
+        public static IOscTypeJsonSerialiser<T> GetSerialiser<T>(T source)
         {
             return GetSerialiser<T>();
         }
@@ -318,9 +321,9 @@ namespace eDrive.Osc.Serialisation
         /// </summary>
         /// <param name="typeTag">The type tag.</param>
         /// <returns></returns>
-        public static IOscTypeSerialiser<T> GetSerialiser<T>(char typeTag)
+        public static IOscTypeJsonSerialiser<T> GetSerialiser<T>(char typeTag)
         {
-            return GetSerialiser(typeTag) as IOscTypeSerialiser<T>;
+            return GetSerialiser(typeTag) as IOscTypeJsonSerialiser<T>;
         }
 
         /// <summary>
@@ -328,19 +331,20 @@ namespace eDrive.Osc.Serialisation
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static IOscTypeSerialiser<T> GetSerialiser<T>()
-        {
-            var type = typeof (T);
-            return GetSerialiser(type) as IOscTypeSerialiser<T>;
-        }
+        public static IOscTypeJsonSerialiser<T> GetSerialiser<T>()
+		{
+			var type = typeof(T);
+			return GetSerialiser (type) as IOscTypeJsonSerialiser<T>;
+		}
 
 		private static void Scan(TypeInfo tInfo)
 		{
-			var attr = tInfo.GetCustomAttribute<CustomOscSerialiserAttribute> ();
-			if (attr != null) {
+			var attr = tInfo.GetCustomAttribute<CustomOscJSonSerialiserAttribute> ();
+			if (attr != null) 
+			{
 				try
 				{
-					var instance = Activator.CreateInstance(tInfo.AsType()) as IOscTypeSerialiser;
+					var instance = Activator.CreateInstance(tInfo.AsType()) as IOscTypeJsonSerialiser;
 					if (instance != null)
 					{
 						if (attr.TypeTag != ' ')
@@ -362,16 +366,16 @@ namespace eDrive.Osc.Serialisation
 
         private static void Scan(Assembly loadedAssembly)
         {
-            var marked = loadedAssembly.GetCustomAttribute<ContainsOscSerialisersAttribute>();
-            if (marked != null)
-            {
+			var marked = loadedAssembly.GetCustomAttribute<ContainsOscJsonSerialisersAttribute>();
+			if (marked != null)
+			{
 				var types = loadedAssembly.ExportedTypes.Select(et => et.GetTypeInfo());
-					
-                foreach (var source in types)
-                {
+
+				foreach (var source in types)
+				{
 					Scan (source);
-                }
-            }
+				}
+			}
         }
     }
 }

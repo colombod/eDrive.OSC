@@ -1,9 +1,10 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
+using eDrive.Osc.Serialisation;
+using eDrive.Osc.Serialisation.Json;
 
 // Information about this assembly is defined by the following attributes.
 // Change them to the values specific to your project.
-using eDrive.Osc.Serialisation;
 
 [assembly: AssemblyTitle ("eDrive.Osc")]
 [assembly: AssemblyDescription ("")]
@@ -26,4 +27,5 @@ using eDrive.Osc.Serialisation;
 //[assembly: AssemblyDelaySign(false)]
 //[assembly: AssemblyKeyFile("")]
 
-[assembly: ContainsOscSerialisersAttribute]
+[assembly: ContainsOscSerialisers]
+[assembly: ContainsOscJsonSerialisers]

@@ -12,5 +12,22 @@
     <Compile Include="$(MSBuildThisFileDirectory)OscInboundStreamBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OscOutboundStreamBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OscOutboundStreamExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Upd\OscInboundUdpStream.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Upd\OscOutboundUpdStream.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IPAddressRange.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TransmissionType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OscEndPoint.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EndPointSerialiser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tcp\OscInboundTcpStream.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tcp\OscOutboundTcpStream.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Http\JSonExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Http\OscInboundHttpStream.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Http\OscOutboundHttpStream.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Http\OscPaylaodMimeType.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Upd\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Tcp\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Http\" />
   </ItemGroup>
 </Project>
