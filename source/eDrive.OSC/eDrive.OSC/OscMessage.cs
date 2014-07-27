@@ -210,10 +210,10 @@ namespace eDrive.Osc
 
         private void DeserialiseFromData()
         {
-            NewDeserialise();
+            Deserialise();
         }
 
-        private void NewDeserialise()
+        private void Deserialise()
         {
             if (m_dataBag != null)
             {

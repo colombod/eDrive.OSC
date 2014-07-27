@@ -148,10 +148,10 @@ namespace eDrive.Osc
         /// <returns>The newly deserialized packet.</returns>
         public static OscBundle BundleFromByteArray(byte[] data, ref int start, int end)
         {
-            return NewDeserialise(data, ref start, end);
+            return Deserialise(data, ref start, end);
         }
 
-        private static OscBundle NewDeserialise(byte[] data, ref int start, int end)
+        private static OscBundle Deserialise(byte[] data, ref int start, int end)
         {
             var str = SerialiserFactory.StringSerialiser;
             var tt = SerialiserFactory.TimeTagSerialiser;
