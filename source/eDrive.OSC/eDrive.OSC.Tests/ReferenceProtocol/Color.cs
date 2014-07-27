@@ -2,9 +2,9 @@
 //  Color.cs
 //
 //  Author:
-//       Diego Colombo <diego@mubreeze.com>
+//       Diego Colombo <diego@Diego Colombo.com>
 //
-//  Copyright (c) 2014 2013 mUBreeze
+//  Copyright (c) 2014 2014 Diego Colombo
 //
 using System.ComponentModel;
 using System.Runtime.InteropServices;

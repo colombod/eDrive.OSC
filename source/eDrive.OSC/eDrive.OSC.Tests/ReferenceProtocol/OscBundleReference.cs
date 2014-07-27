@@ -1,6 +1,6 @@
 ﻿// File :		OscBundleReference.cs
-// Copyright :  	2012-2013 mUBreeze ltd.
-// Created : 		06-2013
+// Copyright :  	2012-2014 Diego Colombo ltd.
+// Created : 		06-2014
 
 #region
 

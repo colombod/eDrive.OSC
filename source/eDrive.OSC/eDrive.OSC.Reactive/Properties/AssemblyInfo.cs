@@ -2,9 +2,9 @@
 //  AssemblyInfo.cs
 //
 //  Author:
-//       Diego Colombo <diego@mubreeze.com>
+//       Diego Colombo <diego@Diego Colombo.com>
 //
-//  Copyright (c) 2014 2013 mUBreeze
+//  Copyright (c) 2014 2014 Diego Colombo
 //
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -15,10 +15,10 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle ("eDrive.OSC.Reactive")]
 [assembly: AssemblyDescription ("")]
 [assembly: AssemblyConfiguration ("")]
-[assembly: AssemblyCompany ("mUBreeze")]
+[assembly: AssemblyCompany ("Diego Colombo")]
 [assembly: AssemblyProduct ("")]
-[assembly: AssemblyCopyright ("2013 mUBreeze")]
-[assembly: AssemblyTrademark ("mUBreeze")]
+[assembly: AssemblyCopyright ("2014 Diego Colombo")]
+[assembly: AssemblyTrademark ("Diego Colombo")]
 [assembly: AssemblyCulture ("")]
 
 // The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".

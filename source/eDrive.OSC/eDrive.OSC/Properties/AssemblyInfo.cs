@@ -8,10 +8,10 @@ using eDrive.Osc.Serialisation;
 [assembly: AssemblyTitle ("eDrive.OSC")]
 [assembly: AssemblyDescription ("")]
 [assembly: AssemblyConfiguration ("")]
-[assembly: AssemblyCompany ("mUBreeze")]
+[assembly: AssemblyCompany ("Diego Colombo")]
 [assembly: AssemblyProduct ("")]
-[assembly: AssemblyCopyright ("2013 mUBreeze")]
-[assembly: AssemblyTrademark ("mUBreeze")]
+[assembly: AssemblyCopyright ("2014 Diego Colombo")]
+[assembly: AssemblyTrademark ("Diego Colombo")]
 [assembly: AssemblyCulture ("")]
 
 // The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
