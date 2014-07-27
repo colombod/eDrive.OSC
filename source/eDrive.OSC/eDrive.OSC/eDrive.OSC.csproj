@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{CBC3534D-CB85-4299-AFF9-C63DAF404C1E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>eDrive.OSC</RootNamespace>
+    <AssemblyName>eDrive.OSC</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile78</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="OscBundle.cs" />
+    <Compile Include="OscColour.cs" />
+    <Compile Include="OscMessage.cs" />
+    <Compile Include="OscMidiMessage.cs" />
+    <Compile Include="OscPacket.cs" />
+    <Compile Include="OscSessionSettings.cs" />
+    <Compile Include="OscSymbol.cs" />
+    <Compile Include="OscTimeTag.cs" />
+    <Compile Include="Serialisation\BooleanValueSerialiser.cs" />
+    <Compile Include="Serialisation\ByteArraySerialiser.cs" />
+    <Compile Include="Serialisation\CharSerialiser.cs" />
+    <Compile Include="Serialisation\ContainsOscSerialisersAttribute.cs" />
+    <Compile Include="Serialisation\CustomOscSerialiserAttribute.cs" />
+    <Compile Include="Serialisation\DoubleSerialiser.cs" />
+    <Compile Include="Serialisation\FalseBooleanValueDeserialiser.cs" />
+    <Compile Include="Serialisation\FloatSerialiser.cs" />
+    <Compile Include="Serialisation\GuidSerialiser.cs" />
+    <Compile Include="Serialisation\IntSerialiser.cs" />
+    <Compile Include="Serialisation\IOscTypeSerialiser.cs" />
+    <Compile Include="Serialisation\LongSerialiser.cs" />
+    <Compile Include="Serialisation\NilSerialiser.cs" />
+    <Compile Include="Serialisation\OscColourSerialiser.cs" />
+    <Compile Include="Serialisation\OscMidiSerialiser.cs" />
+    <Compile Include="Serialisation\OscSerialiserException.cs" />
+    <Compile Include="Serialisation\OscTimeTagSerialiser.cs" />
+    <Compile Include="Serialisation\OscTypeSerialiser.cs" />
+    <Compile Include="Serialisation\SerialiserFactory.cs" />
+    <Compile Include="Serialisation\StringSerialiser.cs" />
+    <Compile Include="Serialisation\SymbolSerialiser.cs" />
+    <Compile Include="Serialisation\TrueBooleanValueDeserialiser.cs" />
+    <Compile Include="Serialisation\VersionSerialiser.cs" />
+    <Compile Include="Attributes\OscAddressAttribute.cs" />
+    <Compile Include="Attributes\OscAddressParameterAttribute.cs" />
+    <Compile Include="Attributes\OscBodyPartAttribute.cs" />
+    <Compile Include="Assert.cs" />
+    <Compile Include="Utility.cs" />
+    <Compile Include="Serialisation\Json\BooleanValueSerialiser.cs" />
+    <Compile Include="Serialisation\Json\ByteArraySerialiser.cs" />
+    <Compile Include="Serialisation\Json\CharSerialiser.cs" />
+    <Compile Include="Serialisation\Json\DoubleSerialiser.cs" />
+    <Compile Include="Serialisation\Json\FalseBooleanValueDeserialiser.cs" />
+    <Compile Include="Serialisation\Json\FloatSerialiser.cs" />
+    <Compile Include="Serialisation\Json\GuidSerialiser.cs" />
+    <Compile Include="Serialisation\Json\IntSerialiser.cs" />
+    <Compile Include="Serialisation\Json\IOscTypeJsonSerialiser.cs" />
+    <Compile Include="Serialisation\Json\JsonSerialiserFactory.cs" />
+    <Compile Include="Serialisation\Json\LongSerialiser.cs" />
+    <Compile Include="Serialisation\Json\NilSerialiser.cs" />
+    <Compile Include="Serialisation\Json\OscColourSerialiser.cs" />
+    <Compile Include="Serialisation\Json\OscMidiSerialiser.cs" />
+    <Compile Include="Serialisation\Json\OscTimeTagSerialiser.cs" />
+    <Compile Include="Serialisation\Json\OscTypeJsonSerialiser.cs" />
+    <Compile Include="Serialisation\Json\StringSerialiser.cs" />
+    <Compile Include="Serialisation\Json\SymbolSerialiser.cs" />
+    <Compile Include="Serialisation\Json\TrueBooleanValueDeserialiser.cs" />
+    <Compile Include="Serialisation\Json\VersionSerialiser.cs" />
+    <Compile Include="Serialisation\Json\CustomOscJSonSerialiserAttribute.cs" />
+    <Compile Include="Serialisation\Json\ContainsOscJSonSerialisersAttribute.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Serialisation\" />
+    <Folder Include="Attributes\" />
+    <Folder Include="Serialisation\Json\" />
+  </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <StandardHeader Text="&#xA;${FileName}&#xA; &#xA;Author:&#xA;      ${AuthorName} &lt;${AuthorEmail}&gt;&#xA;&#xA;Copyright (c) ${Year} ${CopyrightHolder}&#xA;&#xA;Permission is hereby granted, free of charge, to any person obtaining a copy&#xA;of this software and associated documentation files (the &quot;Software&quot;), to deal&#xA;in the Software without restriction, including without limitation the rights&#xA;to use, copy, modify, merge, publish, distribute, sublicense, and/or sell&#xA;copies of the Software, and to permit persons to whom the Software is&#xA;furnished to do so, subject to the following conditions:&#xA;&#xA;The above copyright notice and this permission notice shall be included in&#xA;all copies or substantial portions of the Software.&#xA;&#xA;THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&#xA;IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&#xA;FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE&#xA;AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER&#xA;LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,&#xA;OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN&#xA;THE SOFTWARE." IncludeInNewFiles="True" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+</Project>
