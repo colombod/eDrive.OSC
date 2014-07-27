@@ -1,23 +1,13 @@
-﻿// File :		OscPacketReference.cs
-// Copyright :  	2012-2014 Diego Colombo ltd.
-// Created : 		06-2014
-
-#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Net;
 using System.Text;
 
-#endregion
-
 namespace eDrive.Osc.Tests.ReferenceProtocol
 {
     public abstract class OscPacketReference
     {
-        #region Properties
-
         /// <summary>
         ///     Gets or sets the expected endianness of integral value types.
         /// </summary>
@@ -25,7 +15,7 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
         public static bool LittleEndianByteOrder { get; set; }
 
         /// <summary>
-        ///     Specifies if the packetReference is an OSC bundle.
+        ///     Specifies if the packetReference is an Osc bundle.
         /// </summary>
         public abstract bool IsBundle { get; }
 
@@ -47,8 +37,6 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
             get { return m_data.AsReadOnly(); }
         }
 
-        #endregion
-
         /// <summary>
         ///     The contents of the packetReference.
         /// </summary>
@@ -66,7 +54,7 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
         ///     Initializes a new instance of the <see cref="OscPacketReference" /> class.
         /// </summary>
         /// <param name="sourceEndPoint">The packetReference origin.</param>
-        /// <param name="address">The OSC address pattern.</param>
+        /// <param name="address">The Osc address pattern.</param>
         protected OscPacketReference(IPEndPoint sourceEndPoint, string address)
         {
             Assert.IsFalse(string.IsNullOrEmpty(address));

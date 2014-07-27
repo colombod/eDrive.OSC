@@ -1,12 +1,8 @@
-#region
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using eDrive.Osc.Serialisation;
-
-#endregion
 
 namespace eDrive.Osc
 {

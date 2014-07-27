@@ -1,10 +1,6 @@
-#region
-
 using System;
 using System.Collections.Generic;
 using System.IO;
-
-#endregion
 
 namespace eDrive.Osc
 {
@@ -34,7 +30,7 @@ namespace eDrive.Osc
         /// <summary>
         ///     Initializes a new instance of the <see cref="OscPacket" /> class.
         /// </summary>
-        /// <param name="address">The OSC address pattern.</param>
+        /// <param name="address">The Osc address pattern.</param>
         protected OscPacket(string address)
         {
 			if (string.IsNullOrEmpty (address)) { 
@@ -118,16 +114,10 @@ namespace eDrive.Osc
                        : OscMessage.MessageFromByteArray(data, ref start, end);
         }
 
-        #region Nested type: DataBag
-
         protected class DataBag
         {
             public byte[] Bytes { get; set; }
         }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         ///     Gets or sets the expected endianness of integral value types.
@@ -136,7 +126,7 @@ namespace eDrive.Osc
         public static bool LittleEndianByteOrder { get; set; }
 
         /// <summary>
-        ///     Specifies if the packet is an OSC bundle.
+        ///     Specifies if the packet is an Osc bundle.
         /// </summary>
         public abstract bool IsBundle { get; }
 
@@ -174,7 +164,5 @@ namespace eDrive.Osc
         ///     Ensures that the data is loaded.
         /// </summary>
         protected abstract void EnsureDataLoaded();
-
-        #endregion
     }
 }

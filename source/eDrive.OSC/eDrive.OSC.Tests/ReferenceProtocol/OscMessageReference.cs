@@ -1,17 +1,9 @@
-﻿// File :		OscMessageReference.cs
-// Copyright :  	2012-2014 Diego Colombo ltd.
-// Created : 		06-2014
-
-#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Net;
-
-#endregion
 
 namespace eDrive.Osc.Tests.ReferenceProtocol
 {

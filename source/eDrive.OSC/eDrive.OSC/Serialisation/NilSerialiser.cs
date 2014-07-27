@@ -1,8 +1,4 @@
-#region
-
 using System.IO;
-
-#endregion
 
 namespace eDrive.Osc.Serialisation
 {
@@ -43,15 +39,11 @@ namespace eDrive.Osc.Serialisation
             return 0;
         }
 
-        #region Nested type: Nil
-
         /// <summary>
         ///     Tag Type for Nil.
         /// </summary>
         public class Nil
         {
         }
-
-        #endregion
     }
 }

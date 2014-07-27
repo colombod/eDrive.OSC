@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,8 +9,6 @@ using eDrive.Osc.Serialisation;
 using eDrive.Osc;
 using EDAssert = eDrive.Assert;
 using NUAssert = NUnit.Framework.Assert;
-
-#endregion
 
 namespace eDrive.Osc.Tests
 {

@@ -1,11 +1,4 @@
-﻿//
-//  Color.cs
-//
-//  Author:
-//       Diego Colombo <diego@Diego Colombo.com>
-//
-//  Copyright (c) 2014 2014 Diego Colombo
-//
+﻿
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 
@@ -15,15 +8,6 @@ namespace System.Drawing
 	public struct Color {
 		int value;
 
-		#region Unimplemented bloated properties
-		//
-		// These properties were implemented very poorly on Mono, this
-		// version will only store the int32 value and any helper properties
-		// like Name, IsKnownColor, IsSystemColor, IsNamedColor are not
-		// currently implemented, and would be implemented in the future
-		// using external tables/hastables/dictionaries, without bloating
-		// the Color structure
-		//
 		public string Name {
 			get {
 				throw new NotImplementedException ();

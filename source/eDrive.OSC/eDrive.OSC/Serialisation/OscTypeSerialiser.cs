@@ -1,9 +1,5 @@
-#region
-
 using System;
 using System.IO;
-
-#endregion
 
 namespace eDrive.Osc.Serialisation
 {
@@ -27,8 +23,6 @@ namespace eDrive.Osc.Serialisation
             m_tag = tag;
         }
 
-        #region IEquatable<OscTypeSerialiser<T>> Members
-
         /// <summary>
         ///     Indicates whether the current object is equal to another object of the same type.
         /// </summary>
@@ -48,10 +42,6 @@ namespace eDrive.Osc.Serialisation
             }
             return Tag == other.Tag;
         }
-
-        #endregion
-
-        #region IOscTypeSerialiser Members
 
         /// <summary>
         ///     Decodes the specified data.
@@ -89,10 +79,6 @@ namespace eDrive.Osc.Serialisation
         {
             return value == null ? m_tag : GetTag((T) value);
         }
-
-        #endregion
-
-        #region IOscTypeSerialiser<T> Members
 
         /// <summary>
         ///     Gets the type.
@@ -142,8 +128,6 @@ namespace eDrive.Osc.Serialisation
         {
             return InternalGetTag(value);
         }
-
-        #endregion
 
         /// <summary>
         ///     Internals the get tag.

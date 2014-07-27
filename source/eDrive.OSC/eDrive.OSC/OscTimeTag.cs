@@ -1,8 +1,4 @@
-﻿#region
-
-using System;
-
-#endregion
+﻿using System;
 
 namespace eDrive.Osc
 {
@@ -101,8 +97,6 @@ namespace eDrive.Osc
             get { return m_timeTag == Immediate; }
         }
 
-        #region IEquatable<OscTimeTag> Members
-
         public bool Equals(OscTimeTag other)
         {
             if (ReferenceEquals(null, other))
@@ -115,8 +109,6 @@ namespace eDrive.Osc
             }
             return m_dateTime.Equals(other.m_dateTime);
         }
-
-        #endregion
 
         public override bool Equals(object obj)
         {

@@ -1,17 +1,9 @@
-// File :		OscBundle.cs
-// Copyright :  	2012-2014 Diego Colombo ltd.
-// Created : 		05-2014
 using System.Diagnostics;
-
-#region
-
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using eDrive.Osc.Serialisation;
-
-#endregion
 
 namespace eDrive.Osc
 {
@@ -41,7 +33,7 @@ namespace eDrive.Osc
         }
 
         /// <summary>
-        ///     Specifies if the packet is an OSC bundle.
+        ///     Specifies if the packet is an Osc bundle.
         /// </summary>
         public override bool IsBundle
         {

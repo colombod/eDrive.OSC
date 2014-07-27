@@ -1,8 +1,4 @@
-﻿#region
-
-using System;
-
-#endregion
+﻿using System;
 
 namespace eDrive.Osc
 {
@@ -16,8 +12,6 @@ namespace eDrive.Osc
 		private byte m_data1;
 		private byte m_data2;
 		private int m_value;
-
-        #region Constructors
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="OscMidiMessage" /> class.
@@ -44,10 +38,6 @@ namespace eDrive.Osc
 			m_value = message;
 			UpdateParts();
         }
-
-        #endregion
-
-        #region Public properties
 
         /// <summary>
         ///     Gets or sets the port id.
@@ -117,9 +107,6 @@ namespace eDrive.Osc
         {
 			return m_value;
         }
-
-        #endregion
-
 
         public override bool Equals(object obj)
         {

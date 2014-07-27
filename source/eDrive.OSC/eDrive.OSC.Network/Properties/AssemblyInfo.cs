@@ -3,14 +3,13 @@ using System.Runtime.CompilerServices;
 
 // Information about this assembly is defined by the following attributes.
 // Change them to the values specific to your project.
-using eDrive.Osc.Serialisation;
 
-[assembly: AssemblyTitle ("eDrive.Osc")]
+[assembly: AssemblyTitle ("eDrive.Osc.Network")]
 [assembly: AssemblyDescription ("")]
 [assembly: AssemblyConfiguration ("")]
 [assembly: AssemblyCompany ("Diego Colombo")]
 [assembly: AssemblyProduct ("")]
-[assembly: AssemblyCopyright ("2014 Diego Colombo")]
+[assembly: AssemblyCopyright ("Diego Colombo")]
 [assembly: AssemblyTrademark ("Diego Colombo")]
 [assembly: AssemblyCulture ("")]
 
@@ -26,4 +25,3 @@ using eDrive.Osc.Serialisation;
 //[assembly: AssemblyDelaySign(false)]
 //[assembly: AssemblyKeyFile("")]
 
-[assembly: ContainsOscSerialisersAttribute]

@@ -1,13 +1,9 @@
-﻿#region
-
-using System;
-
-#endregion
+﻿using System;
 
 namespace eDrive.Osc.Attributes
 {
     /// <summary>
-    ///     Use this attribute to bind a class to an OSC address pattern.
+    ///     Use this attribute to bind a class to an Osc address pattern.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
     public sealed class OscAddressAttribute : Attribute

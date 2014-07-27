@@ -1,8 +1,4 @@
-#region
-
 using System.IO;
-
-#endregion
 
 namespace eDrive.Osc.Serialisation
 {

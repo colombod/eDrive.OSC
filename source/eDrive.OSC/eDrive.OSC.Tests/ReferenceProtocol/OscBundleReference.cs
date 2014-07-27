@@ -1,14 +1,6 @@
-﻿// File :		OscBundleReference.cs
-// Copyright :  	2012-2014 Diego Colombo ltd.
-// Created : 		06-2014
-
-#region
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-
-#endregion
 
 namespace eDrive.Osc.Tests.ReferenceProtocol
 {
@@ -37,7 +29,7 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
         }
 
         /// <summary>
-        ///     Specifies if the packet is an OSC bundle.
+        ///     Specifies if the packet is an Osc bundle.
         /// </summary>
         public override bool IsBundle
         {

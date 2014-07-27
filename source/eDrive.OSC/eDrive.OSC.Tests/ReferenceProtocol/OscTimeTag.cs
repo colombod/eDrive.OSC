@@ -1,13 +1,5 @@
-﻿// File :		OscTimeTag.cs
-// Copyright :  	2012-2014 Diego Colombo ltd.
-// Created : 		06-2014
-
-#region
-
-using System;
+﻿using System;
 using System.Globalization;
-
-#endregion
 
 namespace eDrive.Osc.Tests.ReferenceProtocol
 {
@@ -16,8 +8,6 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
     /// </summary>
     public class OscTimeTag
     {
-        #region Constructors
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="OscTimeTag" /> class.
         /// </summary>
@@ -64,10 +54,6 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
             m_timeStamp = GetNetworkTime(data, offset);
         }
 
-        #endregion
-
-        #region Public properties
-
         /// <summary>
         ///     Gets a value indicating whether this instance is an "immediate" time tag.
         /// </summary>
@@ -107,15 +93,11 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
         ///     The delay.
         /// </value>
         public TimeSpan Delay { get; private set; }
-
-        #endregion
-
+		       
         /// <summary>
         ///     Osc Time Epoch (January 1, 1900 00:00:00).
         /// </summary>
         private static readonly DateTime s_epoch = new DateTime(1900, 1, 1, 0, 0, 0, 0);
-
-        #region Public methods
 
         /// <summary>
         ///     Minimum Osc Time Tag.
@@ -306,8 +288,6 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
             return m_timeStamp.ToString(CultureInfo.InvariantCulture);
         }
 
-        #region Private methods
-
         /// <summary>
         ///     Compute the 8-byte array, given the date
         /// </summary>
@@ -424,14 +404,6 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
             return DateTime.MinValue;
         }
 
-        #endregion
-
-        #region Private fields
-
         private readonly DateTime m_timeStamp;
-
-        #endregion
-
-        #endregion
     }
 }

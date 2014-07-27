@@ -1,9 +1,5 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
-
-#endregion
 
 namespace eDrive.Osc
 {
@@ -12,8 +8,6 @@ namespace eDrive.Osc
     /// </summary>
     public class OscColour
     {
-        #region Constructors
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="OscColour" /> class.
         /// </summary>
@@ -37,10 +31,6 @@ namespace eDrive.Osc
         {
             m_storage.Value = message;
         }
-
-        #endregion
-
-        #region Public properties
 
         /// <summary>
         ///     Gets or sets the A.
@@ -99,8 +89,6 @@ namespace eDrive.Osc
             return m_storage.Value;
         }
 
-        #endregion
-
         private Colour m_storage;
 
         public override bool Equals(object obj)
@@ -125,8 +113,6 @@ namespace eDrive.Osc
         {
             return m_storage.Equals(other.m_storage);
         }
-
-        #region Nested type: Colour
 
         /// <summary>
         ///     Struct that represents a colour.
@@ -160,7 +146,5 @@ namespace eDrive.Osc
             /// </summary>
             [FieldOffset(0)] public int Value;
         }
-
-        #endregion
-    }
+	}
 }

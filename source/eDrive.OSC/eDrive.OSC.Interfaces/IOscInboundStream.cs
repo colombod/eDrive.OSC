@@ -1,13 +1,5 @@
-﻿// File :		IOscInboundStream.cs
-// Copyright :  	2012-2014 Diego Colombo.
-// Created : 		04-2014
-
-#region
-
-using System;
+﻿using System;
 using eDrive.Osc;
-
-#endregion
 
 namespace eDrive.Core
 {

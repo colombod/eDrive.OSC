@@ -1,13 +1,6 @@
-﻿// File :		OscValidation.cs
-// Copyright :  	2012-2014 Diego Colombo ltd.
-// Created : 		05-2014
-
-#region
-
-using eDrive.Osc.Tests.ReferenceProtocol;
+﻿using eDrive.Osc.Tests.ReferenceProtocol;
 using NUAssert = NUnit.Framework.Assert;
 using eDrive.Osc;
-#endregion
 
 namespace eDrive.Osc.Tests
 {
