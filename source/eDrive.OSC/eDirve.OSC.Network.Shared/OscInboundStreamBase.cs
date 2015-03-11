@@ -12,17 +12,17 @@ namespace eDrive.Network
 	/// </summary>
 	public abstract class OscInboundStreamBase : IOscInboundStream
 	{
-		private readonly Subject<OscBundle> m_bundleStream;
-		private readonly Subject<OscMessage> m_messageStream;
-		private readonly Subject<OscPacket> m_pakectStream;
-		private readonly IScheduler m_scheduler;
+		private readonly Subject<OscBundle> _mBundleStream;
+		private readonly Subject<OscMessage> _mMessageStream;
+		private readonly Subject<OscPacket> _mPakectStream;
+		private readonly IScheduler _mScheduler;
 
 		protected OscInboundStreamBase(IScheduler scheduler)
 		{
-			m_scheduler = scheduler ?? TaskPoolScheduler.Default;
-			m_pakectStream = new Subject<OscPacket>();
-			m_messageStream = new Subject<OscMessage>();
-			m_bundleStream = new Subject<OscBundle>();
+			_mScheduler = scheduler ?? TaskPoolScheduler.Default;
+			_mPakectStream = new Subject<OscPacket>();
+			_mMessageStream = new Subject<OscMessage>();
+			_mBundleStream = new Subject<OscBundle>();
 		}
 
 		/// <summary>
@@ -33,31 +33,31 @@ namespace eDrive.Network
 		/// </value>
 		public IScheduler Scheduler
 		{
-			get { return m_scheduler; }
+			get { return _mScheduler; }
 		}
 
 		#region IOscInboundStream Members
 
 		public virtual void Dispose()
 		{
-			m_pakectStream.OnCompleted();
-			m_bundleStream.OnCompleted();
-			m_messageStream.OnCompleted();
+			_mPakectStream.OnCompleted();
+			_mBundleStream.OnCompleted();
+			_mMessageStream.OnCompleted();
 		}
 
 		public IObservable<OscMessage> MessageStream
 		{
-			get { return m_messageStream; }
+			get { return _mMessageStream; }
 		}
 
 		public IObservable<OscPacket> PacketStream
 		{
-			get { return m_pakectStream; }
+			get { return _mPakectStream; }
 		}
 
 		public IObservable<OscBundle> BundleStream
 		{
-			get { return m_bundleStream; }
+			get { return _mBundleStream; }
 		}
 
 		public bool SuppressParsingExceptions { get; set; }
@@ -89,7 +89,7 @@ namespace eDrive.Network
 			{
 				if (forward)
 				{
-					Scheduler.Schedule(bundle, (b, action) => m_bundleStream.OnNext(b));
+					Scheduler.Schedule(bundle, (b, action) => _mBundleStream.OnNext(b));
 				}
 
 				if (bundle.Messages != null
@@ -112,9 +112,9 @@ namespace eDrive.Network
 						}
 						else
 						{
-							var delay = b.TimeStamp.DateTime - m_scheduler.Now;
+							var delay = b.TimeStamp.DateTime - _mScheduler.Now;
 							var ob = b;
-							m_scheduler.Schedule(delay, () => InternalFowrardBundle(ob, false));
+							_mScheduler.Schedule(delay, () => InternalFowrardBundle(ob, false));
 						}
 					}
 				}
@@ -125,7 +125,7 @@ namespace eDrive.Network
 		{
 			if (packet != null)
 			{
-				Scheduler.Schedule(packet, (b, action) => m_pakectStream.OnNext(b));
+				Scheduler.Schedule(packet, (b, action) => _mPakectStream.OnNext(b));
 
 				var msg = packet as OscMessage;
 
@@ -152,7 +152,7 @@ namespace eDrive.Network
 		{
 			if (message != null)
 			{
-				Scheduler.Schedule(message, (m, action) => m_messageStream.OnNext(m));
+				Scheduler.Schedule(message, (m, action) => _mMessageStream.OnNext(m));
 			}
 		}
 	}
