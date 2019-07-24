@@ -4,16 +4,16 @@ using System.IO;
 namespace eDrive.Osc.Serialisation
 {
     /// <summary>
-    ///     This serialiser is used to write <see cref="bool" /> values.
+    ///     This serializer is used to write <see cref="bool" /> values.
     ///     No payload will be serialised only the Tag is used.
     /// </summary>
-    [CustomOscSerialiser(typeof (bool))]
-    public class BooleanValueSerialiser : OscTypeSerialiser<bool>
+    [CustomOscSerializer(typeof (bool))]
+    public class BooleanValueSerializer : OscTypeSerializer<bool>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="BooleanValueSerialiser" /> class.
+        ///     Initializes a new instance of the <see cref="BooleanValueSerializer" /> class.
         /// </summary>
-        public BooleanValueSerialiser() : base(' ')
+        public BooleanValueSerializer() : base(' ')
         {
         }
 
@@ -24,10 +24,10 @@ namespace eDrive.Osc.Serialisation
         /// <param name="start">The start.</param>
         /// <param name="position">The position.</param>
         /// <returns></returns>
-        /// <exception cref="System.NotSupportedException">This serialiser can only write</exception>
+        /// <exception cref="System.NotSupportedException">This serializer can only write</exception>
         public override bool Decode(byte[] data, int start, out int position)
         {
-            throw new NotSupportedException("This serialiser can only write");
+            throw new NotSupportedException("This serializer can only write");
         }
 
         /// <summary>

@@ -3,15 +3,15 @@ using System.IO;
 namespace eDrive.Osc.Serialisation
 {
     /// <summary>
-    ///     Serialiser for Osc Colour
+    ///     Serializer for Osc Colour
     /// </summary>
-    [CustomOscSerialiser('r', typeof (OscColour))]
-    public class OscColourSerialiser : OscTypeSerialiser<OscColour>
+    [CustomOscSerializer('r', typeof (OscColour))]
+    public class OscColourSerializer : OscTypeSerializer<OscColour>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="OscColourSerialiser" /> class.
+        ///     Initializes a new instance of the <see cref="OscColourSerializer" /> class.
         /// </summary>
-        public OscColourSerialiser()
+        public OscColourSerializer()
             : base('r')
         {
         }
@@ -25,7 +25,7 @@ namespace eDrive.Osc.Serialisation
         /// <returns></returns>
         public override OscColour Decode(byte[] data, int start, out int position)
         {
-            var msg = SerialiserFactory.IntSerialiser.Decode(data, start, out position);
+            var msg = SerializerFactory.IntSerializer.Decode(data, start, out position);
             var ret = new OscColour(msg);
             return ret;
         }
@@ -39,7 +39,7 @@ namespace eDrive.Osc.Serialisation
         public override int Encode(Stream output, OscColour value)
         {
             var data = value.ToInt32();
-            return SerialiserFactory.IntSerialiser.Encode(output, data);
+            return SerializerFactory.IntSerializer.Encode(output, data);
         }
     }
 }

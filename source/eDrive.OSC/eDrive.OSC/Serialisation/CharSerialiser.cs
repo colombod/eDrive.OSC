@@ -4,23 +4,23 @@ using System.IO;
 namespace eDrive.Osc.Serialisation
 {
     /// <summary>
-    ///     Serialiser for <see cref="char" />
+    ///     Serializer for <see cref="char" />
     /// </summary>
-    [CustomOscSerialiser('c', typeof (char))]
-    public class CharSerialiser : OscTypeSerialiser<char>
+    [CustomOscSerializer('c', typeof (char))]
+    public class CharSerializer : OscTypeSerializer<char>
     {
-        private static IOscTypeSerialiser<int> s_intSer;
+        private static IOscTypeSerializer<int> s_intSer;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="CharSerialiser" /> class.
+        ///     Initializes a new instance of the <see cref="CharSerializer" /> class.
         /// </summary>
-        public CharSerialiser() : base('c')
+        public CharSerializer() : base('c')
         {
         }
 
-        private static IOscTypeSerialiser<int> IntSerialiser
+        private static IOscTypeSerializer<int> IntSerializer
         {
-            get { return s_intSer ?? (s_intSer = SerialiserFactory.GetSerialiser<int>()); }
+            get { return s_intSer ?? (s_intSer = SerializerFactory.GetSerializer<int>()); }
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace eDrive.Osc.Serialisation
         /// <returns></returns>
         public override char Decode(byte[] data, int start, out int position)
         {
-            var iv = IntSerialiser.Decode(data, start, out position);
+            var iv = IntSerializer.Decode(data, start, out position);
             var ret = Convert.ToChar(iv);
             return ret;
         }
@@ -46,7 +46,7 @@ namespace eDrive.Osc.Serialisation
         public override int Encode(Stream output, char value)
         {
             var v = Convert.ToInt32(value);
-            return IntSerialiser.Encode(output, v);
+            return IntSerializer.Encode(output, v);
         }
     }
 }

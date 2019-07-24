@@ -6,13 +6,13 @@ namespace eDrive.Osc.Serialisation
     /// <summary>
     ///     Deserialises a <see cref="bool" /> true value from 'T' tag
     /// </summary>
-    [CustomOscSerialiser('F')]
-    public class FalseBooleanValueDeserialiser : OscTypeSerialiser<bool>
+    [CustomOscSerializer('F')]
+    public class FalseBooleanValueDeserializer : OscTypeSerializer<bool>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="FalseBooleanValueDeserialiser" /> class.
+        ///     Initializes a new instance of the <see cref="FalseBooleanValueDeserializer" /> class.
         /// </summary>
-        public FalseBooleanValueDeserialiser()
+        public FalseBooleanValueDeserializer()
             : base('F')
         {
         }
@@ -38,10 +38,10 @@ namespace eDrive.Osc.Serialisation
         ///     if set to <c>true</c> [value].
         /// </param>
         /// <returns></returns>
-        /// <exception cref="System.NotSupportedException">This serialiser can only read</exception>
+        /// <exception cref="System.NotSupportedException">This serializer can only read</exception>
         public override int Encode(Stream output, bool value)
         {
-            throw new NotSupportedException("This serialiser can only read");
+            throw new NotSupportedException("This serializer can only read");
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using eDrive.Osc.Tests.ReferenceProtocol;
-using NUAssert = NUnit.Framework.Assert;
-using eDrive.Osc;
+using FluentAssertions;
 
 namespace eDrive.Osc.Tests
 {
@@ -13,13 +12,9 @@ namespace eDrive.Osc.Tests
         /// <param name="dst">The DST.</param>
         public static void AssertSameMessage(OscMessageReference src, OscMessage dst)
         {
-            NUAssert.AreEqual(src.TypeTag, dst.TypeTag);
-            NUAssert.AreEqual(src.Address, dst.Address);
-
-            for (var i = 0; i < src.Data.Count; i++)
-            {
-                NUAssert.AreEqual(src.Data[i], dst.Data[i]);
-            }
+            src.TypeTag.Should().Be(dst.TypeTag);
+            src.Address.Should().Be(dst.Address);
+            src.Data.Should().BeEquivalentTo(dst.Data);
         }
 
         /// <summary>
@@ -30,18 +25,13 @@ namespace eDrive.Osc.Tests
         public static void AssertSamePacket(byte[] src, byte[] dst)
         {
             // padded by 4
-            NUAssert.AreEqual(0, src.Length%4);
-            NUAssert.AreEqual(0, dst.Length%4);
+            (src.Length % 4).Should().Be(0);
+            (dst.Length % 4).Should().Be(0);
+            
 
-            // same lenght
-            NUAssert.AreEqual(src.Length, dst.Length);
-            for (var i = 0; i < src.Length; i++)
-            {
-                if (src[i] != dst[i])
-                {
-                    NUAssert.Fail();
-                }
-            }
+            // same length
+            src.Length.Should().Be(dst.Length);
+            src.Should().BeEquivalentTo(dst);
         }
     }
 }

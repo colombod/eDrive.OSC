@@ -5,13 +5,13 @@ namespace eDrive.Osc.Serialisation.Json
     /// <summary>
     ///     Deserialises Null payload
     /// </summary>
-    [CustomOscJSonSerialiser('N')]
-    public class NilSerialiser : OscTypeJsonSerialiser<NilSerialiser.Nil>
+    [CustomOscJSonSerializer('N')]
+    public class NilSerializer : OscTypeJsonSerializer<NilSerializer.Nil>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="NilSerialiser" /> class.
+        ///     Initializes a new instance of the <see cref="NilSerializer" /> class.
         /// </summary>
-        public NilSerialiser() : base('N')
+        public NilSerializer() : base('N')
         {
         }
 

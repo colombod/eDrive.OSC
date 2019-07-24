@@ -4,15 +4,15 @@ using System.IO;
 namespace eDrive.Osc.Serialisation
 {
     /// <summary>
-    ///     Serialiser of <see cref="OscTimeTag" />.
+    ///     Serializer of <see cref="OscTimeTag" />.
     /// </summary>
-    [CustomOscSerialiser('t', typeof (OscTimeTag))]
-    public class OscTimeTagSerialiser : OscTypeSerialiser<OscTimeTag>
+    [CustomOscSerializer('t', typeof (OscTimeTag))]
+    public class OscTimeTagSerializer : OscTypeSerializer<OscTimeTag>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="OscTimeTagSerialiser" /> class.
+        ///     Initializes a new instance of the <see cref="OscTimeTagSerializer" /> class.
         /// </summary>
-        public OscTimeTagSerialiser() : base('t')
+        public OscTimeTagSerializer() : base('t')
         {
         }
 

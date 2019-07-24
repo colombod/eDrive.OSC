@@ -4,9 +4,9 @@ using Newtonsoft.Json;
 namespace eDrive.Osc.Serialisation.Json
 {
     /// <summary>
-    ///     The interface for all serialiser strategies.
+    ///     The interface for all serializer strategies.
     /// </summary>
-    public interface IOscTypeJsonSerialiser
+    public interface IOscTypeJsonSerializer
     {
         /// <summary>
         ///     Gets the type.
@@ -50,10 +50,10 @@ namespace eDrive.Osc.Serialisation.Json
     }
 
     /// <summary>
-    ///     Contract for custom osc serialiser
+    ///     Contract for custom osc serializer
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IOscTypeJsonSerialiser<T>
+    public interface IOscTypeJsonSerializer<T>
     {
         /// <summary>
         ///     Gets the type.

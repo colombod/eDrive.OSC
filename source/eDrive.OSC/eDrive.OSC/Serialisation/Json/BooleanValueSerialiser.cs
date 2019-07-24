@@ -4,16 +4,16 @@ using Newtonsoft.Json;
 namespace eDrive.Osc.Serialisation.Json
 {
     /// <summary>
-    ///     This serialiser is used to write <see cref="bool" /> values.
+    ///     This serializer is used to write <see cref="bool" /> values.
     ///     No payload will be serialised only the Tag is used.
     /// </summary>
-    [CustomOscJSonSerialiser(typeof (bool))]
-    public class BooleanValueSerialiser : OscTypeJsonSerialiser<bool>
+    [CustomOscJSonSerializer(typeof (bool))]
+    public class BooleanValueSerializer : OscTypeJsonSerializer<bool>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="BooleanValueSerialiser" /> class.
+        ///     Initializes a new instance of the <see cref="BooleanValueSerializer" /> class.
         /// </summary>
-        public BooleanValueSerialiser() : base(' ')
+        public BooleanValueSerializer() : base(' ')
         {
         }
 
@@ -23,10 +23,10 @@ namespace eDrive.Osc.Serialisation.Json
         /// </summary>
         /// <param name="reader">The reader.</param>
         /// <returns></returns>
-        /// <exception cref="System.NotSupportedException">This serialiser can only write</exception>
+        /// <exception cref="System.NotSupportedException">This serializer can only write</exception>
         public override bool Decode(JsonReader reader)
         {
-            throw new NotSupportedException("This serialiser can only write");
+            throw new NotSupportedException("This serializer can only write");
         }
 
         /// <summary>

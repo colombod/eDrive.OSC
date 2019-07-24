@@ -4,15 +4,15 @@ using System.IO;
 namespace eDrive.Osc.Serialisation
 {
     /// <summary>
-    ///     Serialiser for <see cref="long" />
+    ///     Serializer for <see cref="long" />
     /// </summary>
-    [CustomOscSerialiser('h', typeof (long))]
-    public class LongSerialiser : OscTypeSerialiser<long>
+    [CustomOscSerializer('h', typeof (long))]
+    public class LongSerializer : OscTypeSerializer<long>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="LongSerialiser" /> class.
+        ///     Initializes a new instance of the <see cref="LongSerializer" /> class.
         /// </summary>
-        public LongSerialiser()
+        public LongSerializer()
             : base('h')
         {
         }

@@ -3,15 +3,15 @@ using System.IO;
 namespace eDrive.Osc.Serialisation
 {
     /// <summary>
-    ///     Deserialisers for Symbol Tag
+    ///     Deserializers for Symbol Tag
     /// </summary>
-    [CustomOscSerialiser('S', typeof (OscSymbol))]
-    public class SymbolSerialiser : OscTypeSerialiser<OscSymbol>
+    [CustomOscSerializer('S', typeof (OscSymbol))]
+    public class SymbolSerializer : OscTypeSerializer<OscSymbol>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="SymbolSerialiser" /> class.
+        ///     Initializes a new instance of the <see cref="SymbolSerializer" /> class.
         /// </summary>
-        public SymbolSerialiser() : base('S')
+        public SymbolSerializer() : base('S')
         {
         }
 
@@ -25,7 +25,7 @@ namespace eDrive.Osc.Serialisation
         /// <returns></returns>
         public override OscSymbol Decode(byte[] data, int start, out int position)
         {
-            var value = SerialiserFactory.StringSerialiser.Decode(data, start, out position);
+            var value = SerializerFactory.StringSerializer.Decode(data, start, out position);
             return new OscSymbol {Value = value};
         }
 
@@ -37,7 +37,7 @@ namespace eDrive.Osc.Serialisation
         /// <returns></returns>
         public override int Encode(Stream output, OscSymbol value)
         {
-            return SerialiserFactory.StringSerialiser.Encode(output, value.Value);
+            return SerializerFactory.StringSerializer.Encode(output, value.Value);
         }
     }
 }

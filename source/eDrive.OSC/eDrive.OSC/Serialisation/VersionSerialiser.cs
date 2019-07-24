@@ -4,21 +4,21 @@ using System.IO;
 namespace eDrive.Osc.Serialisation
 {
     /// <summary>
-    ///     Serialiser for <see cref="Version" />
+    ///     Serializer for <see cref="Version" />
     /// </summary>
-    [CustomOscSerialiser('v', typeof (Version))]
-    public class VersionSerialiser : OscTypeSerialiser<Version>
+    [CustomOscSerializer('v', typeof (Version))]
+    public class VersionSerializer : OscTypeSerializer<Version>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="VersionSerialiser" /> class.
+        ///     Initializes a new instance of the <see cref="VersionSerializer" /> class.
         /// </summary>
-        public VersionSerialiser() : base('v')
+        public VersionSerializer() : base('v')
         {
         }
 
         public override Version Decode(byte[] data, int start, out int position)
         {
-            var vs = SerialiserFactory.StringSerialiser.Decode(data, start, out position);
+            var vs = SerializerFactory.StringSerializer.Decode(data, start, out position);
             return Version.Parse(vs);
         }
 
@@ -32,7 +32,7 @@ namespace eDrive.Osc.Serialisation
         public override int Encode(Stream output, Version value)
         {
             var d = value.ToString();
-            return SerialiserFactory.StringSerialiser.Encode(output, d);
+            return SerializerFactory.StringSerializer.Encode(output, d);
         }
     }
 }

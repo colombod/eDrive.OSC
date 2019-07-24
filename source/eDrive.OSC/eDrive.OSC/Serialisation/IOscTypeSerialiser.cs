@@ -4,9 +4,9 @@ using System.IO;
 namespace eDrive.Osc.Serialisation
 {
     /// <summary>
-    ///     The interface for all serialiser strategies.
+    ///     The interface for all serializer strategies.
     /// </summary>
-    public interface IOscTypeSerialiser
+    public interface IOscTypeSerializer
     {
         /// <summary>
         ///     Gets the type.
@@ -50,10 +50,10 @@ namespace eDrive.Osc.Serialisation
     }
 
     /// <summary>
-    ///     Contract for custom osc serialiser
+    ///     Contract for custom osc serializer
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IOscTypeSerialiser<T>
+    public interface IOscTypeSerializer<T>
     {
         /// <summary>
         ///     Gets the type.

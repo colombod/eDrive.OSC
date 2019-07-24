@@ -39,7 +39,7 @@ namespace eDrive.Osc
         {
             Assert.IsTrue(address.StartsWith(AddressPrefix));
 
-			m_typeTag = SerialiserFactory.DefaultTag.ToString();
+			m_typeTag = SerializerFactory.DefaultTag.ToString();
         }
 
         /// <summary>
@@ -73,11 +73,11 @@ namespace eDrive.Osc
             set
             {
                 m_isEvent = value;
-                m_typeTag = m_typeTag.Replace(SerialiserFactory.EventTagString, string.Empty);
+                m_typeTag = m_typeTag.Replace(SerializerFactory.EventTagString, string.Empty);
 
                 if (m_isEvent)
                 {
-                    m_typeTag = m_typeTag + SerialiserFactory.EventTagString;
+                    m_typeTag = m_typeTag + SerializerFactory.EventTagString;
                 }
             }
         }
@@ -113,7 +113,7 @@ namespace eDrive.Osc
         public override int Write(Stream stream)
         {
             var size = 0;
-            var stringSer = SerialiserFactory.GetSerialiser<string>();
+            var stringSer = SerializerFactory.GetSerializer<string>();
             size += stringSer.Encode(stream, Address);
             size += stringSer.Encode(stream, TypeTag);
 
@@ -132,13 +132,13 @@ namespace eDrive.Osc
                         var collection = part as Array;
                         foreach (var component in collection)
                         {
-                            var ser = SerialiserFactory.GetSerialiser(component);
+                            var ser = SerializerFactory.GetSerializer(component);
                             size += ser.Encode(stream, component);
                         }
                     }
                     else
                     {
-                        var ser = SerialiserFactory.GetSerialiser(part);
+                        var ser = SerializerFactory.GetSerializer(part);
                         size += ser.Encode(stream, part);
                     }
                 }
@@ -159,7 +159,7 @@ namespace eDrive.Osc
         /// </returns>
         public static OscMessage MessageFromByteArray(byte[] data, ref int start, int end)
         {
-            var sd = SerialiserFactory.StringSerialiser;
+            var sd = SerializerFactory.StringSerializer;
 
             var address = sd.Decode(data, start, out start);
 
@@ -223,19 +223,19 @@ namespace eDrive.Osc
                 {
                     var tag = tags[index];
 
-                    if (tag == SerialiserFactory.ArrayOpen)
+                    if (tag == SerializerFactory.ArrayOpen)
                     {
                         // skip the '[' character.
                         index++;
 
                         // deserialise array of object
                         var ret = new List<object>();
-                        while (tags[index] != SerialiserFactory.ArrayClose
+                        while (tags[index] != SerializerFactory.ArrayClose
                                && index < tags.Length)
                         {
                             int pos;
 
-                            var des = SerialiserFactory.GetSerialiser(tags[index]);
+                            var des = SerializerFactory.GetSerializer(tags[index]);
                             ret.Add(des.Decode(data, start, out pos));
 
                             start = pos;
@@ -244,13 +244,13 @@ namespace eDrive.Osc
 
                         m_data.Add(ret.ToArray());
                     }
-                    else if (tag != SerialiserFactory.DefaultTag)
+                    else if (tag != SerializerFactory.DefaultTag)
                     {
-                        if (tag != SerialiserFactory.EventTag)
+                        if (tag != SerializerFactory.EventTag)
                         {
                             int pos;
 
-                            var des = SerialiserFactory.GetSerialiser(tag);
+                            var des = SerializerFactory.GetSerializer(tag);
                             m_data.Add(des.Decode(data, start, out pos));
 
                             start = pos;
@@ -303,11 +303,11 @@ namespace eDrive.Osc
             string typeTag;
             try
             {
-                typeTag = SerialiserFactory.GetTag(value);
+                typeTag = SerializerFactory.GetTag(value);
             }
             catch (KeyNotFoundException e)
             {
-                throw new OscSerialiserException(value.GetType(), e);
+                throw new OscSerializerException(value.GetType(), e);
             }
 
             return typeTag;
@@ -344,7 +344,7 @@ namespace eDrive.Osc
 
         private void RebuldTtypeTag()
         {
-            m_typeTag = SerialiserFactory.DefaultTag.ToString();
+            m_typeTag = SerializerFactory.DefaultTag.ToString();
             foreach (var o in m_data)
             {
                 m_typeTag += GetTag(o);
@@ -357,7 +357,7 @@ namespace eDrive.Osc
         public void ClearData()
         {
             m_dataBag = null;
-            m_typeTag = SerialiserFactory.DefaultTag.ToString();
+            m_typeTag = SerializerFactory.DefaultTag.ToString();
             m_data.Clear();
         }
     }

@@ -4,15 +4,15 @@ using System.IO;
 namespace eDrive.Osc.Serialisation
 {
     /// <summary>
-    ///     Serialiser for <see cref="Guid" />
+    ///     Serializer for <see cref="Guid" />
     /// </summary>
-    [CustomOscSerialiser('g', typeof (Guid))]
-    public class GuidSerialiser : OscTypeSerialiser<Guid>
+    [CustomOscSerializer('g', typeof (Guid))]
+    public class GuidSerializer : OscTypeSerializer<Guid>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="GuidSerialiser" /> class.
+        ///     Initializes a new instance of the <see cref="GuidSerializer" /> class.
         /// </summary>
-        public GuidSerialiser() : base('g')
+        public GuidSerializer() : base('g')
         {
         }
 
@@ -25,7 +25,7 @@ namespace eDrive.Osc.Serialisation
         /// <returns></returns>
         public override Guid Decode(byte[] data, int start, out int position)
         {
-            var src = SerialiserFactory.ByteArraySerialiser.Decode(data, start, out position);
+            var src = SerializerFactory.ByteArraySerializer.Decode(data, start, out position);
             return new Guid(src);
         }
 
@@ -38,7 +38,7 @@ namespace eDrive.Osc.Serialisation
         public override int Encode(Stream output, Guid value)
         {
             var data = value.ToByteArray();
-            return SerialiserFactory.ByteArraySerialiser.Encode(output, data);
+            return SerializerFactory.ByteArraySerializer.Encode(output, data);
         }
     }
 }

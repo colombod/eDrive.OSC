@@ -4,15 +4,15 @@ using eDrive.Osc;
 namespace eDrive.Osc.Serialisation.Json
 {
     /// <summary>
-    ///     Serialiser for Osc Colour
+    ///     Serializer for Osc Colour
     /// </summary>
-    [CustomOscJSonSerialiser('r', typeof (OscColour))]
-    public class OscColourSerialiser : OscTypeJsonSerialiser<OscColour>
+    [CustomOscJSonSerializer('r', typeof (OscColour))]
+    public class OscColourSerializer : OscTypeJsonSerializer<OscColour>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="OscColourSerialiser" /> class.
+        ///     Initializes a new instance of the <see cref="OscColourSerializer" /> class.
         /// </summary>
-        public OscColourSerialiser()
+        public OscColourSerializer()
             : base('r')
         {
         }

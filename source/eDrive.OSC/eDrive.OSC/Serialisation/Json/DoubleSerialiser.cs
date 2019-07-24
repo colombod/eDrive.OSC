@@ -3,15 +3,15 @@ using Newtonsoft.Json;
 namespace eDrive.Osc.Serialisation.Json
 {
     /// <summary>
-    ///     Serialiser for <see cref="double" />
+    ///     Serializer for <see cref="double" />
     /// </summary>
-    [CustomOscJSonSerialiser('d', typeof (double))]
-    public class DoubleSerialiser : OscTypeJsonSerialiser<double>
+    [CustomOscJSonSerializer('d', typeof (double))]
+    public class DoubleSerializer : OscTypeJsonSerializer<double>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="DoubleSerialiser" /> class.
+        ///     Initializes a new instance of the <see cref="DoubleSerializer" /> class.
         /// </summary>
-        public DoubleSerialiser() : base('d')
+        public DoubleSerializer() : base('d')
         {
         }
 

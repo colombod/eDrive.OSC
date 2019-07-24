@@ -4,15 +4,15 @@ using System.IO;
 namespace eDrive.Osc.Serialisation
 {
     /// <summary>
-    ///     Serialiser for <see cref="int" />.
+    ///     Serializer for <see cref="int" />.
     /// </summary>
-    [CustomOscSerialiser('i', typeof (int))]
-    public class IntSerialiser : OscTypeSerialiser<int>
+    [CustomOscSerializer('i', typeof (int))]
+    public class IntSerializer : OscTypeSerializer<int>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="IntSerialiser" /> class.
+        ///     Initializes a new instance of the <see cref="IntSerializer" /> class.
         /// </summary>
-        public IntSerialiser()
+        public IntSerializer()
             : base('i')
         {
         }

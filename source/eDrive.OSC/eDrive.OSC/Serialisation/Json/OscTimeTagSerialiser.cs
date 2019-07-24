@@ -4,15 +4,15 @@ using eDrive.Osc;
 namespace eDrive.Osc.Serialisation.Json
 {
     /// <summary>
-    ///     Serialiser of <see cref="OscTimeTag" />.
+    ///     Serializer of <see cref="OscTimeTag" />.
     /// </summary>
-    [CustomOscJSonSerialiser('t', typeof (OscTimeTag))]
-    public class OscTimeTagSerialiser : OscTypeJsonSerialiser<OscTimeTag>
+    [CustomOscJSonSerializer('t', typeof (OscTimeTag))]
+    public class OscTimeTagSerializer : OscTypeJsonSerializer<OscTimeTag>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="OscTimeTagSerialiser" /> class.
+        ///     Initializes a new instance of the <see cref="OscTimeTagSerializer" /> class.
         /// </summary>
-        public OscTimeTagSerialiser() : base('t')
+        public OscTimeTagSerializer() : base('t')
         {
         }
 
