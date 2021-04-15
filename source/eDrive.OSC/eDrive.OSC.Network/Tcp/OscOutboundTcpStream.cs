@@ -63,7 +63,7 @@ namespace eDrive.Network.Tcp
                 {
                     using (var stream = new MemoryStream())
                     {
-                        SerialiserFactory.ByteArraySerialiser.Encode(stream, data);
+                        SerializerFactory.ByteArraySerializer.Encode(stream, data);
                         stream.Flush();
                         var msg = stream.ToArray();
                         m_socket.BeginSend(msg, 0, msg.Length, SocketFlags.None, null, null);

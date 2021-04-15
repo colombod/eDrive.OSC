@@ -95,10 +95,9 @@ namespace eDrive.Network.Udp
         private void CompleteRead(IAsyncResult ar)
         {
             var size = m_socket.EndReceive(ar);
-            var data = ar.AsyncState as byte[];
 
             if (size > 0
-                && data != null)
+                && ar.AsyncState is byte[] data)
             {
                 Scheduler.Schedule(() =>
                                        {

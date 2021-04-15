@@ -15,11 +15,10 @@ namespace eDrive.Network
 		private readonly Subject<OscBundle> _mBundleStream;
 		private readonly Subject<OscMessage> _mMessageStream;
 		private readonly Subject<OscPacket> _mPakectStream;
-		private readonly IScheduler _mScheduler;
 
-		protected OscInboundStreamBase(IScheduler scheduler)
+        protected OscInboundStreamBase(IScheduler scheduler)
 		{
-			_mScheduler = scheduler ?? TaskPoolScheduler.Default;
+			Scheduler = scheduler ?? TaskPoolScheduler.Default;
 			_mPakectStream = new Subject<OscPacket>();
 			_mMessageStream = new Subject<OscMessage>();
 			_mBundleStream = new Subject<OscBundle>();
@@ -31,12 +30,9 @@ namespace eDrive.Network
 		/// <value>
 		///     The scheduler.
 		/// </value>
-		public IScheduler Scheduler
-		{
-			get { return _mScheduler; }
-		}
+		public IScheduler Scheduler { get; }
 
-		#region IOscInboundStream Members
+        #region IOscInboundStream Members
 
 		public virtual void Dispose()
 		{
@@ -45,22 +41,13 @@ namespace eDrive.Network
 			_mMessageStream.OnCompleted();
 		}
 
-		public IObservable<OscMessage> MessageStream
-		{
-			get { return _mMessageStream; }
-		}
+		public IObservable<OscMessage> MessageStream => _mMessageStream;
 
-		public IObservable<OscPacket> PacketStream
-		{
-			get { return _mPakectStream; }
-		}
+        public IObservable<OscPacket> PacketStream => _mPakectStream;
 
-		public IObservable<OscBundle> BundleStream
-		{
-			get { return _mBundleStream; }
-		}
+        public IObservable<OscBundle> BundleStream => _mBundleStream;
 
-		public bool SuppressParsingExceptions { get; set; }
+        public bool SuppressParsingExceptions { get; set; }
 
 		/// <summary>
 		///     Starts this instance.
@@ -80,10 +67,10 @@ namespace eDrive.Network
 		/// <param name="bundle">The bundle.</param>
 		protected void ForwardBundle(OscBundle bundle)
 		{
-			InternalFowrardBundle(bundle, true);
+			InternalForwardBundle(bundle, true);
 		}
 
-		private void InternalFowrardBundle(OscBundle bundle, bool forward)
+		private void InternalForwardBundle(OscBundle bundle, bool forward)
 		{
 			if (bundle != null)
 			{
@@ -108,13 +95,13 @@ namespace eDrive.Network
 					{
 						if (b.TimeStamp.TimeTag == OscTimeTag.Immediate)
 						{
-							InternalFowrardBundle(b, false);
+							InternalForwardBundle(b, false);
 						}
 						else
 						{
-							var delay = b.TimeStamp.DateTime - _mScheduler.Now;
+							var delay = b.TimeStamp.DateTime - Scheduler.Now;
 							var ob = b;
-							_mScheduler.Schedule(delay, () => InternalFowrardBundle(ob, false));
+							Scheduler.Schedule(delay, () => InternalForwardBundle(ob, false));
 						}
 					}
 				}
@@ -127,16 +114,13 @@ namespace eDrive.Network
 			{
 				Scheduler.Schedule(packet, (b, action) => _mPakectStream.OnNext(b));
 
-				var msg = packet as OscMessage;
-
-				if (msg != null)
+                if (packet is OscMessage msg)
 				{
 					ForwardMessage(msg);
 				}
 				else
 				{
-					var bundle = packet as OscBundle;
-					if (bundle != null)
+                    if (packet is OscBundle bundle)
 					{
 						ForwardBundle(bundle);
 					}

@@ -4,29 +4,29 @@ using Newtonsoft.Json;
 namespace eDrive.Osc.Serialisation.Json
 {
     /// <summary>
-    ///     Serialiser for <see cref="Version" />
+    ///     Serializer for <see cref="Version" />
     /// </summary>
-    [CustomOscJSonSerialiser('v', typeof (Version))]
-    public class VersionSerialiser : OscTypeJsonSerialiser<Version>
+    [CustomOscJSonSerializer('v', typeof (Version))]
+    public class VersionSerializer : OscTypeJsonSerializer<Version>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="VersionSerialiser" /> class.
+        ///     Initializes a new instance of the <see cref="VersionSerializer" /> class.
         /// </summary>
-        public VersionSerialiser() : base('v')
+        public VersionSerializer() : base('v')
         {
         }
 
 
         public override Version Decode(JsonReader reader)
         {
-            var vs = JsonSerialiserFactory.StringSerialiser.Decode(reader);
+            var vs = JsonSerializerFactory.StringSerializer.Decode(reader);
             return Version.Parse(vs);
         }
 
         public override void Encode(JsonWriter output, Version value)
         {
             var d = value.ToString();
-            JsonSerialiserFactory.StringSerialiser.Encode(output, d);
+            JsonSerializerFactory.StringSerializer.Encode(output, d);
         }
     }
 }

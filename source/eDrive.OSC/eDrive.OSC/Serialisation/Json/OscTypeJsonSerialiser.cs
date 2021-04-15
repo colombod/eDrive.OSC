@@ -8,18 +8,18 @@ namespace eDrive.Osc.Serialisation.Json
     ///     This class can be used to create serialisation strategies for types.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class OscTypeJsonSerialiser<T> : IEquatable<OscTypeJsonSerialiser<T>>,
-                                                     IOscTypeJsonSerialiser<T>,
-                                                     IOscTypeJsonSerialiser
+    public abstract class OscTypeJsonSerializer<T> : IEquatable<OscTypeJsonSerializer<T>>,
+                                                     IOscTypeJsonSerializer<T>,
+                                                     IOscTypeJsonSerializer
     {
         private readonly char m_tag;
         private readonly Type m_type = typeof (T);
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="OscTypeJsonSerialiser{T}" /> class.
+        ///     Initializes a new instance of the <see cref="OscTypeJsonSerializer{T}" /> class.
         /// </summary>
         /// <param name="tag">The tag.</param>
-        protected OscTypeJsonSerialiser(char tag)
+        protected OscTypeJsonSerializer(char tag)
         {
             m_tag = tag;
         }
@@ -31,7 +31,7 @@ namespace eDrive.Osc.Serialisation.Json
         /// <returns>
         ///     true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.
         /// </returns>
-        public bool Equals(OscTypeJsonSerialiser<T> other)
+        public bool Equals(OscTypeJsonSerializer<T> other)
         {
             if (ReferenceEquals(null, other))
             {
@@ -51,7 +51,7 @@ namespace eDrive.Osc.Serialisation.Json
         /// <returns>
         ///     Deserialised data
         /// </returns>
-        object IOscTypeJsonSerialiser.Decode(JsonReader reader)
+        object IOscTypeJsonSerializer.Decode(JsonReader reader)
         {
             return Decode(reader);
         }
@@ -160,7 +160,7 @@ namespace eDrive.Osc.Serialisation.Json
             {
                 return false;
             }
-            return Equals((OscTypeSerialiser<T>) obj);
+            return Equals((OscTypeSerializer<T>) obj);
         }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace eDrive.Osc.Serialisation.Json
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
         /// <returns></returns>
-        public static bool operator ==(OscTypeJsonSerialiser<T> left, OscTypeJsonSerialiser<T> right)
+        public static bool operator ==(OscTypeJsonSerializer<T> left, OscTypeJsonSerializer<T> right)
         {
             return Equals(left, right);
         }
@@ -191,7 +191,7 @@ namespace eDrive.Osc.Serialisation.Json
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
         /// <returns></returns>
-        public static bool operator !=(OscTypeJsonSerialiser<T> left, OscTypeJsonSerialiser<T> right)
+        public static bool operator !=(OscTypeJsonSerializer<T> left, OscTypeJsonSerializer<T> right)
         {
             return !Equals(left, right);
         }

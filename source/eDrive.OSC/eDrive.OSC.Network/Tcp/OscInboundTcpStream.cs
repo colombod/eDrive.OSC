@@ -94,7 +94,7 @@ namespace eDrive.Network.Tcp
             {
                 // header read, now proceed with message
                 var cursor = 0;
-                var messageSize = SerialiserFactory.IntSerialiser.Decode(state.Buffer, cursor, out cursor);
+                var messageSize = SerializerFactory.IntSerializer.Decode(state.Buffer, cursor, out cursor);
                 state.ToRead = messageSize;
                 state.Offset = 0;
                 state.Buffer = new byte[messageSize];

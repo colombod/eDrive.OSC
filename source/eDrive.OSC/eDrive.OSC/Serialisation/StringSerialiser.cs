@@ -4,15 +4,15 @@ using System.Text;
 namespace eDrive.Osc.Serialisation
 {
     /// <summary>
-    ///     Serialiser for <see cref="string" />
+    ///     Serializer for <see cref="string" />
     /// </summary>
-    [CustomOscSerialiser('s', typeof (string))]
-    public class StringSerialiser : OscTypeSerialiser<string>
+    [CustomOscSerializer('s', typeof (string))]
+    public class StringSerializer : OscTypeSerializer<string>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="StringSerialiser" /> class.
+        ///     Initializes a new instance of the <see cref="StringSerializer" /> class.
         /// </summary>
-        public StringSerialiser() : base('s')
+        public StringSerializer() : base('s')
         {
         }
 

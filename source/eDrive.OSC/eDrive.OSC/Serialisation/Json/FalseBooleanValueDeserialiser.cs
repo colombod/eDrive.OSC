@@ -6,13 +6,13 @@ namespace eDrive.Osc.Serialisation.Json
     /// <summary>
     ///     Deserialises a <see cref="bool" /> true value from 'T' tag
     /// </summary>
-    [CustomOscJSonSerialiser('F')]
-    public class FalseBooleanValueDeserialiser : OscTypeJsonSerialiser<bool>
+    [CustomOscJSonSerializer('F')]
+    public class FalseBooleanValueDeserializer : OscTypeJsonSerializer<bool>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="FalseBooleanValueDeserialiser" /> class.
+        ///     Initializes a new instance of the <see cref="FalseBooleanValueDeserializer" /> class.
         /// </summary>
-        public FalseBooleanValueDeserialiser()
+        public FalseBooleanValueDeserializer()
             : base('F')
         {
         }
@@ -24,7 +24,7 @@ namespace eDrive.Osc.Serialisation.Json
 
         public override void Encode(JsonWriter output, bool value)
         {
-            throw new NotSupportedException("This serialiser can only read");
+            throw new NotSupportedException("This serializer can only read");
         }
     }
 }

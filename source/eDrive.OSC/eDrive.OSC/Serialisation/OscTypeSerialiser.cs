@@ -7,18 +7,18 @@ namespace eDrive.Osc.Serialisation
     ///     This class can be used to create serialisation strategies for types.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class OscTypeSerialiser<T> : IEquatable<OscTypeSerialiser<T>>,
-                                                 IOscTypeSerialiser<T>,
-                                                 IOscTypeSerialiser
+    public abstract class OscTypeSerializer<T> : IEquatable<OscTypeSerializer<T>>,
+                                                 IOscTypeSerializer<T>,
+                                                 IOscTypeSerializer
     {
         private readonly char m_tag;
         private readonly Type m_type = typeof (T);
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="OscTypeSerialiser{T}" /> class.
+        ///     Initializes a new instance of the <see cref="OscTypeSerializer{T}" /> class.
         /// </summary>
         /// <param name="tag">The tag.</param>
-        protected OscTypeSerialiser(char tag)
+        protected OscTypeSerializer(char tag)
         {
             m_tag = tag;
         }
@@ -30,7 +30,7 @@ namespace eDrive.Osc.Serialisation
         /// <returns>
         ///     true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.
         /// </returns>
-        public bool Equals(OscTypeSerialiser<T> other)
+        public bool Equals(OscTypeSerializer<T> other)
         {
             if (ReferenceEquals(null, other))
             {
@@ -52,7 +52,7 @@ namespace eDrive.Osc.Serialisation
         /// <returns>
         ///     Deserialised data
         /// </returns>
-        object IOscTypeSerialiser.Decode(byte[] data, int start, out int position)
+        object IOscTypeSerializer.Decode(byte[] data, int start, out int position)
         {
             return Decode(data, start, out position);
         }
@@ -162,7 +162,7 @@ namespace eDrive.Osc.Serialisation
             {
                 return false;
             }
-            return Equals((OscTypeSerialiser<T>) obj);
+            return Equals((OscTypeSerializer<T>) obj);
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace eDrive.Osc.Serialisation
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
         /// <returns></returns>
-        public static bool operator ==(OscTypeSerialiser<T> left, OscTypeSerialiser<T> right)
+        public static bool operator ==(OscTypeSerializer<T> left, OscTypeSerializer<T> right)
         {
             return Equals(left, right);
         }
@@ -193,7 +193,7 @@ namespace eDrive.Osc.Serialisation
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
         /// <returns></returns>
-        public static bool operator !=(OscTypeSerialiser<T> left, OscTypeSerialiser<T> right)
+        public static bool operator !=(OscTypeSerializer<T> left, OscTypeSerializer<T> right)
         {
             return !Equals(left, right);
         }

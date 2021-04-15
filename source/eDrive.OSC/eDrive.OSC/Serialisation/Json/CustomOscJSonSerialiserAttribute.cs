@@ -7,34 +7,34 @@ namespace eDrive.Osc.Serialisation.Json
     ///     Marks classes as custom osc sersialiser
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    public sealed class CustomOscJSonSerialiserAttribute : Attribute
+    public sealed class CustomOscJSonSerializerAttribute : Attribute
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="CustomOscJSonSerialiserAttribute" /> class.
+        ///     Initializes a new instance of the <see cref="CustomOscJSonSerializerAttribute" /> class.
         /// </summary>
         /// <param name="typeTag">The type tag.</param>
         /// <param name="type">The type tag.</param>
-        public CustomOscJSonSerialiserAttribute(char typeTag, Type type)
+        public CustomOscJSonSerializerAttribute(char typeTag, Type type)
         {
             TypeTag = typeTag;
             Type = type;
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="CustomOscJSonSerialiserAttribute" /> class.
+        ///     Initializes a new instance of the <see cref="CustomOscJSonSerializerAttribute" /> class.
         /// </summary>
         /// <param name="type">The type tag.</param>
-        public CustomOscJSonSerialiserAttribute(Type type)
+        public CustomOscJSonSerializerAttribute(Type type)
         {
             TypeTag = ' ';
             Type = type;
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="CustomOscJSonSerialiserAttribute" /> class.
+        ///     Initializes a new instance of the <see cref="CustomOscJSonSerializerAttribute" /> class.
         /// </summary>
         /// <param name="typeTag">The type tag.</param>
-        public CustomOscJSonSerialiserAttribute(char typeTag)
+        public CustomOscJSonSerializerAttribute(char typeTag)
         {
             TypeTag = typeTag;
             Type = null;

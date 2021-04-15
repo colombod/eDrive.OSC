@@ -1,5 +1,3 @@
-using System.Diagnostics;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -35,10 +33,7 @@ namespace eDrive.Osc
         /// <summary>
         ///     Specifies if the packet is an Osc bundle.
         /// </summary>
-        public override bool IsBundle
-        {
-            get { return true; }
-        }
+        public override bool IsBundle => true;
 
         /// <summary>
         ///     Gets the creation time of the bundle.
@@ -81,10 +76,10 @@ namespace eDrive.Osc
         /// <returns>The newly serialized packet.</returns>
         public override byte[] ToByteArray()
         {
-            return NewSerialiser();
+            return NewSerializer();
         }
 
-        private byte[] NewSerialiser()
+        private byte[] NewSerializer()
         {
             using (var s = new MemoryStream())
             {
@@ -103,8 +98,8 @@ namespace eDrive.Osc
         public override int Write(Stream stream)
         {
             var size = 0;
-            size += SerialiserFactory.StringSerialiser.Encode(stream, Address);
-            size += SerialiserFactory.TimeTagSerialiser.Encode(stream, TimeStamp);
+            size += SerializerFactory.StringSerializer.Encode(stream, Address);
+            size += SerializerFactory.TimeTagSerializer.Encode(stream, TimeStamp);
 
             if (m_dataBag != null)
             {
@@ -119,7 +114,7 @@ namespace eDrive.Osc
                 {
 					System.Diagnostics.Debug.Assert(packetBytes.Length%4 == 0);
 
-                    SerialiserFactory.IntSerialiser.Encode(stream, packetBytes.Length);
+                    SerializerFactory.IntSerializer.Encode(stream, packetBytes.Length);
 
                     stream.Write(packetBytes, 0, packetBytes.Length);
 
@@ -145,8 +140,8 @@ namespace eDrive.Osc
 
         private static OscBundle Deserialise(byte[] data, ref int start, int end)
         {
-            var str = SerialiserFactory.StringSerialiser;
-            var tt = SerialiserFactory.TimeTagSerialiser;
+            var str = SerializerFactory.StringSerializer;
+            var tt = SerializerFactory.TimeTagSerializer;
 
             var prefix = str.Decode(data, start, out start);
 			Assert.IsTrue(prefix == BundlePrefix);
@@ -190,7 +185,7 @@ namespace eDrive.Osc
 
                 while (start < end)
                 {
-                    var length = SerialiserFactory.IntSerialiser.Decode(data, start, out start);
+                    var length = SerializerFactory.IntSerializer.Decode(data, start, out start);
                     var packetEnd = start + length;
                     Append(FromByteArray(data, ref start, packetEnd));
                 }
@@ -209,8 +204,7 @@ namespace eDrive.Osc
             EnsureDataLoaded();
             Assert.IsTrue(value is OscPacket);
 
-            var nestedBundle = value as OscBundle;
-            if (nestedBundle != null)
+            if (value is OscBundle nestedBundle)
             {
                 Assert.IsTrue(nestedBundle.TimeStamp.DateTime >= TimeStamp.DateTime);
             }

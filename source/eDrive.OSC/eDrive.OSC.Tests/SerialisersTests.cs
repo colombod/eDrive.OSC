@@ -2,22 +2,25 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text;
-using NUnit.Framework;
 using eDrive.Osc.Serialisation;
-using eDrive.Osc;
-using EDAssert = eDrive.Assert;
-using NUAssert = NUnit.Framework.Assert;
+using FluentAssertions;
+using Xunit;
 
 namespace eDrive.Osc.Tests
 {
-    [TestFixture]
-    public class SerialisersTests
+   
+    public class SerializersTests
     {
         private class UnknownType
         {
         }
+
+        public  SerializersTests()
+        {
+            Serialisation.SerializerFactory.LoadSerializersFromAssembly(typeof(OscMessage).Assembly);
+        }
+
 
         private static int GetIntExpectedData(out byte[] expectedData)
         {
@@ -83,20 +86,21 @@ namespace eDrive.Osc.Tests
             return value;
         }
 
-        public void TestNilSerialiserEncode()
+        [Fact]
+        public void TestNilSerializerEncode()
         {
-            var serialiser = new NilSerialiser();
+            var serializer = new NilSerializer();
 
             // according to http://opensoundcontrol.org/spec-1_0 
             // "No bytes are allocated in the argument data."
 
             var stream = new MemoryStream();
-            NUAssert.AreEqual(0, serialiser.Encode(stream, new NilSerialiser.Nil()));
-            NUAssert.AreEqual(0, stream.ToArray().Length);
-
+            serializer.Encode(stream, new NilSerializer.Nil()).Should().Be(0);
+            stream.ToArray().Length.Should().Be(0);
+           
             stream = new MemoryStream();
-            NUAssert.AreEqual(0, serialiser.Encode(stream, null));
-            NUAssert.AreEqual(0, stream.ToArray().Length);
+            serializer.Encode(stream, null).Should().Be(0);
+            stream.ToArray().Length.Should().Be(0);
         }
 
         private static OscMidiMessage GetMidiExpectedData(out byte[] expectedData)
@@ -132,7 +136,7 @@ namespace eDrive.Osc.Tests
         {
             var headerData = GetHeaderDataArray(",[ifs]");
 
-            // NB: here we are assuming the correct behaviour of these serialisers,
+            // NB: here we are assuming the correct behaviour of these serializers,
             // maybe specific tests should be added as well.
             var memoryStream = new MemoryStream();
             GetArrayData(memoryStream);
@@ -145,10 +149,10 @@ namespace eDrive.Osc.Tests
         {
             var headerData = GetHeaderDataArray(",i[ifs]");
 
-            // NB: here we are assuming the correct behaviour of these serialisers,
+            // NB: here we are assuming the correct behaviour of these serializers,
             // maybe specific tests should be added as well.
             var memoryStream = new MemoryStream();
-            SerialiserFactory.GetSerialiser(typeof (int)).Encode(memoryStream, 1);
+            SerializerFactory.GetSerializer(typeof (int)).Encode(memoryStream, 1);
             GetArrayData(memoryStream);
             var arrayData = memoryStream.ToArray();
 
@@ -159,11 +163,11 @@ namespace eDrive.Osc.Tests
         {
             var headerData = GetHeaderDataArray(",[ifs]i");
 
-            // NB: here we are assuming the correct behaviour of these serialisers,
+            // NB: here we are assuming the correct behaviour of these serializers,
             // maybe specific tests should be added as well.
             var memoryStream = new MemoryStream();
             GetArrayData(memoryStream);
-            SerialiserFactory.GetSerialiser(typeof (int)).Encode(memoryStream, 1);
+            SerializerFactory.GetSerializer(typeof (int)).Encode(memoryStream, 1);
             var arrayData = memoryStream.ToArray();
 
             return headerData.Concat(arrayData).ToArray();
@@ -173,11 +177,11 @@ namespace eDrive.Osc.Tests
         {
             var headerData = GetHeaderDataArray(",[ifs]b");
 
-            // NB: here we are assuming the correct behaviour of these serialisers,
+            // NB: here we are assuming the correct behaviour of these serializers,
             // maybe specific tests should be added as well.
             var memoryStream = new MemoryStream();
             GetArrayData(memoryStream);
-            SerialiserFactory.GetSerialiser(typeof (byte[])).Encode(memoryStream, CreateTestBlob());
+            SerializerFactory.GetSerializer(typeof (byte[])).Encode(memoryStream, CreateTestBlob());
             var arrayData = memoryStream.ToArray();
 
             return headerData.Concat(arrayData).ToArray();
@@ -203,12 +207,12 @@ namespace eDrive.Osc.Tests
 
         private static void GetArrayData(Stream memoryStream)
         {
-            // NB: here we are assuming the correct behaviour of these serialisers,
+            // NB: here we are assuming the correct behaviour of these serializers,
             // maybe specific tests should be added as well.
 
-            SerialiserFactory.GetSerialiser(typeof (int)).Encode(memoryStream, 1);
-            SerialiserFactory.GetSerialiser(typeof (float)).Encode(memoryStream, 2f);
-            SerialiserFactory.GetSerialiser(typeof (string)).Encode(memoryStream, "foo");
+            SerializerFactory.GetSerializer(typeof (int)).Encode(memoryStream, 1);
+            SerializerFactory.GetSerializer(typeof (float)).Encode(memoryStream, 2f);
+            SerializerFactory.GetSerializer(typeof (string)).Encode(memoryStream, "foo");
         }
 
         private static byte[] CreateTestBlob()
@@ -220,120 +224,113 @@ namespace eDrive.Osc.Tests
             blob[3] = 0;
             return blob;
         }
-
+        
         private static void AssertCorrectArray(IList<object> actual)
         {
-            NUAssert.IsNotNull(actual);
-
-            NUAssert.AreEqual(1, actual[0]);
-            NUAssert.AreEqual(2f, actual[1]);
-            NUAssert.AreEqual("foo", actual[2]);
+            actual.Should().NotBeNull();
+            actual[0].Should().Be(1);
+            actual[1].Should().Be(2);
+            actual[2].Should().Be("foo");
         }
 
-        private static void AssertSerialiserType(IOscTypeSerialiser serialiser, Type type, char tag)
+
+        private static void AssertSerializerType(IOscTypeSerializer serializer, Type type, char tag)
         {
-            NUAssert.AreEqual(type, serialiser.Type);
-            NUAssert.AreEqual(tag, serialiser.Tag);
+            serializer.Type.Should().Be(type);
+            serializer.Tag.Should().Be(tag);
         }
 
-        private static void AssertEncode<T>(OscTypeSerialiser<T> serialiser, T value, byte[] expectedData)
+        private static void AssertEncode<T>(OscTypeSerializer<T> serializer, T value, byte[] expectedData)
         {
             var stream1 = new MemoryStream();
-            serialiser.Encode(stream1, value);
+            serializer.Encode(stream1, value);
 
-            var actualData = stream1.ToArray();
-
-            for (var i = 0; i < expectedData.Length; i++)
-            {
-                NUAssert.AreEqual(expectedData[i], actualData[i]);
-            }
+            var actualData = stream1.ToArray().Take(expectedData.Length);
+            actualData.Should().BeEquivalentTo(expectedData);
+            
 
 
             var stream2 = new MemoryStream();
-            serialiser.Encode(stream2, (object) value);
+            serializer.Encode(stream2, (object) value);
 
-            actualData = stream2.ToArray();
-
-            for (var i = 0; i < expectedData.Length; i++)
-            {
-                NUAssert.AreEqual(expectedData[i], actualData[i]);
-            }
+            actualData = stream2.ToArray().Take(expectedData.Length);
+            actualData.Should().BeEquivalentTo(expectedData);
         }
 
         private static void AssertDecode<T>
             (
-            IOscTypeSerialiser<T> serialiser, byte[] data, T expected, int size)
+            IOscTypeSerializer<T> serializer, byte[] data, T expected, int size)
         {
             int pos;
-            var actual = serialiser.Decode(data, 0, out pos);
-
-            NUAssert.AreEqual(expected, actual);
-            NUAssert.AreEqual(size, pos);
+            var actual = serializer.Decode(data, 0, out pos);
+            actual.Should().Be(expected);
+            pos.Should().Be(size);
         }
 
-		[TestFixtureSetUp]
-		public void Setup(){
-			Serialisation.SerialiserFactory.LoadSerialisersFromAssembly(typeof(OscMessage).Assembly);
-		}
-
-        [Test]
+		
+		
+        [Fact]
         public void TestArrayDeserialisation()
         {
             var msg = OscPacket.FromByteArray(CreateExpectedDataArray());
 
             const string typeTag = ",[ifs]";
-
-            NUAssert.IsTrue(msg is OscMessage);
-            NUAssert.AreEqual(typeTag, ((OscMessage) msg).TypeTag);
+            msg.Should().BeOfType<OscMessage>()
+                .Which
+                .TypeTag.Should().Be(typeTag);
 
             var actual = msg.Data[0] as object[]; // the heterogeneous array.
 
             AssertCorrectArray(actual);
         }
 
-        [Test]
+        [Fact]
         public void TestArrayDeserialisation2()
         {
             var msg = OscPacket.FromByteArray(CreateExpectedDataArray2());
 
             const string typeTag = ",i[ifs]";
 
-            NUAssert.IsTrue(msg is OscMessage);
-            NUAssert.AreEqual(typeTag, ((OscMessage) msg).TypeTag);
+            msg.Should().BeOfType<OscMessage>()
+                .Which
+                .TypeTag.Should().Be(typeTag);
 
-            NUAssert.AreEqual(msg.Data[0], 1);
+            msg.Data[0].Should().Be(1);
 
             var actual = msg.Data[1] as object[]; // the heterogeneous array.
 
             AssertCorrectArray(actual);
         }
 
-        [Test]
+        [Fact]
         public void TestArrayDeserialisation3()
         {
             var msg = OscPacket.FromByteArray(CreateExpectedDataArray3());
 
             const string typeTag = ",[ifs]i";
 
-            NUAssert.IsTrue(msg is OscMessage);
-            NUAssert.AreEqual(typeTag, ((OscMessage) msg).TypeTag);
+            msg.Should().BeOfType<OscMessage>()
+                .Which
+                .TypeTag.Should().Be(typeTag);
 
             var actual = msg.Data[0] as object[]; // the heterogeneous array.
 
             AssertCorrectArray(actual);
-
-            NUAssert.AreEqual(msg.Data[1], 1);
+            msg.Data[1].Should().Be(1);
         }
 
-        [Test]
+        [Fact]
         public void TestArrayDeserialisation4()
         {
             var msg = OscPacket.FromByteArray(CreateExpectedDataArray4());
 
             const string typeTag = ",[ifs]b";
 
-            NUAssert.IsTrue(msg is OscMessage);
-            NUAssert.AreEqual(typeTag, ((OscMessage) msg).TypeTag);
+            msg.Should().BeOfType<OscMessage>()
+                .Which
+                .TypeTag.Should().Be(typeTag);
+
+            
 
             var actual = msg.Data[0] as object[]; // the heterogeneous array.
 
@@ -341,49 +338,43 @@ namespace eDrive.Osc.Tests
 
             var expectedBlob = CreateTestBlob();
             var actualBlob = (byte[]) msg.Data[1];
-            for (var i = 0; i < expectedBlob.Length; i++)
-            {
-                NUAssert.AreEqual(expectedBlob[i], actualBlob[i]);
-            }
+            actualBlob.Should().BeEquivalentTo(expectedBlob);
         }
 
-        [Test]
+        [Fact]
         public void TestArraySerialisation()
         {
             var data = new object[] {1, 2f, "foo"};
             var msg = new OscMessage("/test", data);
 
             var expected = CreateExpectedDataArray();
-
-            NUAssert.AreEqual(",[ifs]", msg.TypeTag);
+            msg.TypeTag.Should().Be(",[ifs]");
             OscValidation.AssertSamePacket(expected, msg.ToByteArray());
         }
 
-        [Test]
+        [Fact]
         public void TestArraySerialisation2()
         {
             var msg = new OscMessage("/test", 1); // the first argument is an integer 
             msg.Append(new object[] {1, 2f, "foo"});
 
             var expected = CreateExpectedDataArray2();
-
-            NUAssert.AreEqual(",i[ifs]", msg.TypeTag);
+            msg.TypeTag.Should().Be(",i[ifs]");
             OscValidation.AssertSamePacket(expected, msg.ToByteArray());
         }
 
-        [Test]
+        [Fact]
         public void TestArraySerialisation3()
         {
             var msg = new OscMessage("/test", new object[] {1, 2f, "foo"});
             msg.Append(1); // the last argument is an integer.
 
             var expected = CreateExpectedDataArray3();
-
-            NUAssert.AreEqual(",[ifs]i", msg.TypeTag);
+            msg.TypeTag.Should().Be(",[ifs]i");
             OscValidation.AssertSamePacket(expected, msg.ToByteArray());
         }
 
-        [Test]
+        [Fact]
         public void TestArraySerialisation4()
         {
             var msg = new OscMessage("/test", new object[] {1, 2f, "foo"});
@@ -392,51 +383,51 @@ namespace eDrive.Osc.Tests
             msg.Append(blob); // the last argument is a blob.
 
             var expected = CreateExpectedDataArray4();
-
-            NUAssert.AreEqual(",[ifs]b", msg.TypeTag);
+            msg.TypeTag.Should().Be(",[ifs]b");
             OscValidation.AssertSamePacket(expected, msg.ToByteArray());
         }
 
-        [Test]
-        public void TestBooleanSerialiser()
+        [Fact]
+        public void TestBooleanSerializer()
         {
-            AssertSerialiserType(new BooleanValueSerialiser(), typeof (bool), ' ');
+            AssertSerializerType(new BooleanValueSerializer(), typeof (bool), ' ');
         }
 
-        [Test, ExpectedException(typeof (NotSupportedException))]
-        public void TestBooleanSerialiserDecode()
+        [Fact]
+        public void TestBooleanSerializerDecode()
         {
-            var serialiser = new BooleanValueSerialiser();
+            var serializer = new BooleanValueSerializer();
 
             int pos;
-            serialiser.Decode(new byte[1], 0, out pos);
+           var action = new Action( () => serializer.Decode(new byte[1], 0, out pos));
+           action.Should().Throw<NotSupportedException>();
         }
 
-        [Test]
-        public void TestBooleanSerialiserEncode()
+        [Fact]
+        public void TestBooleanSerializerEncode()
         {
-            var serialiser = new BooleanValueSerialiser();
+            var serializer = new BooleanValueSerializer();
 
             // according to http://opensoundcontrol.org/spec-1_0 
             // "No bytes are allocated in the argument data."
 
             var stream = new MemoryStream();
-            NUAssert.AreEqual(0, serialiser.Encode(stream, true));
-            NUAssert.AreEqual(0, stream.ToArray().Length);
+            serializer.Encode(stream, true).Should().Be(0);
+            stream.ToArray().Length.Should().Be(0);
 
             stream = new MemoryStream();
-            NUAssert.AreEqual(0, serialiser.Encode(stream, false));
-            NUAssert.AreEqual(0, stream.ToArray().Length);
+            serializer.Encode(stream, false).Should().Be(0);
+            stream.ToArray().Length.Should().Be(0);
         }
 
-        [Test]
-        public void TestCharSerialiser()
+        [Fact]
+        public void TestCharSerializer()
         {
-            AssertSerialiserType(new CharSerialiser(), typeof (char), 'c');
+            AssertSerializerType(new CharSerializer(), typeof (char), 'c');
         }
 
-        [Test]
-        public void TestCharSerialiserDecode()
+        [Fact]
+        public void TestCharSerializerDecode()
         {
             // according to http://opensoundcontrol.org/spec-1_0, chars are encoded as 32 bits ascii characters.
             const char expected = 'a';
@@ -445,11 +436,11 @@ namespace eDrive.Osc.Tests
             Array.Copy(BitConverter.GetBytes(expected), data, 2);
             Array.Reverse(data);
 
-            AssertDecode(new CharSerialiser(), data, expected, 4);
+            AssertDecode(new CharSerializer(), data, expected, 4);
         }
 
-        [Test]
-        public void TestCharSerialiserEncode()
+        [Fact]
+        public void TestCharSerializerEncode()
         {
             // according to http://opensoundcontrol.org/spec-1_0, chars are encoded as 32 bits ascii characters.
             const char value = 'a';
@@ -457,48 +448,46 @@ namespace eDrive.Osc.Tests
             Array.Copy(BitConverter.GetBytes(value), expectedData, 2);
             Array.Reverse(expectedData);
 
-            AssertEncode(new CharSerialiser(), value, expectedData);
+            AssertEncode(new CharSerializer(), value, expectedData);
         }
 
-        [Test]
-        public void TestDoubleSerialiser()
+        [Fact]
+        public void TestDoubleSerializer()
         {
-            AssertSerialiserType(new DoubleSerialiser(), typeof (double), 'd');
+            AssertSerializerType(new DoubleSerializer(), typeof (double), 'd');
         }
 
-        [Test]
-        public void TestDoubleSerialiserDecode()
+        [Fact]
+        public void TestDoubleSerializerDecode()
         {
-            byte[] data;
-            var expected = GetDoubleExpectedData(out data);
+            var expected = GetDoubleExpectedData(out var data);
 
-            AssertDecode(new DoubleSerialiser(), data, expected, 8);
+            AssertDecode(new DoubleSerializer(), data, expected, 8);
         }
 
-        [Test]
-        public void TestDoubleSerialiserEncode()
+        [Fact]
+        public void TestDoubleSerializerEncode()
         {
-            byte[] expectedData;
-            var value = GetDoubleExpectedData(out expectedData);
+            var value = GetDoubleExpectedData(out var expectedData);
 
-            AssertEncode(new DoubleSerialiser(), value, expectedData);
+            AssertEncode(new DoubleSerializer(), value, expectedData);
         }
 
-		/*
-        [Test]
+        /*
+        [Fact]
         public void TestEndPointSerialisation()
         {
             var ep = new OscEndPoint(IPAddress.Parse("122.168.2.2"), 9900, TransportType.Udp, TransmissionType.Unicast);
 
-            var serialiser = new EndPointSerialiser();
+            var serializer = new EndPointSerializer();
             using (var s = new MemoryStream())
             {
-                var l = serialiser.Encode(s, ep);
+                var l = serializer.Encode(s, ep);
                 NUAssert.AreNotEqual(0, l);
 
                 var bytes = s.ToArray();
 
-                var ep2 = serialiser.Decode(bytes, 0, out l);
+                var ep2 = serializer.Decode(bytes, 0, out l);
 
                 NUAssert.AreEqual(ep.EndPoint, ep2.EndPoint);
                 NUAssert.AreEqual(ep.TransportType, ep2.TransportType);
@@ -506,102 +495,102 @@ namespace eDrive.Osc.Tests
             }
         }
 */
-        [Test]
-        public void TestFalseSerialiser()
+        [Fact]
+        public void TestFalseSerializer()
         {
-            AssertSerialiserType(new FalseBooleanValueDeserialiser(), typeof (bool), 'F');
+            AssertSerializerType(new FalseBooleanValueDeserializer(), typeof (bool), 'F');
         }
 
-        [Test]
-        public void TestFalseSerialiserDecode()
+        [Fact]
+        public void TestFalseSerializerDecode()
         {
-            var serialiser = new FalseBooleanValueDeserialiser();
+            var serializer = new FalseBooleanValueDeserializer();
 
-            int pos;
-            NUAssert.IsFalse(serialiser.Decode(new byte[1], 0, out pos));
-            NUAssert.AreEqual(0, pos);
+            serializer.Decode(new byte[1], 0, out var pos).Should().BeFalse();
+            pos.Should().Be(0);
         }
 
-        [Test, ExpectedException(typeof (NotSupportedException))]
-        public void TestFalseSerialiserEncode()
+        [Fact]
+        public void TestFalseSerializerEncode()
         {
-            var serialiser = new FalseBooleanValueDeserialiser();
-            serialiser.Encode(new MemoryStream(), true);
+            var serializer = new FalseBooleanValueDeserializer();
+            var action = new Action( () => serializer.Encode(new MemoryStream(), true));
+            action.Should().Throw<NotSupportedException>();
         }
 
-        [Test]
-        public void TestFloatSerialiser()
+        [Fact]
+        public void TestFloatSerializer()
         {
-            AssertSerialiserType(new FloatSerialiser(), typeof (float), 'f');
+            AssertSerializerType(new FloatSerializer(), typeof (float), 'f');
         }
 
-        [Test]
-        public void TestFloatSerialiserDecode()
+        [Fact]
+        public void TestFloatSerializerDecode()
         {
             byte[] data;
             var expected = GetFloatExpectedData(out data);
 
-            AssertDecode(new FloatSerialiser(), data, expected, 4);
+            AssertDecode(new FloatSerializer(), data, expected, 4);
         }
 
-        [Test]
-        public void TestFloatSerialiserEncode()
+        [Fact]
+        public void TestFloatSerializerEncode()
         {
             byte[] expectedData;
             var value = GetFloatExpectedData(out expectedData);
 
-            AssertEncode(new FloatSerialiser(), value, expectedData);
+            AssertEncode(new FloatSerializer(), value, expectedData);
         }
 
-        [Test]
-        public void TestIntSerialiser()
+        [Fact]
+        public void TestIntSerializer()
         {
-            AssertSerialiserType(new IntSerialiser(), typeof (int), 'i');
+            AssertSerializerType(new IntSerializer(), typeof (int), 'i');
         }
 
-        [Test]
-        public void TestIntSerialiserDecode()
+        [Fact]
+        public void TestIntSerializerDecode()
         {
             byte[] data;
             var expected = GetIntExpectedData(out data);
 
-            AssertDecode(new IntSerialiser(), data, expected, 4);
+            AssertDecode(new IntSerializer(), data, expected, 4);
         }
 
-        [Test]
-        public void TestIntSerialiserEncode()
+        [Fact]
+        public void TestIntSerializerEncode()
         {
             byte[] expectedData;
             var value = GetIntExpectedData(out expectedData);
 
-            AssertEncode(new IntSerialiser(), value, expectedData);
+            AssertEncode(new IntSerializer(), value, expectedData);
         }
 
-        [Test]
-        public void TestLongSerialiser()
+        [Fact]
+        public void TestLongSerializer()
         {
-            AssertSerialiserType(new LongSerialiser(), typeof (long), 'h');
+            AssertSerializerType(new LongSerializer(), typeof (long), 'h');
         }
 
-        [Test]
-        public void TestLongSerialiserDecode()
+        [Fact]
+        public void TestLongSerializerDecode()
         {
             byte[] data;
             var expected = GetLongExpectedData(out data);
 
-            AssertDecode(new LongSerialiser(), data, expected, 8);
+            AssertDecode(new LongSerializer(), data, expected, 8);
         }
 
-        [Test]
-        public void TestLongSerialiserEncode()
+        [Fact]
+        public void TestLongSerializerEncode()
         {
             byte[] expectedData;
             var value = GetLongExpectedData(out expectedData);
 
-            AssertEncode(new LongSerialiser(), value, expectedData);
+            AssertEncode(new LongSerializer(), value, expectedData);
         }
 
-        [Test]
+        [Fact]
         public void TestNestedArrayNotSupported()
         {
             var value = new object[2];
@@ -609,36 +598,36 @@ namespace eDrive.Osc.Tests
             value[1] = new object[] {3, "boo"};
 
             var success = false;
-			OscMessage msg = null;
+			OscMessage msg;
             try
             {
                 msg = new OscMessage("/test", value);
             }
-            catch (OscSerialiserException e)
+            catch (OscSerializerException e)
             {
-                NUAssert.AreEqual("Nested arrays are not supported.", e.Message);
+                e.Message.Should().Be("Nested arrays are not supported.");
                 success = true;
 				msg = null;
             }
 
-            NUAssert.IsTrue(success);
-			NUAssert.IsNull (msg);
+            success.Should().BeTrue();
+            msg.Should().BeNull();
         }
 
-        [Test]
-        public void TestNilSerialiser()
+        [Fact]
+        public void TestNilSerializer()
         {
-            AssertSerialiserType(new NilSerialiser(), typeof (NilSerialiser.Nil), 'N');
+            AssertSerializerType(new NilSerializer(), typeof (NilSerializer.Nil), 'N');
         }
 
-        [Test]
-        public void TestNilSerialiserDecode()
+        [Fact]
+        public void TestNilSerializerDecode()
         {
-            var serialiser = new NilSerialiser();
+            var serializer = new NilSerializer();
 
             int pos;
-            NUAssert.IsNull(serialiser.Decode(new byte[1], 0, out pos));
-            NUAssert.AreEqual(0, pos);
+            serializer.Decode(new byte[1], 0, out pos).Should().BeNull();
+            pos.Should().Be(0);
         }
 
         /// <summary>
@@ -646,245 +635,230 @@ namespace eDrive.Osc.Tests
         ///     internal representation of the 4 bytes.
         ///     http://opensoundcontrol.org/spec-1_0
         /// </summary>
-        [Test]
+        [Fact]
         public void TestOscColourMessageToInt32()
         {
             var value = new OscColour(1, 0, 0, 0);
             var actual = value.ToInt32();
-
-            NUAssert.AreEqual(1, actual);
+            actual.Should().Be(1);
         }
 
-        [Test]
-        public void TestOscColourSerialiser()
+        [Fact]
+        public void TestOscColourSerializer()
         {
-            AssertSerialiserType(new OscColourSerialiser(), typeof (OscColour), 'r');
+            AssertSerializerType(new OscColourSerializer(), typeof (OscColour), 'r');
         }
 
-        [Test]
-        public void TestOscColourSerialiserDecode()
+        [Fact]
+        public void TestOscColourSerializerDecode()
         {
             byte[] data;
             var expected = GetColourExpectedData(out data);
 
-            AssertDecode(new OscColourSerialiser(), data, expected, 4);
+            AssertDecode(new OscColourSerializer(), data, expected, 4);
         }
 
-        [Test]
-        public void TestOscColourSerialiserEncode()
+        [Fact]
+        public void TestOscColourSerializerEncode()
         {
             byte[] expectedData;
             var value = GetColourExpectedData(out expectedData);
 
-            AssertEncode(new OscColourSerialiser(), value, expectedData);
+            AssertEncode(new OscColourSerializer(), value, expectedData);
         }
 
         /// <summary>
         ///     Checks that the ToInt32 yields the int32 corresponding to the big endian
         ///     internal representation of the 4 bytes.
         /// </summary>
-        [Test]
+        [Fact]
         public void TestOscMidiMessageToInt32()
         {
             var value = new OscMidiMessage(1, 0, 0, 0);
             var actual = value.ToInt32();
-
-            NUAssert.AreEqual(16777216, actual);
+            actual.Should().Be(16777216);
         }
 
-        [Test]
-        public void TestOscMidiSerialiser()
+        [Fact]
+        public void TestOscMidiSerializer()
         {
-            AssertSerialiserType(new OscMidiSerialiser(), typeof (OscMidiMessage), 'm');
+            AssertSerializerType(new OscMidiSerializer(), typeof (OscMidiMessage), 'm');
         }
 
-        [Test]
-        public void TestOscMidiSerialiserDecode()
+        [Fact]
+        public void TestOscMidiSerializerDecode()
         {
             byte[] data;
             var expected = GetMidiExpectedData(out data);
 
-            AssertDecode(new OscMidiSerialiser(), data, expected, 4);
+            AssertDecode(new OscMidiSerializer(), data, expected, 4);
         }
 
-        [Test]
-        public void TestOscMidiSerialiserEncode()
+        [Fact]
+        public void TestOscMidiSerializerEncode()
         {
             byte[] expectedData;
             var value = GetMidiExpectedData(out expectedData);
 
-            AssertEncode(new OscMidiSerialiser(), value, expectedData);
+            AssertEncode(new OscMidiSerializer(), value, expectedData);
         }
 
         /// <summary>
         ///     Checks that an unsupported type raise an error upon OscMessage creation.
         /// </summary>
-        [Test]
-        public void TestOscSerialiserExceptionWhenUnsupportedType()
+        [Fact]
+        public void TestOscSerializerExceptionWhenUnsupportedType()
         {
 			OscMessage msg = null;
             try
             {
                 msg = new OscMessage("/test", new UnknownType());
             }
-            catch (OscSerialiserException e)
+            catch (OscSerializerException e)
             {
 				msg = null;
-                NUAssert.AreEqual(typeof (KeyNotFoundException), e.InnerException.GetType());
-                NUAssert.AreEqual(
-                    string.Format("Unsupported type: {0}", typeof (UnknownType)), e.Message);
+                e.InnerException.Should().BeOfType<KeyNotFoundException>();
+                e.Message.Should().Be($"Unsupported type: {typeof(UnknownType)}");
 
             }
 
-            NUAssert.IsNull(msg);
+            msg.Should().BeNull();
         }
 
-        [Test]
-        public void TestStringSerialiser()
+        [Fact]
+        public void TestStringSerializer()
         {
-            AssertSerialiserType(new StringSerialiser(), typeof (string), 's');
+            AssertSerializerType(new StringSerializer(), typeof (string), 's');
         }
 
-        [Test]
-        public void TestStringSerialiserDecode()
+        [Fact]
+        public void TestStringSerializerDecode()
         {
             const string expected = "data";
             var data = new byte[8];
             Array.Copy(Encoding.ASCII.GetBytes(expected), data, 4);
 
-            AssertDecode(new StringSerialiser(), data, expected, 8);
+            AssertDecode(new StringSerializer(), data, expected, 8);
         }
 
-        [Test]
-        public void TestStringSerialiserEncode()
+        [Fact]
+        public void TestStringSerializerEncode()
         {
             const string value = "data";
             var expectedData = new byte[8];
             Array.Copy(Encoding.ASCII.GetBytes(value), expectedData, 4);
 
-            AssertEncode(new StringSerialiser(), value, expectedData);
+            AssertEncode(new StringSerializer(), value, expectedData);
         }
 
-        [Test]
-        public void TestSymbolDeserialiser()
+        [Fact]
+        public void TestSymbolDeserializer()
         {
-            AssertSerialiserType(new SymbolSerialiser(), typeof (OscSymbol), 'S');
+            AssertSerializerType(new SymbolSerializer(), typeof (OscSymbol), 'S');
         }
 
-        [Test]
-        public void TestSymbolDeserialiserDecode()
+        [Fact]
+        public void TestSymbolDeserializerDecode()
         {
-            byte[] data;
-            var expected = GetSymbolExpectedData(out data);
+            var expected = GetSymbolExpectedData(out var data);
 
-            AssertDecode(new SymbolSerialiser(), data, expected, 4);
+            AssertDecode(new SymbolSerializer(), data, expected, 4);
         }
 
-        [Test]
-        public void TestSymbolDeserialiserEncode()
+        [Fact]
+        public void TestSymbolDeserializerEncode()
         {
-            byte[] expectedData;
-            var value = GetSymbolExpectedData(out expectedData);
+            var value = GetSymbolExpectedData(out var expectedData);
 
-            AssertEncode(new SymbolSerialiser(), value, expectedData);
+            AssertEncode(new SymbolSerializer(), value, expectedData);
         }
 
         /// <summary>
         ///     Tests that Encode/Decode produce two equals OscTimeTag.
         /// </summary>
-        [Test]
-        public void TestTimeTagSerialiser()
+        [Fact]
+        public void TestTimeTagSerializer()
         {
             var stream = new MemoryStream();
             var expected = new OscTimeTag();
 
-            SerialiserFactory.TimeTagSerialiser.Encode(stream, expected);
+            SerializerFactory.TimeTagSerializer.Encode(stream, expected);
             var data = stream.ToArray();
 
-            int pos;
-            var actual = SerialiserFactory.TimeTagSerialiser.Decode(data, 0, out pos);
-
-            NUAssert.AreEqual(expected, actual);
+            var actual = SerializerFactory.TimeTagSerializer.Decode(data, 0, out _);
+            actual.Should().Be(expected);
         }
 
         /// <summary>
         ///     Tests the deserialisation for an immediate value.
         /// </summary>
-        [Test]
-        public void TestTimeTagSerialiserDecodeImmediateValue()
+        [Fact]
+        public void TestTimeTagSerializerDecodeImmediateValue()
         {
             var data = new byte[8];
             data[7] = 1;
 
-            int pos;
-            var actual = SerialiserFactory.TimeTagSerialiser.Decode(data, 0, out pos);
-
-            NUAssert.IsTrue(actual.IsImmediate);
-            NUAssert.AreEqual(1UL, actual.TimeTag);
-            NUAssert.AreEqual(DateTime.MinValue, actual.DateTime);
+            var actual = SerializerFactory.TimeTagSerializer.Decode(data, 0, out _);
+            actual.IsImmediate.Should().BeTrue();
+            actual.TimeTag.Should().Be(1UL);
+            actual.DateTime.Should().Be(DateTime.MinValue);
         }
 
         /// <summary>
         ///     Tests the serialisation for an immediate value.
         /// </summary>
-        [Test]
-        public void TestTimeTagSerialiserEncodeImmediateValue()
+        [Fact]
+        public void TestTimeTagSerializerEncodeImmediateValue()
         {
             var stream = new MemoryStream();
             var timetag = new OscTimeTag();
 
-            var actual = SerialiserFactory.TimeTagSerialiser.Encode(stream, timetag);
+            var actual = SerializerFactory.TimeTagSerializer.Encode(stream, timetag);
             var data = stream.ToArray();
+            actual.Should().Be(8);
 
-            NUAssert.AreEqual(8, actual);
-
-            for (var i = 0; i < 7; i++)
-            {
-                NUAssert.AreEqual(data[i], 0);
-            }
-
-            NUAssert.AreEqual(data[7], 1);
+            data.Take(7).Should().BeEquivalentTo(Enumerable.Repeat(0, 7));
+            data.Last().Should().Be(1);
         }
 
-        [Test]
-        public void TestTrueSerialiser()
+        [Fact]
+        public void TestTrueSerializer()
         {
-            AssertSerialiserType(new TrueBooleanValueDeserialiser(), typeof (bool), 'T');
+            AssertSerializerType(new TrueBooleanValueDeserializer(), typeof (bool), 'T');
         }
 
-        [Test]
-        public void TestTrueSerialiserDecode()
+        [Fact]
+        public void TestTrueSerializerDecode()
         {
-            var serialiser = new TrueBooleanValueDeserialiser();
+            var serializer = new TrueBooleanValueDeserializer();
 
-            int pos;
-            NUAssert.IsTrue(serialiser.Decode(new byte[1], 0, out pos));
-            NUAssert.AreEqual(0, pos);
+            serializer.Decode(new byte[1], 0, out var pos).Should().BeTrue();
+            pos.Should().Be(0);
         }
 
-        [Test, ExpectedException(typeof (NotSupportedException))]
-        public void TestTrueSerialiserEncode()
+        [Fact]
+        public void TestTrueSerializerEncode()
         {
-            var serialiser = new TrueBooleanValueDeserialiser();
-            serialiser.Encode(new MemoryStream(), true);
+            var serializer = new TrueBooleanValueDeserializer();
+           var action = new Action(() => serializer.Encode(new MemoryStream(), true));
+           action.Should().Throw<NotSupportedException>();
         }
 
-        [Test]
+        [Fact]
         public void TestVersionSerialisation()
         {
             var version = new Version(1, 0, 2, 3);
 
-            var serialiser = new VersionSerialiser();
+            var serializer = new VersionSerializer();
             using (var s = new MemoryStream())
             {
-                var l = serialiser.Encode(s, version);
-                NUAssert.AreNotEqual(0, l);
+                var l = serializer.Encode(s, version);
+                l.Should().NotBe(0);
 
                 var bytes = s.ToArray();
 
-                var v = serialiser.Decode(bytes, 0, out l);
-
-                NUAssert.AreEqual(version, v);
+                var v = serializer.Decode(bytes, 0, out l);
+                v.Should().Be(version);
             }
         }
     }

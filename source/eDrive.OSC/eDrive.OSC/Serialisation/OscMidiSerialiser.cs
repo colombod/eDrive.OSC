@@ -6,13 +6,13 @@ namespace eDrive.Osc.Serialisation
     /// <summary>
     ///     Encdodes and decodes midi messages
     /// </summary>
-    [CustomOscSerialiser('m', typeof (OscMidiMessage))]
-    public class OscMidiSerialiser : OscTypeSerialiser<OscMidiMessage>
+    [CustomOscSerializer('m', typeof (OscMidiMessage))]
+    public class OscMidiSerializer : OscTypeSerializer<OscMidiMessage>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="OscMidiSerialiser" /> class.
+        ///     Initializes a new instance of the <see cref="OscMidiSerializer" /> class.
         /// </summary>
-        public OscMidiSerialiser() : base('m')
+        public OscMidiSerializer() : base('m')
         {
         }
 

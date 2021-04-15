@@ -1,22 +1,21 @@
 using System;
 using System.Net;
 using Newtonsoft.Json;
-using eDrive.Osc;
 using eDrive.Network;
 using System.IO;
 
 namespace eDrive.Osc.Serialisation.Json
 {
     /// <summary>
-    ///     Serialiser for <see cref="OscEndPoint" />.
+    ///     Serializer for <see cref="OscEndPoint" />.
     /// </summary>
-    [CustomOscJSonSerialiser('E', typeof (OscEndPoint))]
-    public class EndPointJsonSerialiser : OscTypeJsonSerialiser<OscEndPoint>
+    [CustomOscJSonSerializer('E', typeof (OscEndPoint))]
+    public class EndPointJsonSerializer : OscTypeJsonSerializer<OscEndPoint>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="EndPointSerialiser" /> class.
+        ///     Initializes a new instance of the <see cref="EndPointSerializer" /> class.
         /// </summary>
-		public EndPointJsonSerialiser() : base('E')
+		public EndPointJsonSerializer() : base('E')
         {
         }
 
@@ -45,15 +44,15 @@ namespace eDrive.Osc.Serialisation.Json
     }
 
 	/// <summary>
-	///     Serialiser for <see cref="OscEndPoint" />.
+	///     Serializer for <see cref="OscEndPoint" />.
 	/// </summary>
-	[CustomOscSerialiser('E', typeof (OscEndPoint))]
-	public class EndPointSerialiser : OscTypeSerialiser<OscEndPoint>
+	[CustomOscSerializer('E', typeof (OscEndPoint))]
+	public class EndPointSerializer : OscTypeSerializer<OscEndPoint>
 	{
 		/// <summary>
-		///     Initializes a new instance of the <see cref="EndPointSerialiser" /> class.
+		///     Initializes a new instance of the <see cref="EndPointSerializer" /> class.
 		/// </summary>
-		public EndPointSerialiser() : base('E')
+		public EndPointSerializer() : base('E')
 		{
 		}
 
@@ -66,11 +65,11 @@ namespace eDrive.Osc.Serialisation.Json
 		/// <returns></returns>
 		public override OscEndPoint Decode(byte[] data, int start, out int position)
 		{
-			var ip = new IPAddress(SerialiserFactory.ByteArraySerialiser.Decode(data, start, out position));
-			var port = SerialiserFactory.IntSerialiser.Decode(data, position, out position);
+			var ip = new IPAddress(SerializerFactory.ByteArraySerializer.Decode(data, start, out position));
+			var port = SerializerFactory.IntSerializer.Decode(data, position, out position);
 			var transmissionType =
-				(TransmissionType) SerialiserFactory.IntSerialiser.Decode(data, position, out position);
-			var transportType = (TransportType) SerialiserFactory.IntSerialiser.Decode(data, position, out position);
+				(TransmissionType) SerializerFactory.IntSerializer.Decode(data, position, out position);
+			var transportType = (TransportType) SerializerFactory.IntSerializer.Decode(data, position, out position);
 
 			return new OscEndPoint(ip, port, transportType, transmissionType);
 		}
@@ -85,10 +84,10 @@ namespace eDrive.Osc.Serialisation.Json
 		{
 			var ip = value.EndPoint.Address.GetAddressBytes();
 
-			var ret = SerialiserFactory.ByteArraySerialiser.Encode(output, ip);
-			ret += SerialiserFactory.IntSerialiser.Encode(output, value.EndPoint.Port);
-			ret += SerialiserFactory.IntSerialiser.Encode(output, value.TransmissionType);
-			ret += SerialiserFactory.IntSerialiser.Encode(output, value.TransportType);
+			var ret = SerializerFactory.ByteArraySerializer.Encode(output, ip);
+			ret += SerializerFactory.IntSerializer.Encode(output, value.EndPoint.Port);
+			ret += SerializerFactory.IntSerializer.Encode(output, value.TransmissionType);
+			ret += SerializerFactory.IntSerializer.Encode(output, value.TransportType);
 
 			return ret;
 		}

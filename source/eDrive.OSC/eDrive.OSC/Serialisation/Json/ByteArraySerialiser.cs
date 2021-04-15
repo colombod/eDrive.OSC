@@ -5,15 +5,15 @@ using Newtonsoft.Json;
 namespace eDrive.Osc.Serialisation.Json
 {
     /// <summary>
-    ///     Serialiser for binary blob.
+    ///     Serializer for binary blob.
     /// </summary>
-    [CustomOscJSonSerialiser('b', typeof (byte[]))]
-    public class ByteArraySerialiser : OscTypeJsonSerialiser<byte[]>
+    [CustomOscJSonSerializer('b', typeof (byte[]))]
+    public class ByteArraySerializer : OscTypeJsonSerializer<byte[]>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ByteArraySerialiser" /> class.
+        ///     Initializes a new instance of the <see cref="ByteArraySerializer" /> class.
         /// </summary>
-        public ByteArraySerialiser() : base('b')
+        public ByteArraySerializer() : base('b')
         {
         }
 

@@ -6,34 +6,34 @@ namespace eDrive.Osc.Serialisation
     ///     Marks classes as custom osc sersialiser
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    public sealed class CustomOscSerialiserAttribute : Attribute
+    public sealed class CustomOscSerializerAttribute : Attribute
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="CustomOscSerialiserAttribute" /> class.
+        ///     Initializes a new instance of the <see cref="CustomOscSerializerAttribute" /> class.
         /// </summary>
         /// <param name="typeTag">The type tag.</param>
         /// <param name="type">The type tag.</param>
-        public CustomOscSerialiserAttribute(char typeTag, Type type)
+        public CustomOscSerializerAttribute(char typeTag, Type type)
         {
             TypeTag = typeTag;
             Type = type;
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="CustomOscSerialiserAttribute" /> class.
+        ///     Initializes a new instance of the <see cref="CustomOscSerializerAttribute" /> class.
         /// </summary>
         /// <param name="type">The type tag.</param>
-        public CustomOscSerialiserAttribute(Type type)
+        public CustomOscSerializerAttribute(Type type)
         {
             TypeTag = ' ';
             Type = type;
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="CustomOscSerialiserAttribute" /> class.
+        ///     Initializes a new instance of the <see cref="CustomOscSerializerAttribute" /> class.
         /// </summary>
         /// <param name="typeTag">The type tag.</param>
-        public CustomOscSerialiserAttribute(char typeTag)
+        public CustomOscSerializerAttribute(char typeTag)
         {
             TypeTag = typeTag;
             Type = null;

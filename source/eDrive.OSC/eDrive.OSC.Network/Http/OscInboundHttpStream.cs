@@ -119,7 +119,7 @@ namespace eDrive.Network.Http
                                     stream.CopyTo(dst);
                                     dst.Flush();
                                     var data = dst.ToArray();
-                                    Scheduler.Schedule(() => DeserialiserAndDeliver(data));
+                                    Scheduler.Schedule(() => DeSerializerAndDeliver(data));
                                 }
                             }
                         }
@@ -147,7 +147,7 @@ namespace eDrive.Network.Http
             }
         }
 
-        private void DeserialiserAndDeliver(byte[] data)
+        private void DeSerializerAndDeliver(byte[] data)
         {
             OscPacket response;
             try

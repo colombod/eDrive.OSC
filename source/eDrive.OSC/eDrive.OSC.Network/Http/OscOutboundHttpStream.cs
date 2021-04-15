@@ -10,7 +10,6 @@ namespace eDrive.Network.Http
     public class OscOutboundHttpStream : OscOutboundStreamBase
     {
         private readonly string m_destination;
-        private readonly OscPaylaodMimeType m_mimetype;
         private readonly IObserver<OscPacket> m_responseStream;
 
         /// <summary>
@@ -40,17 +39,14 @@ namespace eDrive.Network.Http
         {
             if (string.IsNullOrWhiteSpace(destination))
             {
-                throw new ArgumentNullException("destination");
+                throw new ArgumentNullException(nameof(destination));
             }
             m_destination = destination;
             m_responseStream = responseStream;
-            m_mimetype = mimetype ?? OscPaylaodMimeType.Json;
+            Mimetype = mimetype ?? OscPaylaodMimeType.Json;
         }
 
-        public OscPaylaodMimeType Mimetype
-        {
-            get { return m_mimetype; }
-        }
+        public OscPaylaodMimeType Mimetype { get; }
 
         public override void Dispose()
         {
@@ -65,15 +61,7 @@ namespace eDrive.Network.Http
         {
             if (value != null)
             {
-                byte[] postData;
-                if (Mimetype == OscPaylaodMimeType.Json)
-                {
-                    postData = Encoding.UTF8.GetBytes(value.CreateJson());
-                }
-                else
-                {
-                    postData = value.ToByteArray();
-                }
+                var postData = Mimetype == OscPaylaodMimeType.Json ? Encoding.UTF8.GetBytes(value.CreateJson()) : value.ToByteArray();
 
                 // post method to destination.
                 var request = WebRequest.Create(m_destination);
@@ -92,8 +80,7 @@ namespace eDrive.Network.Http
 
         private void RequestStreamReceived(IAsyncResult ar)
         {
-            var state = ar.AsyncState as RequestState;
-            if (state != null)
+            if (ar.AsyncState is RequestState state)
             {
                 state.Stream = state.Request.EndGetRequestStream(ar);
                 state.Stream.BeginWrite(state.Data, 0, state.Data.Length, SendCompleted, state);
@@ -102,8 +89,7 @@ namespace eDrive.Network.Http
 
         private void SendCompleted(IAsyncResult ar)
         {
-            var state = ar.AsyncState as RequestState;
-            if (state != null)
+            if (ar.AsyncState is RequestState state)
             {
                 state.Data = null;
                 state.Stream.EndWrite(ar);
@@ -116,52 +102,47 @@ namespace eDrive.Network.Http
 
         private void ResponseReceived(IAsyncResult ar)
         {
-            var state = ar.AsyncState as RequestState;
-            if (state != null)
+            if (ar.AsyncState is RequestState state)
             {
                 var response = state.Request.EndGetResponse(ar);
-                state.Reponse = response;
-                using (var stream = state.Reponse.GetResponseStream())
+                state.Response = response;
+                using (var stream = state.Response.GetResponseStream())
                 {
                     if (stream != null)
                     {
-                        using (var reader = new StreamReader(stream))
+                        using var reader = new StreamReader(stream);
+                        if (response.ContentType == OscPaylaodMimeType.Json.Type)
                         {
-                            if (response.ContentType == OscPaylaodMimeType.Json.Type)
-                            {
-                                var ret = reader.ReadToEnd();
+                            var ret = reader.ReadToEnd();
 
-                                if (!string.IsNullOrWhiteSpace(ret)
-                                    && m_responseStream != null)
-                                {
-                                    Scheduler.Schedule(() => ParseAndDeliver(ret, m_responseStream));
-                                }
-                            }
-                            else
+                            if (!string.IsNullOrWhiteSpace(ret)
+                                && m_responseStream != null)
                             {
-                                using (var dst = new MemoryStream())
-                                {
-                                    stream.CopyTo(dst);
-                                    dst.Flush();
-                                    var data = dst.ToArray();
-                                    Scheduler.Schedule(() => DeserialiserAndDeliver(data, m_responseStream));
-                                }
+                                Scheduler.Schedule(() => ParseAndDeliver(ret, m_responseStream));
                             }
+                        }
+                        else
+                        {
+                            using var dst = new MemoryStream();
+                            stream.CopyTo(dst);
+                            dst.Flush();
+                            var data = dst.ToArray();
+                            Scheduler.Schedule(() => DeSerializerAndDeliver(data, m_responseStream));
                         }
                     }
                 }
-                state.Reponse.Close();
+                state.Response.Close();
             }
         }
 
-        private void DeserialiserAndDeliver(byte[] data, IObserver<OscPacket> responseStream)
+        private void DeSerializerAndDeliver(byte[] data, IObserver<OscPacket> responseStream)
         {
             OscPacket response;
             try
             {
                 response = OscPacket.FromByteArray(data);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 response = null;
             }
@@ -195,7 +176,7 @@ namespace eDrive.Network.Http
         {
             public Stream Stream { get; set; }
             public WebRequest Request { get; set; }
-            public WebResponse Reponse { get; set; }
+            public WebResponse Response { get; set; }
 
             public byte[] Data { get; set; }
         }

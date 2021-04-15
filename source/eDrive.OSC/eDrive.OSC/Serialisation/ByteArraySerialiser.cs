@@ -3,23 +3,23 @@ using System.IO;
 namespace eDrive.Osc.Serialisation
 {
     /// <summary>
-    ///     Serialiser for binary blob.
+    ///     Serializer for binary blob.
     /// </summary>
-    [CustomOscSerialiser('b', typeof (byte[]))]
-    public class ByteArraySerialiser : OscTypeSerialiser<byte[]>
+    [CustomOscSerializer('b', typeof (byte[]))]
+    public class ByteArraySerializer : OscTypeSerializer<byte[]>
     {
-        private static IOscTypeSerialiser<int> s_intSer;
+        private static IOscTypeSerializer<int> s_intSer;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ByteArraySerialiser" /> class.
+        ///     Initializes a new instance of the <see cref="ByteArraySerializer" /> class.
         /// </summary>
-        public ByteArraySerialiser() : base('b')
+        public ByteArraySerializer() : base('b')
         {
         }
 
-        private static IOscTypeSerialiser<int> IntSerialiser
+        private static IOscTypeSerializer<int> IntSerializer
         {
-            get { return s_intSer ?? (s_intSer = SerialiserFactory.GetSerialiser<int>()); }
+            get { return s_intSer ?? (s_intSer = SerializerFactory.GetSerializer<int>()); }
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace eDrive.Osc.Serialisation
         /// <returns></returns>
         public override byte[] Decode(byte[] data, int start, out int position)
         {
-            var length = IntSerialiser.Decode(data, start, out position);
+            var length = IntSerializer.Decode(data, start, out position);
 
             var buffer = data.CopySubArray(position, length);
 
@@ -49,7 +49,7 @@ namespace eDrive.Osc.Serialisation
         /// <returns></returns>
         public override int Encode(Stream output, byte[] value)
         {
-            var ret = IntSerialiser.Encode(output, value.Length);
+            var ret = IntSerializer.Encode(output, value.Length);
 
             output.Write(value, 0, value.Length);
 

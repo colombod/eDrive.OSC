@@ -67,17 +67,17 @@ namespace eDrive.Network.Http
             {
                 var tag = tags[index];
 
-                if (tag == JsonSerialiserFactory.ArrayOpen)
+                if (tag == JsonSerializerFactory.ArrayOpen)
                 {
                     // skip the '[' character.
                     index++;
 
                     // deserialise array of object
                     var ret = new List<object>();
-                    while (tags[index] != JsonSerialiserFactory.ArrayClose
+                    while (tags[index] != JsonSerializerFactory.ArrayClose
                            && index < tags.Length)
                     {
-                        var des = JsonSerialiserFactory.GetSerialiser(tags[index]);
+                        var des = JsonSerializerFactory.GetSerializer(tags[index]);
                         ret.Add(des.Decode(reader));
 
                         index++;
@@ -85,11 +85,11 @@ namespace eDrive.Network.Http
 
                     msg.Append(ret.ToArray());
                 }
-                else if (tag != JsonSerialiserFactory.DefaultTag)
+                else if (tag != JsonSerializerFactory.DefaultTag)
                 {
-                    if (tag != JsonSerialiserFactory.EventTag)
+                    if (tag != JsonSerializerFactory.EventTag)
                     {
-                        var des = JsonSerialiserFactory.GetSerialiser(tag);
+                        var des = JsonSerializerFactory.GetSerializer(tag);
                         msg.Append(des.Decode(reader));
                     }
                     else
@@ -223,13 +223,13 @@ namespace eDrive.Network.Http
                     var collection = part as Array;
                     foreach (var component in collection)
                     {
-                        var ser = JsonSerialiserFactory.GetSerialiser(component);
+                        var ser = JsonSerializerFactory.GetSerializer(component);
                         ser.Encode(writer, component);
                     }
                 }
                 else
                 {
-                    var ser = JsonSerialiserFactory.GetSerialiser(part);
+                    var ser = JsonSerializerFactory.GetSerializer(part);
                     ser.Encode(writer, part);
                 }
             }

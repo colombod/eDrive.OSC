@@ -4,15 +4,15 @@ using Newtonsoft.Json;
 namespace eDrive.Osc.Serialisation.Json
 {
     /// <summary>
-    ///     Serialiser for <see cref="Guid" />
+    ///     Serializer for <see cref="Guid" />
     /// </summary>
-    [CustomOscJSonSerialiser('g', typeof (Guid))]
-    public class GuidSerialiser : OscTypeJsonSerialiser<Guid>
+    [CustomOscJSonSerializer('g', typeof (Guid))]
+    public class GuidSerializer : OscTypeJsonSerializer<Guid>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="GuidSerialiser" /> class.
+        ///     Initializes a new instance of the <see cref="GuidSerializer" /> class.
         /// </summary>
-        public GuidSerialiser() : base('g')
+        public GuidSerializer() : base('g')
         {
         }
 

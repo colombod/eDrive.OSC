@@ -1,10 +1,9 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace eDrive.Osc
 {
     /// <summary>
-    ///     Representes an osc colour.
+    ///     Represents an osc colour.
     /// </summary>
     public class OscColour
     {
@@ -40,8 +39,8 @@ namespace eDrive.Osc
         /// </value>
         public byte A
         {
-            get { return m_storage.A; }
-            set { m_storage.A = value; }
+            get => m_storage.A;
+            set => m_storage.A = value;
         }
 
         /// <summary>
@@ -52,32 +51,32 @@ namespace eDrive.Osc
         /// </value>
         public byte B
         {
-            get { return m_storage.B; }
-            set { m_storage.B = value; }
+            get => m_storage.B;
+            set => m_storage.B = value;
         }
 
         /// <summary>
-        ///     Gets or sets the data1.
+        ///     Gets or sets the G.
         /// </summary>
         /// <value>
-        ///     The data1.
+        ///     The G.
         /// </value>
         public byte G
         {
-            get { return m_storage.G; }
-            set { m_storage.G = value; }
+            get => m_storage.G;
+            set => m_storage.G = value;
         }
 
         /// <summary>
-        ///     Gets or sets the data2.
+        ///     Gets or sets the R.
         /// </summary>
         /// <value>
-        ///     The data2.
+        ///     The R.
         /// </value>
         public byte R
         {
-            get { return m_storage.R; }
-            set { m_storage.R = value; }
+            get => m_storage.R;
+            set => m_storage.R = value;
         }
 
         /// <summary>

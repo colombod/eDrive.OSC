@@ -13,8 +13,8 @@ namespace eDrive.Osc
     {
 		static OscEndPoint()
 		{
-			SerialiserFactory.LoadSerialiser(typeof(EndPointSerialiser));
-			JsonSerialiserFactory.LoadSerialiser (typeof(EndPointJsonSerialiser));
+			SerializerFactory.LoadSerializer(typeof(EndPointSerializer));
+			JsonSerializerFactory.LoadSerializer (typeof(EndPointJsonSerializer));
 		}
 
         /// <summary>

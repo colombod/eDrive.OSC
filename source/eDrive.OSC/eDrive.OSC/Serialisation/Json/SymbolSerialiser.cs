@@ -4,27 +4,27 @@ using eDrive.Osc;
 namespace eDrive.Osc.Serialisation.Json
 {
     /// <summary>
-    ///     Deserialisers for Symbol Tag
+    ///     Deserializers for Symbol Tag
     /// </summary>
-    [CustomOscJSonSerialiser('S', typeof (OscSymbol))]
-    public class SymbolSerialiser : OscTypeJsonSerialiser<OscSymbol>
+    [CustomOscJSonSerializer('S', typeof (OscSymbol))]
+    public class SymbolSerializer : OscTypeJsonSerializer<OscSymbol>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="SymbolSerialiser" /> class.
+        ///     Initializes a new instance of the <see cref="SymbolSerializer" /> class.
         /// </summary>
-        public SymbolSerialiser() : base('S')
+        public SymbolSerializer() : base('S')
         {
         }
 
         public override OscSymbol Decode(JsonReader reader)
         {
-            var value = JsonSerialiserFactory.StringSerialiser.Decode(reader);
+            var value = JsonSerializerFactory.StringSerializer.Decode(reader);
             return new OscSymbol {Value = value};
         }
 
         public override void Encode(JsonWriter output, OscSymbol value)
         {
-            JsonSerialiserFactory.StringSerialiser.Encode(output, value.Value);
+            JsonSerializerFactory.StringSerializer.Encode(output, value.Value);
         }
     }
 }

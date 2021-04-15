@@ -1,73 +1,18 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0BE56A82-F87E-4E53-9374-068AAD978AA1}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>eDrive.OSC.Tests</RootNamespace>
-    <AssemblyName>eDrive.OSC.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Compile Include="SerialisersTests.cs" />
-    <Compile Include="OscValidation.cs" />
-    <Compile Include="ReferenceProtocol\OscBundleReference.cs" />
-    <Compile Include="ReferenceProtocol\OscMessageReference.cs" />
-    <Compile Include="ReferenceProtocol\OscPacketReference.cs" />
-    <Compile Include="ReferenceProtocol\OscTimeTag.cs" />
-    <Compile Include="ReferenceProtocol\Color.cs" />
+  
+    <PackageReference Include="FluentAssertions" Version="5.7.0" />
+  
+    <PackageReference Include="Microsoft.Reactive.Testing" Version="4.1.5" />
+    <PackageReference Include="System.Reactive" Version="4.1.5" />
+    <PackageReference Include="xunit" Version="2.4.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\eDrive.OSC\eDrive.OSC.csproj">
-      <Project>{CBC3534D-CB85-4299-AFF9-C63DAF404C1E}</Project>
-      <Name>eDrive.OSC</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\eDrive.OSC.Interfaces\eDrive.OSC.Interfaces.csproj">
-      <Project>{CA91E5FE-849E-40D8-ADE2-3C1652FD03C4}</Project>
-      <Name>eDrive.OSC.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\eDrive.OSC.Reactive\eDrive.OSC.Reactive.csproj">
-      <Project>{0E2FB01C-FD30-4C01-8B10-5C1115C002EB}</Project>
-      <Name>eDrive.OSC.Reactive</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\eDrive.OSC\eDrive.OSC.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-  </Target>
+
 </Project>
