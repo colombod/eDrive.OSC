@@ -246,13 +246,13 @@ namespace eDrive.Osc.Serialisation
         /// <returns>
         ///     <c>true</c> if this instance can serialise the specified t; otherwise, <c>false</c>.
         /// </returns>
-        public static bool CanSerialise(Type t)
+        public static bool CanSerialize(Type t)
         {
             return s_type2Serializer.ContainsKey(t);
         }
 
         /// <summary>
-        ///     Supporteds the types.
+        ///     Supported  types.
         /// </summary>
         /// <returns></returns>
         public static string SupportedTypes()
