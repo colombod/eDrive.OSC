@@ -18,7 +18,17 @@ public class FloatSerializer : OscTypeJsonSerializer<float>
 
     public override float Decode(JsonReader reader)
     {
-        var ret = (float)(reader.ReadAsDecimal() ?? 0);
+        var stringValue = reader.ReadAsString() ?? "0";
+        
+        // Handle special float values that JSON.NET produces
+        if (stringValue == "Infinity")
+            return float.PositiveInfinity;
+        if (stringValue == "-Infinity")
+            return float.NegativeInfinity;
+        if (stringValue == "NaN")
+            return float.NaN;
+            
+        var ret = float.Parse(stringValue);
         return ret;
     }
 

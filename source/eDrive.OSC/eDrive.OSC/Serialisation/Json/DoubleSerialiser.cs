@@ -18,20 +18,24 @@ public class DoubleSerializer : OscTypeJsonSerializer<double>
 
     public override double Decode(JsonReader reader)
     {
-        var ret = 0.0;
         try
         {
-            reader.Read();
-
-            ret = (double)reader.Value;
-
+            var stringValue = reader.ReadAsString();
+            
+            // Handle special double values that JSON.NET produces
+            if (stringValue == "Infinity")
+                return double.PositiveInfinity;
+            if (stringValue == "-Infinity")
+                return double.NegativeInfinity;
+            if (stringValue == "NaN")
+                return double.NaN;
+                
+            return double.Parse(stringValue ?? "0");
         }
         catch
         {
-            ret = double.NaN;
+            return double.NaN;
         }
-
-        return ret;
     }
 
     public override void Encode(JsonWriter output, double value)
