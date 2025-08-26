@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IO;
-using System.Net;
+using System.Net.Http;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using eDrive.Osc;
 
 namespace eDrive.Network.Http
@@ -13,6 +14,7 @@ namespace eDrive.Network.Http
         private readonly TimeSpan m_pollingInterval;
         private volatile bool m_running;
         private IDisposable m_pending;
+        private readonly HttpClient m_httpClient;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OscInboundHttpStream" /> class.
@@ -42,6 +44,7 @@ namespace eDrive.Network.Http
             m_source = source;
             m_pollingInterval = pollingInterval;
             Mimetype = mimetype ?? OscPaylaodMimeType.Json;
+            m_httpClient = new HttpClient();
         }
 
         public TimeSpan PollingInterval
@@ -68,69 +71,68 @@ namespace eDrive.Network.Http
             }
         }
 
+        public override void Dispose()
+        {
+            Stop();
+            m_httpClient?.Dispose();
+            base.Dispose();
+        }
+
         private void PollAndDeliver()
         {
             m_pending = null;
             if (m_running)
             {
-                // post method to destination.
-                var request = WebRequest.Create(m_source);
-                request.Method = "GET";
-                request.ContentType = Mimetype.Type;
-                request.ContentLength = 0;
-                var state = new RequestState
+                var start = Scheduler.Now;
+                Scheduler.Schedule(async () =>
                 {
-                    Request = request,
-                    Stream = request.GetRequestStream(),
-                    Start= Scheduler.Now
-                };
-                state.Request.BeginGetResponse(ResponseReceived, state);
+                    try
+                    {
+                        var response = await m_httpClient.GetAsync(m_source);
+                        await ProcessResponse(response, start);
+                    }
+                    catch (Exception)
+                    {
+                        // Handle HTTP errors gracefully
+                        ScheduleNextPoll(Scheduler.Now - start);
+                    }
+                });
             }
         }
 
-        private void ResponseReceived(IAsyncResult ar)
+        private async Task ProcessResponse(HttpResponseMessage response, DateTimeOffset start)
         {
-            var elapsed = TimeSpan.Zero;
-
-            var state = ar.AsyncState as RequestState;
-            if (state != null)
+            try
             {
-                var response = state.Request.EndGetResponse(ar);
-                state.Reponse = response;
-                using (var stream = state.Reponse.GetResponseStream())
+                var contentType = response.Content.Headers.ContentType?.MediaType;
+                
+                if (contentType == OscPaylaodMimeType.Json.Type)
                 {
-                    if (stream != null)
+                    var ret = await response.Content.ReadAsStringAsync();
+                    if (!string.IsNullOrWhiteSpace(ret))
                     {
-                        using (var reader = new StreamReader(stream))
-                        {
-                            if (response.ContentType == OscPaylaodMimeType.Json.Type)
-                            {
-                                var ret = reader.ReadToEnd();
-
-                                if (!string.IsNullOrWhiteSpace(ret))
-                                {
-                                    Scheduler.Schedule(() => ParseAndDeliver(ret));
-                                }
-                            }
-                            else
-                            {
-                                using (var dst = new MemoryStream())
-                                {
-                                    stream.CopyTo(dst);
-                                    dst.Flush();
-                                    var data = dst.ToArray();
-                                    Scheduler.Schedule(() => DeSerializerAndDeliver(data));
-                                }
-                            }
-                        }
+                        Scheduler.Schedule(() => ParseAndDeliver(ret));
                     }
                 }
-                state.Reponse.Close();
-
-
-                elapsed = Scheduler.Now - state.Start;
+                else
+                {
+                    var data = await response.Content.ReadAsByteArrayAsync();
+                    Scheduler.Schedule(() => DeSerializerAndDeliver(data));
+                }
             }
+            catch (Exception)
+            {
+                // Handle response processing errors gracefully
+            }
+            finally
+            {
+                var elapsed = Scheduler.Now - start;
+                ScheduleNextPoll(elapsed);
+            }
+        }
 
+        private void ScheduleNextPoll(TimeSpan elapsed)
+        {
             if (m_running)
             {
                 if (elapsed > PollingInterval)
@@ -184,19 +186,5 @@ namespace eDrive.Network.Http
 
 
 
-        #region Nested type: RequestState
-
-        private class RequestState
-        {
-            public Stream Stream { get; set; }
-            public WebRequest Request { get; set; }
-            public WebResponse Reponse { get; set; }
-
-            public byte[] Data { get; set; }
-
-            public DateTimeOffset Start { get; set; }
-        }
-
-        #endregion
     }
 }

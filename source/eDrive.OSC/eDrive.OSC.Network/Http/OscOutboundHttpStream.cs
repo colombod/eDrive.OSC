@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IO;
-using System.Net;
+using System.Net.Http;
 using System.Reactive.Concurrency;
 using System.Text;
+using System.Threading.Tasks;
 using eDrive.Osc;
 
 namespace eDrive.Network.Http
@@ -11,6 +12,7 @@ namespace eDrive.Network.Http
     {
         private readonly string m_destination;
         private readonly IObserver<OscPacket> m_responseStream;
+        private readonly HttpClient m_httpClient;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="OscOutboundHttpStream" /> class.
@@ -44,12 +46,14 @@ namespace eDrive.Network.Http
             m_destination = destination;
             m_responseStream = responseStream;
             Mimetype = mimetype ?? OscPaylaodMimeType.Json;
+            m_httpClient = new HttpClient();
         }
 
         public OscPaylaodMimeType Mimetype { get; }
 
         public override void Dispose()
         {
+            m_httpClient?.Dispose();
         }
 
         /// <summary>
@@ -63,75 +67,51 @@ namespace eDrive.Network.Http
             {
                 var postData = Mimetype == OscPaylaodMimeType.Json ? Encoding.UTF8.GetBytes(value.CreateJson()) : value.ToByteArray();
 
-                // post method to destination.
-                var request = WebRequest.Create(m_destination);
-                request.Method = "POST";
-                request.ContentType = Mimetype.Type;
-                request.ContentLength = postData.Length;
-                var state = new RequestState
-                                {
-                                    Request = request,
-                                    Data = postData,
-                                    Stream = request.GetRequestStream()
-                                };
-                state.Request.BeginGetRequestStream(RequestStreamReceived, state);
-            }
-        }
-
-        private void RequestStreamReceived(IAsyncResult ar)
-        {
-            if (ar.AsyncState is RequestState state)
-            {
-                state.Stream = state.Request.EndGetRequestStream(ar);
-                state.Stream.BeginWrite(state.Data, 0, state.Data.Length, SendCompleted, state);
-            }
-        }
-
-        private void SendCompleted(IAsyncResult ar)
-        {
-            if (ar.AsyncState is RequestState state)
-            {
-                state.Data = null;
-                state.Stream.EndWrite(ar);
-                state.Stream.Dispose();
-
-                state.Stream = null;
-                state.Request.BeginGetResponse(ResponseReceived, state);
-            }
-        }
-
-        private void ResponseReceived(IAsyncResult ar)
-        {
-            if (ar.AsyncState is RequestState state)
-            {
-                var response = state.Request.EndGetResponse(ar);
-                state.Response = response;
-                using (var stream = state.Response.GetResponseStream())
+                Scheduler.Schedule(async () =>
                 {
-                    if (stream != null)
+                    try
                     {
-                        using var reader = new StreamReader(stream);
-                        if (response.ContentType == OscPaylaodMimeType.Json.Type)
+                        using var content = new ByteArrayContent(postData);
+                        content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(Mimetype.Type);
+                        
+                        var response = await m_httpClient.PostAsync(m_destination, content);
+                        
+                        if (m_responseStream != null)
                         {
-                            var ret = reader.ReadToEnd();
-
-                            if (!string.IsNullOrWhiteSpace(ret)
-                                && m_responseStream != null)
-                            {
-                                Scheduler.Schedule(() => ParseAndDeliver(ret, m_responseStream));
-                            }
-                        }
-                        else
-                        {
-                            using var dst = new MemoryStream();
-                            stream.CopyTo(dst);
-                            dst.Flush();
-                            var data = dst.ToArray();
-                            Scheduler.Schedule(() => DeSerializerAndDeliver(data, m_responseStream));
+                            await ProcessResponse(response);
                         }
                     }
+                    catch (Exception)
+                    {
+                        // Handle HTTP errors gracefully
+                    }
+                });
+            }
+        }
+
+        private async Task ProcessResponse(HttpResponseMessage response)
+        {
+            try
+            {
+                var contentType = response.Content.Headers.ContentType?.MediaType;
+                
+                if (contentType == OscPaylaodMimeType.Json.Type)
+                {
+                    var ret = await response.Content.ReadAsStringAsync();
+                    if (!string.IsNullOrWhiteSpace(ret))
+                    {
+                        Scheduler.Schedule(() => ParseAndDeliver(ret, m_responseStream));
+                    }
                 }
-                state.Response.Close();
+                else
+                {
+                    var data = await response.Content.ReadAsByteArrayAsync();
+                    Scheduler.Schedule(() => DeSerializerAndDeliver(data, m_responseStream));
+                }
+            }
+            catch (Exception)
+            {
+                // Handle response processing errors gracefully
             }
         }
 
@@ -170,17 +150,5 @@ namespace eDrive.Network.Http
             }
         }
 
-        #region Nested type: RequestState
-
-        private class RequestState
-        {
-            public Stream Stream { get; set; }
-            public WebRequest Request { get; set; }
-            public WebResponse Response { get; set; }
-
-            public byte[] Data { get; set; }
-        }
-
-        #endregion
     }
 }
