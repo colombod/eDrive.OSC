@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Reactive.Concurrency;
-using System.Runtime.Serialization.Formatters.Binary;
 using eDrive.Osc;
 
 
@@ -15,7 +14,6 @@ namespace eDrive.Network.NamedPipe
     public class OscOutboundNamedPipeStream : OscOutboundStreamBase
     {
         private readonly string m_destinationPipeName;
-        private readonly BinaryFormatter m_formatter;
         private readonly NamedPipeClientStream m_pipe;
 
         /// <summary>
@@ -29,7 +27,6 @@ namespace eDrive.Network.NamedPipe
             m_destinationPipeName = destinationPipeName;
             m_pipe = new NamedPipeClientStream(".", m_destinationPipeName, PipeDirection.Out, PipeOptions.Asynchronous);
             var pid = Process.GetCurrentProcess().Id;
-            m_formatter = new BinaryFormatter();
             m_pipe.Connect(2000);
             m_pipe.ReadMode = PipeTransmissionMode.Message;
 
@@ -51,20 +48,20 @@ namespace eDrive.Network.NamedPipe
                                    (oscPacket, action) =>
                                        {
                                            byte[] data;
-                                           using (var ms = new MemoryStream())
+                                           try
                                            {
-                                               ms.Write(BitConverter.GetBytes(0),
-                                                        0,
-                                                        4);
-                                               m_formatter.Serialize(ms, oscPacket);
-
-                                               var ps = ms.Position - 4;
-                                               ms.Seek(0, SeekOrigin.Begin);
-                                               ms.Write(BitConverter.GetBytes(ps),
-                                                        0,
-                                                        4);
-
-                                               data = ms.ToArray();
+                                               var packetData = oscPacket.ToByteArray();
+                                               using (var ms = new MemoryStream())
+                                               {
+                                                   ms.Write(BitConverter.GetBytes(packetData.Length), 0, 4);
+                                                   ms.Write(packetData, 0, packetData.Length);
+                                                   data = ms.ToArray();
+                                               }
+                                           }
+                                           catch (Exception)
+                                           {
+                                               // Handle serialization errors gracefully
+                                               data = new byte[0];
                                            }
                                            if (data.Length > 0)
                                            {

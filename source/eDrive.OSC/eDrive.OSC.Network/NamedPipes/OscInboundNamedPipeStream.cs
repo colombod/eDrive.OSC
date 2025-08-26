@@ -1,12 +1,12 @@
-﻿using System;
+﻿using eDrive.Osc;
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
 using System.Reactive.Concurrency;
-using System.Runtime.Serialization.Formatters.Binary;
-using eDrive.Osc;
 
 namespace eDrive.Network.NamedPipe
 {
@@ -43,7 +43,7 @@ namespace eDrive.Network.NamedPipe
                                        {
                                            if (m_clients.Count > 0)
                                            {
-                                               var todelete = m_clients.Where(c => !c.IsConneted).ToList();
+                                               var todelete = m_clients.Where(c => !c.IsConnected).ToList();
                                                foreach (var client in todelete)
                                                {
                                                    RemoveReader(client);
@@ -124,7 +124,6 @@ namespace eDrive.Network.NamedPipe
         {
             private readonly Action<OscPacket> m_deliveryAction;
             private readonly Action<AsynchReader> m_droppedConnection;
-            private readonly BinaryFormatter m_formatter;
             private readonly NamedPipeServerStream m_srv;
             private Process m_process;
 
@@ -135,13 +134,9 @@ namespace eDrive.Network.NamedPipe
 
                 m_deliveryAction = deliveryAction;
                 m_droppedConnection = droppedConnection;
-                m_formatter = new BinaryFormatter();
             }
 
-            public bool IsConneted
-            {
-                get { return m_srv.IsConnected; }
-            }
+            public bool IsConnected => m_srv.IsConnected;
 
             #region IDisposable Members
 
@@ -188,8 +183,8 @@ namespace eDrive.Network.NamedPipe
                     m_droppedConnection(this);
                     return;
                 }
-                var buffer = ar.AsyncState as byte[];
-                var size = buffer != null ? BitConverter.ToInt32(buffer, 0) : 0;
+
+                var size = ar.AsyncState is byte[] buffer ? BitConverter.ToInt32(buffer, 0) : 0;
 
 
                 if (size != 0)
@@ -212,10 +207,10 @@ namespace eDrive.Network.NamedPipe
                             }
 
                             var state = new BodyReadState
-                                            {
-                                                Data = buffer,
-                                                Offset = 0
-                                            };
+                            {
+                                Data = buffer,
+                                Offset = 0
+                            };
                             m_srv.BeginRead(state.Data, state.Offset, state.Data.Length, BodyReadCompleted, state);
                         }
 
@@ -263,10 +258,15 @@ namespace eDrive.Network.NamedPipe
                     state.Offset += read;
                     if (state.Offset == state.Data.Length)
                     {
-                        OscPacket p;
-                        using (var ms = new MemoryStream(state.Data))
+                        OscPacket p = null;
+                        try
                         {
-                            p = m_formatter.Deserialize(ms) as OscPacket;
+                            p = OscPacket.FromByteArray(state.Data);
+                        }
+                        catch (Exception)
+                        {
+                            // Handle deserialization errors gracefully
+                            p = null;
                         }
 
                         if (p != null)
