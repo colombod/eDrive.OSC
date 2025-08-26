@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 
+using System;
 using System.Collections.Generic;
 
 namespace eDrive.OSC.Serialisation.Json;
@@ -20,12 +21,24 @@ public class ByteArraySerializer : OscTypeJsonSerializer<byte[]>
 
     public override byte[] Decode(JsonReader reader)
     {
-        reader.Read();
         var ret = new List<byte>();
-        while (reader.TokenType != JsonToken.EndArray)
+        
+        // Read the start array token
+        if (reader.TokenType != JsonToken.StartArray)
         {
-            ret.Add((byte)reader.Value);
+            reader.Read();
         }
+        
+        // Read array elements
+        while (reader.Read() && reader.TokenType != JsonToken.EndArray)
+        {
+            if (reader.TokenType == JsonToken.Integer && reader.Value != null)
+            {
+                var value = Convert.ToInt32(reader.Value);
+                ret.Add((byte)value);
+            }
+        }
+        
         return ret.ToArray();
     }
 

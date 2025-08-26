@@ -43,7 +43,15 @@ public class JsonSerialisersTests
         var jsonReader = new JsonTextReader(stringReader);
 
         var actual = serializer.Decode(jsonReader);
-        actual.Should().Be(expected);
+        
+        if (typeof(T) == typeof(byte[]))
+        {
+            actual.Should().BeEquivalentTo(expected);
+        }
+        else
+        {
+            actual.Should().Be(expected);
+        }
     }
 
     private static void AssertJsonRoundTrip<T>(OscTypeJsonSerializer<T> serializer, T value)
@@ -59,7 +67,14 @@ public class JsonSerialisersTests
         var jsonReader = new JsonTextReader(stringReader);
         var decoded = serializer.Decode(jsonReader);
 
-        decoded.Should().Be(value);
+        if (typeof(T) == typeof(byte[]))
+        {
+            decoded.Should().BeEquivalentTo(value);
+        }
+        else
+        {
+            decoded.Should().Be(value);
+        }
     }
 
     #endregion
@@ -564,23 +579,55 @@ public class JsonSerialisersTests
     [Fact]
     public void TestByteArraySerializer_Decode()
     {
-        // ByteArraySerializer has a bug in Decode - it doesn't advance reader properly
-        // Skip decode tests due to implementation bug
         var serializer = new ByteArraySerializer();
-        serializer.Should().NotBeNull();
+        
+        // Test decoding empty array
+        AssertJsonDecode(serializer, "[]", new byte[0]);
+        
+        // Test decoding small array
+        AssertJsonDecode(serializer, "[1,2,3,255]", new byte[] { 0x01, 0x02, 0x03, 0xFF });
+        
+        // Test decoding array with zero values
+        AssertJsonDecode(serializer, "[0,0,0]", new byte[] { 0x00, 0x00, 0x00 });
+        
+        // Test decoding array with max byte values
+        AssertJsonDecode(serializer, "[255,254,253]", new byte[] { 0xFF, 0xFE, 0xFD });
+        
+        // Test decoding single byte
+        AssertJsonDecode(serializer, "[42]", new byte[] { 42 });
     }
 
     [Fact]
     public void TestByteArraySerializer_RoundTrip()
     {
-        // Skip round trip tests due to ByteArraySerializer.Decode bug
-        // Test only encoding functionality
         var serializer = new ByteArraySerializer();
-        var bytes1 = new byte[] { 0x01, 0x02, 0x03, 0xFF };
-        AssertJsonEncode(serializer, bytes1, "[1,2,3,255]");
-
-        var emptyBytes = new byte[0];
-        AssertJsonEncode(serializer, emptyBytes, "[]");
+        
+        // Test empty byte array round trip
+        AssertJsonRoundTrip(serializer, new byte[0]);
+        
+        // Test small byte array round trip
+        AssertJsonRoundTrip(serializer, new byte[] { 0x01, 0x02, 0x03, 0xFF });
+        
+        // Test array with zero values
+        AssertJsonRoundTrip(serializer, new byte[] { 0x00, 0x00, 0x00 });
+        
+        // Test array with max byte values
+        AssertJsonRoundTrip(serializer, new byte[] { 0xFF, 0xFE, 0xFD });
+        
+        // Test single byte
+        AssertJsonRoundTrip(serializer, new byte[] { 42 });
+        
+        // Test larger array with various values
+        var largeArray = new byte[256];
+        for (int i = 0; i < 256; i++)
+        {
+            largeArray[i] = (byte)i;
+        }
+        AssertJsonRoundTrip(serializer, largeArray);
+        
+        // Test random byte values
+        var randomArray = new byte[] { 17, 89, 123, 200, 0, 255, 1, 254 };
+        AssertJsonRoundTrip(serializer, randomArray);
     }
 
     [Fact]
