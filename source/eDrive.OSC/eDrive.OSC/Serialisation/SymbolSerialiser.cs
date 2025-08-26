@@ -1,11 +1,11 @@
 using System.IO;
 
-namespace eDrive.Osc.Serialisation
+namespace eDrive.OSC.Serialisation
 {
     /// <summary>
     ///     Deserializers for Symbol Tag
     /// </summary>
-    [CustomOscSerializer('S', typeof (OscSymbol))]
+    [CustomOscSerializer('S', typeof(OscSymbol))]
     public class SymbolSerializer : OscTypeSerializer<OscSymbol>
     {
         /// <summary>
@@ -26,7 +26,7 @@ namespace eDrive.Osc.Serialisation
         public override OscSymbol Decode(byte[] data, int start, out int position)
         {
             var value = SerializerFactory.StringSerializer.Decode(data, start, out position);
-            return new OscSymbol {Value = value};
+            return new OscSymbol { Value = value };
         }
 
         /// <summary>

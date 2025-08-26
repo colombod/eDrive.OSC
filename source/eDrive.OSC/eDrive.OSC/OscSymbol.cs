@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace eDrive.Osc
+﻿namespace eDrive.OSC
 {
     /// <summary>
     ///     Osc Symbol
@@ -25,7 +23,7 @@ namespace eDrive.Osc
             {
                 return true;
             }
-            return obj.GetType() == GetType() && Equals((OscSymbol) obj);
+            return obj.GetType() == GetType() && Equals((OscSymbol)obj);
         }
 
         public override int GetHashCode()

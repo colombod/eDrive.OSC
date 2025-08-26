@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace eDrive.Osc.Serialisation
+namespace eDrive.OSC.Serialisation
 {
     /// <summary>
     ///     Osc Serializer Factory;
@@ -55,7 +55,7 @@ namespace eDrive.Osc.Serialisation
         static SerializerFactory()
         {
             s_type2Serializer = new Dictionary<Type, IOscTypeSerializer>();
-            s_tag2Serializer = new IOscTypeSerializer[256];     
+            s_tag2Serializer = new IOscTypeSerializer[256];
 
             NilSerializer = new NilSerializer();
             StringSerializer = new StringSerializer();
@@ -63,84 +63,101 @@ namespace eDrive.Osc.Serialisation
             IntSerializer = new IntSerializer();
             ByteArraySerializer = new ByteArraySerializer();
 
-			var src = typeof(SerializerFactory).GetTypeInfo ().Assembly;
-			LoadSerializersFromAssembly (src);
+            var src = typeof(SerializerFactory).GetTypeInfo().Assembly;
+            LoadSerializersFromAssembly(src);
         }
 
-		public static void LoadSerializer(TypeInfo source){
-			if (source == null) {
-				throw new ArgumentNullException ("source");
-			}
-			s_supported = null;
-			Scan(source);
-		}
+        public static void LoadSerializer(TypeInfo source)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+            s_supported = null;
+            Scan(source);
+        }
 
 
-		public static void LoadSerializer(Type source){
-			if (source == null) {
-				throw new ArgumentNullException ("source");
-			}
+        public static void LoadSerializer(Type source)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
 
-			LoadSerializer (source.GetTypeInfo ());
-		}
+            LoadSerializer(source.GetTypeInfo());
+        }
 
 
-		public static void LoadSerializers(IEnumerable<TypeInfo> sources){
-			if (sources == null) {
-				throw new ArgumentNullException ("sources");
-			}
-			s_supported = null;
-			foreach (var source in sources) {
-				Scan(source);
-			}
-		}
+        public static void LoadSerializers(IEnumerable<TypeInfo> sources)
+        {
+            if (sources == null)
+            {
+                throw new ArgumentNullException("sources");
+            }
+            s_supported = null;
+            foreach (var source in sources)
+            {
+                Scan(source);
+            }
+        }
 
-		public static void LoadSerializers(IEnumerable<Type> sources){
-			if (sources == null) {
-				throw new ArgumentNullException ("sources");
-			}
-			s_supported = null;
-			foreach (var source in sources.Select(s => s.GetTypeInfo())) {
-				Scan(source);
-			}
-		}
+        public static void LoadSerializers(IEnumerable<Type> sources)
+        {
+            if (sources == null)
+            {
+                throw new ArgumentNullException("sources");
+            }
+            s_supported = null;
+            foreach (var source in sources.Select(s => s.GetTypeInfo()))
+            {
+                Scan(source);
+            }
+        }
 
-		public static void LoadSerializers(params TypeInfo[] sources){
-			if (sources == null) {
-				throw new ArgumentNullException ("sources");
-			}
-			LoadSerializers ((IEnumerable<TypeInfo>)sources);
-		}
+        public static void LoadSerializers(params TypeInfo[] sources)
+        {
+            if (sources == null)
+            {
+                throw new ArgumentNullException("sources");
+            }
+            LoadSerializers((IEnumerable<TypeInfo>)sources);
+        }
 
-		public static void LoadSerializersFromAssembly(Assembly source){
-			if (source == null) {
-				throw new ArgumentNullException ("source");
-			}
+        public static void LoadSerializersFromAssembly(Assembly source)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
 
-			s_supported = null;
-			Scan(source);
-		}
+            s_supported = null;
+            Scan(source);
+        }
 
-		public static void LoadSerializersFromAssemblies(IEnumerable<Assembly> sources)
-		{
-			if (sources == null) {
-				throw new ArgumentNullException ("sources");
-			}
+        public static void LoadSerializersFromAssemblies(IEnumerable<Assembly> sources)
+        {
+            if (sources == null)
+            {
+                throw new ArgumentNullException("sources");
+            }
 
-			s_supported = null;
-			foreach (var source in sources) {
-				Scan(source);
-			}
-		}
+            s_supported = null;
+            foreach (var source in sources)
+            {
+                Scan(source);
+            }
+        }
 
-		public static void LoadSerializersFromAssemblies(params Assembly[] sources)
-		{
+        public static void LoadSerializersFromAssemblies(params Assembly[] sources)
+        {
 
-			if (sources == null) {
-				throw new ArgumentNullException ("sources");
-			}
-			LoadSerializersFromAssemblies((IEnumerable<Assembly>)sources);
-		}
+            if (sources == null)
+            {
+                throw new ArgumentNullException("sources");
+            }
+            LoadSerializersFromAssemblies((IEnumerable<Assembly>)sources);
+        }
         /// <summary>
         ///     Gets the byte array serializer.
         /// </summary>
@@ -189,8 +206,8 @@ namespace eDrive.Osc.Serialisation
         /// <returns></returns>
         public static string GetTag<T>(T value)
         {
-            var t = typeof (T);
-			var tInfo = t.GetTypeInfo ();
+            var t = typeof(T);
+            var tInfo = t.GetTypeInfo();
             var typeTag = string.Empty;
 
             if (value is Array
@@ -210,7 +227,7 @@ namespace eDrive.Osc.Serialisation
             }
             else
             {
-				if (!tInfo.IsValueType
+                if (!tInfo.IsValueType
                     && Equals(value, default(T)))
                 {
                     typeTag += NilSerializer.Tag;
@@ -218,7 +235,7 @@ namespace eDrive.Osc.Serialisation
 
                 else if (t == value.GetType())
                 {
-					if (tInfo.IsValueType
+                    if (tInfo.IsValueType
                         || !Equals(value, default(T)))
                     {
                         var sed = GetSerializer<T>();
@@ -231,7 +248,7 @@ namespace eDrive.Osc.Serialisation
                 }
                 else
                 {
-                    var sed = GetSerializer((object) value);
+                    var sed = GetSerializer((object)value);
                     typeTag += sed.GetTag(value);
                 }
             }
@@ -261,8 +278,8 @@ namespace eDrive.Osc.Serialisation
             {
                 var chars =
                     s_tag2Serializer.Where(s => s != null)
-                                    .Select((s, i) => (char) i)
-                                    .Concat(new[] {NilTag, EventTag, ArrayOpen, ArrayClose})
+                                    .Select((s, i) => (char)i)
+                                    .Concat(new[] { NilTag, EventTag, ArrayOpen, ArrayClose })
                                     .Distinct()
                                     .ToArray();
 
@@ -330,44 +347,45 @@ namespace eDrive.Osc.Serialisation
         /// <returns></returns>
         public static IOscTypeSerializer<T> GetSerializer<T>()
         {
-            var type = typeof (T);
+            var type = typeof(T);
             return GetSerializer(type) as IOscTypeSerializer<T>;
         }
 
-		private static void Scan(TypeInfo tInfo)
-		{
-			var attr = tInfo.GetCustomAttribute<CustomOscSerializerAttribute> ();
-			if (attr != null) {
-				try
-				{
-					var instance = Activator.CreateInstance(tInfo.AsType()) as IOscTypeSerializer;
-					if (instance != null)
-					{
-						if (attr.TypeTag != ' ')
-						{
-							s_tag2Serializer[attr.TypeTag] = instance;
-						}
+        private static void Scan(TypeInfo tInfo)
+        {
+            var attr = tInfo.GetCustomAttribute<CustomOscSerializerAttribute>();
+            if (attr != null)
+            {
+                try
+                {
+                    var instance = Activator.CreateInstance(tInfo.AsType()) as IOscTypeSerializer;
+                    if (instance != null)
+                    {
+                        if (attr.TypeTag != ' ')
+                        {
+                            s_tag2Serializer[attr.TypeTag] = instance;
+                        }
 
-						if (attr.Type != null)
-						{
-							s_type2Serializer[attr.Type] = instance;
-						}
-					}
-				}
-				catch
-				{
-				}
-			}
-		}
+                        if (attr.Type != null)
+                        {
+                            s_type2Serializer[attr.Type] = instance;
+                        }
+                    }
+                }
+                catch
+                {
+                }
+            }
+        }
 
         private static void Scan(Assembly loadedAssembly)
         {
             {
-				var types = loadedAssembly.ExportedTypes.Select(et => et.GetTypeInfo());
-					
+                var types = loadedAssembly.ExportedTypes.Select(et => et.GetTypeInfo());
+
                 foreach (var source in types)
                 {
-					Scan (source);
+                    Scan(source);
                 }
             }
         }

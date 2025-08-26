@@ -1,12 +1,12 @@
 using System;
 using System.IO;
 
-namespace eDrive.Osc.Serialisation
+namespace eDrive.OSC.Serialisation
 {
     /// <summary>
     ///     Serializer of <see cref="OscTimeTag" />.
     /// </summary>
-    [CustomOscSerializer('t', typeof (OscTimeTag))]
+    [CustomOscSerializer('t', typeof(OscTimeTag))]
     public class OscTimeTagSerializer : OscTypeSerializer<OscTimeTag>
     {
         /// <summary>

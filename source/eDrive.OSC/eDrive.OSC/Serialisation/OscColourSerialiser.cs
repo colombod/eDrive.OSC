@@ -1,11 +1,11 @@
 using System.IO;
 
-namespace eDrive.Osc.Serialisation
+namespace eDrive.OSC.Serialisation
 {
     /// <summary>
     ///     Serializer for Osc Colour
     /// </summary>
-    [CustomOscSerializer('r', typeof (OscColour))]
+    [CustomOscSerializer('r', typeof(OscColour))]
     public class OscColourSerializer : OscTypeSerializer<OscColour>
     {
         /// <summary>

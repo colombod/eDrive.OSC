@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace eDrive.Osc
+namespace eDrive.OSC
 {
     /// <summary>
     ///     Represents an osc colour.
@@ -100,7 +100,7 @@ namespace eDrive.Osc
             {
                 return true;
             }
-            return obj.GetType() == GetType() && Equals((OscColour) obj);
+            return obj.GetType() == GetType() && Equals((OscColour)obj);
         }
 
         public override int GetHashCode()
@@ -145,5 +145,5 @@ namespace eDrive.Osc
             /// </summary>
             [FieldOffset(0)] public int Value;
         }
-	}
+    }
 }

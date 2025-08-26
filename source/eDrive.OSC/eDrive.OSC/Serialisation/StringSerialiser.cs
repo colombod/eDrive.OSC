@@ -1,12 +1,12 @@
 using System.IO;
 using System.Text;
 
-namespace eDrive.Osc.Serialisation
+namespace eDrive.OSC.Serialisation
 {
     /// <summary>
     ///     Serializer for <see cref="string" />
     /// </summary>
-    [CustomOscSerializer('s', typeof (string))]
+    [CustomOscSerializer('s', typeof(string))]
     public class StringSerializer : OscTypeSerializer<string>
     {
         /// <summary>
@@ -30,10 +30,10 @@ namespace eDrive.Osc.Serialisation
             {
                 count++;
             }
-			var ret = Encoding.UTF8.GetString(data, start, count);
+            var ret = Encoding.UTF8.GetString(data, start, count);
 
             position = start + ret.Length;
-            position += (4 - (position%4));
+            position += (4 - (position % 4));
 
             return ret;
         }
@@ -46,7 +46,7 @@ namespace eDrive.Osc.Serialisation
         /// <returns></returns>
         public override int Encode(Stream output, string value)
         {
-			var data = Encoding.UTF8.GetBytes(value);
+            var data = Encoding.UTF8.GetBytes(value);
             output.Write(data, 0, data.Length);
 
             var ret = data.Length;

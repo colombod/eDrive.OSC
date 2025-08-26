@@ -1,6 +1,6 @@
 using System;
 
-namespace eDrive
+namespace eDrive.OSC
 {
     /// <summary>
     ///     Provides a set of methods to verify conditions.
@@ -33,7 +33,7 @@ namespace eDrive
         public static void ParamIsNotNull(object param)
         {
             if ((param == null)
-                || ((param is string) && (string.IsNullOrEmpty((string) param))))
+                || ((param is string) && (string.IsNullOrEmpty((string)param))))
             {
                 throw new ArgumentNullException();
             }

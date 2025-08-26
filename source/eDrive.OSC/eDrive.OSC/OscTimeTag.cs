@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace eDrive.Osc
+namespace eDrive.OSC
 {
     /// <summary>
     ///     Represents an Osc Time Tag.
@@ -124,7 +124,7 @@ namespace eDrive.Osc
             {
                 return false;
             }
-            return Equals((OscTimeTag) obj);
+            return Equals((OscTimeTag)obj);
         }
 
         public override int GetHashCode()
@@ -155,8 +155,8 @@ namespace eDrive.Osc
             }
             var num = timeStamp >> 0x20;
             var num2 = timeStamp & 0xffffffffL;
-            var num3 = (num*(0x989680L)) + ((num2*(0x989680L))/(0x100000000L));
-            return (s_dt1900 + new TimeSpan((long) num3));
+            var num3 = (num * (0x989680L)) + ((num2 * (0x989680L)) / (0x100000000L));
+            return (s_dt1900 + new TimeSpan((long)num3));
         }
 
         /// <summary>
@@ -171,9 +171,9 @@ namespace eDrive.Osc
                 return 1L;
             }
             var span = (dateTime - s_dt1900);
-            var ticks = (ulong) span.Ticks;
-            var num2 = ticks/0x989680L;
-            var num3 = ((ticks%0x989680L)*0x100000000L)/0x989680L;
+            var ticks = (ulong)span.Ticks;
+            var num2 = ticks / 0x989680L;
+            var num3 = ((ticks % 0x989680L) * 0x100000000L) / 0x989680L;
             return ((num2 << 0x20) | num3);
         }
     }

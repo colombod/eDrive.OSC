@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace eDrive.Osc.Serialisation
+namespace eDrive.OSC.Serialisation
 {
     /// <summary>
     ///     This class can be used to create serialisation strategies for types.
@@ -12,7 +12,7 @@ namespace eDrive.Osc.Serialisation
                                                  IOscTypeSerializer
     {
         private readonly char m_tag;
-        private readonly Type m_type = typeof (T);
+        private readonly Type m_type = typeof(T);
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="OscTypeSerializer{T}" /> class.
@@ -67,7 +67,7 @@ namespace eDrive.Osc.Serialisation
         /// </returns>
         public int Encode(Stream output, object value)
         {
-            return Encode(output, (T) value);
+            return Encode(output, (T)value);
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace eDrive.Osc.Serialisation
         /// <returns></returns>
         public char GetTag(object value)
         {
-            return value == null ? m_tag : GetTag((T) value);
+            return value == null ? m_tag : GetTag((T)value);
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace eDrive.Osc.Serialisation
             {
                 return false;
             }
-            return Equals((OscTypeSerializer<T>) obj);
+            return Equals((OscTypeSerializer<T>)obj);
         }
 
         /// <summary>
@@ -244,7 +244,7 @@ namespace eDrive.Osc.Serialisation
                 return lastWritten;
             }
 
-            var topad = alignment - (lastWritten%alignment);
+            var topad = alignment - (lastWritten % alignment);
 
             stream.Write(new byte[topad], 0, topad);
 
@@ -269,7 +269,7 @@ namespace eDrive.Osc.Serialisation
         /// <returns></returns>
         protected static int PadValue(int value, int alignment)
         {
-            var topad = alignment > 1 ? (alignment - (value%alignment)) : 0;
+            var topad = alignment > 1 ? (alignment - (value % alignment)) : 0;
             return value + topad;
         }
     }

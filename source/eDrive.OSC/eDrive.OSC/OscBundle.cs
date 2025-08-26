@@ -1,9 +1,10 @@
+using eDrive.OSC.Serialisation;
+
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using eDrive.Osc.Serialisation;
 
-namespace eDrive.Osc
+namespace eDrive.OSC
 {
     /// <summary>
     ///     Represents a bundle of <see cref="OscMessage" /> and other <see cref="OscBundle" /> objects.
@@ -112,13 +113,13 @@ namespace eDrive.Osc
                     var packetBytes in
                         m_data.OfType<OscPacket>().Select(packet => packet.ToByteArray()))
                 {
-					System.Diagnostics.Debug.Assert(packetBytes.Length%4 == 0);
+                    System.Diagnostics.Debug.Assert(packetBytes.Length % 4 == 0);
 
                     SerializerFactory.IntSerializer.Encode(stream, packetBytes.Length);
 
                     stream.Write(packetBytes, 0, packetBytes.Length);
 
-                    size += (sizeof (int) + packetBytes.Length);
+                    size += (sizeof(int) + packetBytes.Length);
                 }
             }
 
@@ -144,7 +145,7 @@ namespace eDrive.Osc
             var tt = SerializerFactory.TimeTagSerializer;
 
             var prefix = str.Decode(data, start, out start);
-			Assert.IsTrue(prefix == BundlePrefix);
+            Assert.IsTrue(prefix == BundlePrefix);
             var timeTag = tt.Decode(data, start, out start);
 
             var bundle = new OscBundle(timeTag);
@@ -152,18 +153,18 @@ namespace eDrive.Osc
             if (end - start > 0)
             {
                 bundle.m_dataBag = new DataBag
-                                       {
-                                           Bytes = data.CopySubArray(start, end - start)
-                                       };
+                {
+                    Bytes = data.CopySubArray(start, end - start)
+                };
 
                 start += bundle.m_dataBag.Bytes.Length;
             }
             else
             {
                 bundle.m_dataBag = new DataBag
-                                       {
-                                           Bytes = new byte[0]
-                                       };
+                {
+                    Bytes = new byte[0]
+                };
             }
 
             return bundle;

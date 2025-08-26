@@ -1,12 +1,12 @@
 using System;
 using System.IO;
 
-namespace eDrive.Osc.Serialisation
+namespace eDrive.OSC.Serialisation
 {
     /// <summary>
     ///     Serializer for <see cref="long" />
     /// </summary>
-    [CustomOscSerializer('h', typeof (long))]
+    [CustomOscSerializer('h', typeof(long))]
     public class LongSerializer : OscTypeSerializer<long>
     {
         /// <summary>
@@ -26,7 +26,7 @@ namespace eDrive.Osc.Serialisation
         /// <returns></returns>
         public override long Decode(byte[] data, int start, out int position)
         {
-            const int size = sizeof (long);
+            const int size = sizeof(long);
             position = start + size;
 
             AdjustForEndianInPlace(ref data, ref start, size);

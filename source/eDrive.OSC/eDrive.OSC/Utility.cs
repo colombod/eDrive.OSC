@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace eDrive
+namespace eDrive.OSC
 {
     /// <summary>
     ///     General-Purpose utility functions.
@@ -21,8 +21,8 @@ namespace eDrive
             var ret = string.Empty;
             if (source != null)
             {
-				var encoding = new UTF8Encoding();
-				ret = encoding.GetString(source,0,source.Length);
+                var encoding = new UTF8Encoding();
+                ret = encoding.GetString(source, 0, source.Length);
             }
             return ret;
         }
@@ -38,7 +38,7 @@ namespace eDrive
             if (source != null)
             {
                 var encoding = new UnicodeEncoding();
-				ret = encoding.GetString(source,0,source.Length);
+                ret = encoding.GetString(source, 0, source.Length);
             }
             return ret;
         }
@@ -121,7 +121,7 @@ namespace eDrive
         /// <returns>The angle in degrees.</returns>
         public static float ToDegrees(float radians)
         {
-            return (radians*57.29578f);
+            return (radians * 57.29578f);
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace eDrive
         /// <returns>The angle in radians</returns>
         public static float ToRadians(float degrees)
         {
-            return (degrees*0.01745329f);
+            return (degrees * 0.01745329f);
         }
 
         /// <summary>
@@ -146,14 +146,14 @@ namespace eDrive
         /// </exception>
 		public static Enum[] GetEnumValues(Type enumType)
         {
-			var tInfo = enumType.GetTypeInfo();
-			Assert.IsTrue(tInfo.IsEnum);
+            var tInfo = enumType.GetTypeInfo();
+            Assert.IsTrue(tInfo.IsEnum);
 
-			var info = tInfo.DeclaredFields.ToArray ();
+            var info = tInfo.DeclaredFields.ToArray();
             var values = new Enum[info.Length];
             for (var i = 0; i < values.Length; i++)
             {
-                values[i] = (Enum) info[i].GetValue(null);
+                values[i] = (Enum)info[i].GetValue(null);
             }
 
             return values;
@@ -169,10 +169,10 @@ namespace eDrive
         /// </exception>
         public static int GetEnumMaxValue(Type enumType)
         {
-			var tInfo = enumType.GetTypeInfo();
-			Assert.IsTrue(tInfo.IsEnum);
+            var tInfo = enumType.GetTypeInfo();
+            Assert.IsTrue(tInfo.IsEnum);
 
-            return Enum.GetValues(enumType).Cast<int>().Concat(new[] {int.MinValue}).Max();
+            return Enum.GetValues(enumType).Cast<int>().Concat(new[] { int.MinValue }).Max();
         }
 
         /// <summary>
@@ -238,7 +238,7 @@ namespace eDrive
             }
 
             var end = (offset + length) - 1;
-            for (var i = 0; i < length/2; i++)
+            for (var i = 0; i < length / 2; i++)
             {
                 var temp = data[start + i];
                 data[start + i] = data[end - i];

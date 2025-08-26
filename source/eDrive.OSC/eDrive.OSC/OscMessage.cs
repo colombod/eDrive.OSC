@@ -1,10 +1,10 @@
+using eDrive.OSC.Serialisation;
+
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using eDrive.Osc.Serialisation;
 
-namespace eDrive.Osc
+namespace eDrive.OSC
 {
     /// <summary>
     ///     Represents an Osc Message packet.
@@ -39,7 +39,7 @@ namespace eDrive.Osc
         {
             Assert.IsTrue(address.StartsWith(AddressPrefix));
 
-			m_typeTag = SerializerFactory.DefaultTag.ToString();
+            m_typeTag = SerializerFactory.DefaultTag.ToString();
         }
 
         /// <summary>
@@ -171,18 +171,18 @@ namespace eDrive.Osc
             if (end - start > 0)
             {
                 message.m_dataBag = new DataBag
-                                        {
-                                            Bytes = data.CopySubArray(start, end - start)
-                                        };
+                {
+                    Bytes = data.CopySubArray(start, end - start)
+                };
 
                 start += message.m_dataBag.Bytes.Length;
             }
             else
             {
                 message.m_dataBag = new DataBag
-                                        {
-                                            Bytes = new byte[0]
-                                        };
+                {
+                    Bytes = new byte[0]
+                };
             }
 
             message.m_typeTag = tags;

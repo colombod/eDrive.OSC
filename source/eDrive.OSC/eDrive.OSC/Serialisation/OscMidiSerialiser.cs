@@ -1,12 +1,12 @@
 using System;
 using System.IO;
 
-namespace eDrive.Osc.Serialisation
+namespace eDrive.OSC.Serialisation
 {
     /// <summary>
     ///     Encdodes and decodes midi messages
     /// </summary>
-    [CustomOscSerializer('m', typeof (OscMidiMessage))]
+    [CustomOscSerializer('m', typeof(OscMidiMessage))]
     public class OscMidiSerializer : OscTypeSerializer<OscMidiMessage>
     {
         /// <summary>

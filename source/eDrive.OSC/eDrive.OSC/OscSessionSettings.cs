@@ -1,6 +1,4 @@
-using System;
-
-namespace eDrive.Osc
+namespace eDrive.OSC
 {
     /// <summary>
     ///     Hold session and debug setting

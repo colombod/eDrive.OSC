@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace eDrive.Osc
+namespace eDrive.OSC
 {
     /// <summary>
     ///     Represents the base unit of transmission for the Open Sound Control protocol.
@@ -33,9 +33,10 @@ namespace eDrive.Osc
         /// <param name="address">The Osc address pattern.</param>
         protected OscPacket(string address)
         {
-			if (string.IsNullOrEmpty (address)) { 
-				throw new ArgumentException ("Cannot be null or empty", "address");
-			}
+            if (string.IsNullOrEmpty(address))
+            {
+                throw new ArgumentException("Cannot be null or empty", "address");
+            }
 
 
             Address = address;
@@ -72,7 +73,7 @@ namespace eDrive.Osc
                 throw new InvalidCastException();
             }
 
-            return (T) m_data[index];
+            return (T)m_data[index];
         }
 
         /// <summary>
@@ -110,7 +111,7 @@ namespace eDrive.Osc
         public static OscPacket FromByteArray(byte[] data, ref int start, int end)
         {
             return data[start] == '#'
-                       ? (OscPacket) OscBundle.BundleFromByteArray(data, ref start, end)
+                       ? (OscPacket)OscBundle.BundleFromByteArray(data, ref start, end)
                        : OscMessage.MessageFromByteArray(data, ref start, end);
         }
 
@@ -155,7 +156,7 @@ namespace eDrive.Osc
             get
             {
                 EnsureDataLoaded();
-				return m_data;
+                return m_data;
             }
         }
 

@@ -1,12 +1,12 @@
 using System;
 using System.IO;
 
-namespace eDrive.Osc.Serialisation
+namespace eDrive.OSC.Serialisation
 {
     /// <summary>
     ///     Serializer for <see cref="Version" />
     /// </summary>
-    [CustomOscSerializer('v', typeof (Version))]
+    [CustomOscSerializer('v', typeof(Version))]
     public class VersionSerializer : OscTypeSerializer<Version>
     {
         /// <summary>

@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Runtime.Serialization;
 
-namespace eDrive.Osc.Serialisation
+namespace eDrive.OSC.Serialisation
 {
     /// <summary>
     ///     Represents an unexpected error during serialisation or deserialisation.
@@ -23,10 +22,10 @@ namespace eDrive.Osc.Serialisation
         /// </summary>
         /// <param name="message">The message that describes the error.</param>
         public OscSerializerException(string message)
-			:  base(message)
+            : base(message)
         {
         }
 
-	
+
     }
 }
