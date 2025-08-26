@@ -1,7 +1,7 @@
 # eDrive.OSC
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![.NET](https://img.shields.io/badge/.NET-6.0%20%7C%207.0%20%7C%208.0-blue.svg)](https://dotnet.microsoft.com/)
+[![.NET](https://img.shields.io/badge/.NET-9.0-blue.svg)](https://dotnet.microsoft.com/)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/colombod/eDrive.OSC)
 
 A comprehensive, high-performance Open Sound Control (OSC) 1.1 implementation for .NET with full binary and JSON serialization support.
