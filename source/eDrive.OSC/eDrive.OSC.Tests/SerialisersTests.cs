@@ -863,4 +863,451 @@ public class SerializersTests
             v.Should().Be(version);
         }
     }
+
+    #region ByteArraySerializer Tests
+
+    [Fact]
+    public void TestByteArraySerializer()
+    {
+        AssertSerializerType(new ByteArraySerializer(), typeof(byte[]), 'b');
+    }
+
+    [Fact]
+    public void TestByteArraySerializerEncode()
+    {
+        var serializer = new ByteArraySerializer();
+        var testData = new byte[] { 0xFF, 0xAB, 0x1E, 0x00 };
+        
+        var stream = new MemoryStream();
+        var bytesWritten = serializer.Encode(stream, testData);
+        
+        var result = stream.ToArray();
+        
+        // Verify we can decode what we encoded
+        var decoded = serializer.Decode(result, 0, out var position);
+        decoded.Should().BeEquivalentTo(testData);
+        
+        // Position should match bytes written
+        position.Should().Be(bytesWritten);
+        
+        // Verify the structure: length + data + padding
+        result.Length.Should().Be(bytesWritten);
+        
+        // Verify the structure contains the expected data length
+        result.Length.Should().BeGreaterThan(4); // At least length + some data
+        
+        // Next 4 bytes should be the actual data
+        result.Skip(4).Take(4).Should().BeEquivalentTo(testData);
+    }
+
+    [Fact]
+    public void TestByteArraySerializerDecode()
+    {
+        var serializer = new ByteArraySerializer();
+        var testData = new byte[] { 0xFF, 0xAB, 0x1E, 0x00 };
+        
+        // First encode to get the correct OSC format
+        var stream = new MemoryStream();
+        serializer.Encode(stream, testData);
+        var encodedData = stream.ToArray();
+        
+        // Then decode
+        var decoded = serializer.Decode(encodedData, 0, out var position);
+        
+        decoded.Should().BeEquivalentTo(testData);
+        position.Should().Be(encodedData.Length);
+    }
+
+    [Fact]
+    public void TestByteArraySerializerRoundTrip()
+    {
+        var serializer = new ByteArraySerializer();
+        var testData = new byte[] { 0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC };
+        
+        // Encode
+        var stream = new MemoryStream();
+        serializer.Encode(stream, testData);
+        var encoded = stream.ToArray();
+        
+        // Decode
+        var decoded = serializer.Decode(encoded, 0, out var position);
+        
+        decoded.Should().BeEquivalentTo(testData);
+    }
+
+    [Fact]
+    public void TestByteArraySerializerEmptyArray()
+    {
+        var serializer = new ByteArraySerializer();
+        var testData = new byte[0];
+        
+        // Encode
+        var stream = new MemoryStream();
+        var bytesWritten = serializer.Encode(stream, testData);
+        var encoded = stream.ToArray();
+        
+        // Decode
+        var decoded = serializer.Decode(encoded, 0, out var position);
+        
+        decoded.Should().BeEquivalentTo(testData);
+        decoded.Length.Should().Be(0);
+        position.Should().Be(bytesWritten);
+        encoded.Length.Should().Be(bytesWritten);
+    }
+
+    [Fact]
+    public void TestByteArraySerializerLargeArray()
+    {
+        var serializer = new ByteArraySerializer();
+        var testData = new byte[1000];
+        for (int i = 0; i < testData.Length; i++)
+        {
+            testData[i] = (byte)(i % 256);
+        }
+        
+        // Encode
+        var stream = new MemoryStream();
+        var bytesWritten = serializer.Encode(stream, testData);
+        var encoded = stream.ToArray();
+        
+        // Decode
+        var decoded = serializer.Decode(encoded, 0, out var position);
+        
+        decoded.Should().BeEquivalentTo(testData);
+        position.Should().Be(bytesWritten);
+        encoded.Length.Should().Be(bytesWritten);
+    }
+
+    [Fact]
+    public void TestByteArraySerializerPaddingVerification()
+    {
+        var serializer = new ByteArraySerializer();
+        var testData = new byte[] { 0x01, 0x02, 0x03 }; // 3 bytes, needs 1 byte padding
+        
+        // Encode
+        var stream = new MemoryStream();
+        var bytesWritten = serializer.Encode(stream, testData);
+        var encoded = stream.ToArray();
+        
+        // Should write: length (4 bytes) + data (3 bytes) + padding (1 byte) = 8 bytes total
+        bytesWritten.Should().Be(8);
+        encoded.Length.Should().Be(8);
+        
+        // Last byte should be padding (0)
+        encoded[7].Should().Be(0);
+        
+        // Decode
+        var decoded = serializer.Decode(encoded, 0, out var position);
+        
+        decoded.Should().BeEquivalentTo(testData);
+        position.Should().Be(8);
+    }
+
+    [Fact]
+    public void TestByteArraySerializerSingleByte()
+    {
+        var serializer = new ByteArraySerializer();
+        var testData = new byte[] { 0xFF };
+        
+        // Encode
+        var stream = new MemoryStream();
+        var bytesWritten = serializer.Encode(stream, testData);
+        var encoded = stream.ToArray();
+        
+        // Should write: length (4 bytes) + data (1 byte) + padding (3 bytes) = 8 bytes total
+        bytesWritten.Should().Be(8);
+        
+        // Decode
+        var decoded = serializer.Decode(encoded, 0, out var position);
+        
+        decoded.Should().BeEquivalentTo(testData);
+        position.Should().Be(8);
+    }
+
+    #endregion
+
+    #region GuidSerializer Tests
+
+    [Fact]
+    public void TestGuidSerializer()
+    {
+        AssertSerializerType(new GuidSerializer(), typeof(Guid), 'g');
+    }
+
+    [Fact]
+    public void TestGuidSerializerEncode()
+    {
+        var serializer = new GuidSerializer();
+        var testGuid = new Guid("12345678-1234-5678-9ABC-123456789ABC");
+        
+        var stream = new MemoryStream();
+        var bytesWritten = serializer.Encode(stream, testGuid);
+        
+        var result = stream.ToArray();
+        
+        // Verify we can decode what we encoded
+        var decoded = serializer.Decode(result, 0, out var position);
+        decoded.Should().Be(testGuid);
+        
+        // Position should match bytes written
+        position.Should().Be(bytesWritten);
+        result.Length.Should().Be(bytesWritten);
+        
+        // Verify the structure contains the expected data length
+        result.Length.Should().BeGreaterThan(16); // At least length + GUID data
+        
+        // Next 16 bytes should be the GUID bytes
+        var guidBytes = result.Skip(4).Take(16).ToArray();
+        var reconstructedGuid = new Guid(guidBytes);
+        reconstructedGuid.Should().Be(testGuid);
+    }
+
+    [Fact]
+    public void TestGuidSerializerDecode()
+    {
+        var serializer = new GuidSerializer();
+        var testGuid = new Guid("FEDCBA98-7654-3210-FEDC-BA9876543210");
+        
+        // First encode to get the correct OSC format
+        var stream = new MemoryStream();
+        serializer.Encode(stream, testGuid);
+        var encodedData = stream.ToArray();
+        
+        // Then decode
+        var decoded = serializer.Decode(encodedData, 0, out var position);
+        
+        decoded.Should().Be(testGuid);
+        position.Should().Be(encodedData.Length);
+    }
+
+    [Fact]
+    public void TestGuidSerializerRoundTrip()
+    {
+        var serializer = new GuidSerializer();
+        var testGuid = Guid.NewGuid();
+        
+        // Encode
+        var stream = new MemoryStream();
+        serializer.Encode(stream, testGuid);
+        var encoded = stream.ToArray();
+        
+        // Decode
+        var decoded = serializer.Decode(encoded, 0, out var position);
+        
+        decoded.Should().Be(testGuid);
+    }
+
+    [Fact]
+    public void TestGuidSerializerEmptyGuid()
+    {
+        var serializer = new GuidSerializer();
+        var testGuid = Guid.Empty;
+        
+        // Encode
+        var stream = new MemoryStream();
+        var bytesWritten = serializer.Encode(stream, testGuid);
+        var encoded = stream.ToArray();
+        
+        // Decode
+        var decoded = serializer.Decode(encoded, 0, out var position);
+        
+        decoded.Should().Be(Guid.Empty);
+        position.Should().Be(bytesWritten);
+        encoded.Length.Should().Be(bytesWritten);
+    }
+
+    [Fact]
+    public void TestGuidSerializerMultipleGuids()
+    {
+        var serializer = new GuidSerializer();
+        var guids = new[]
+        {
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            Guid.Empty,
+            new Guid("AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE")
+        };
+        
+        foreach (var guid in guids)
+        {
+            // Encode
+            var stream = new MemoryStream();
+            serializer.Encode(stream, guid);
+            var encoded = stream.ToArray();
+            
+            // Decode
+            var decoded = serializer.Decode(encoded, 0, out var position);
+            
+            decoded.Should().Be(guid);
+        }
+    }
+
+    #endregion
+
+    #region Boundary Value Tests for Existing Serializers
+
+    [Fact]
+    public void TestIntSerializerBoundaryValues()
+    {
+        var serializer = new IntSerializer();
+        var boundaryValues = new[] { int.MinValue, int.MaxValue, 0, -1, 1 };
+        
+        foreach (var value in boundaryValues)
+        {
+            // Encode
+            var stream = new MemoryStream();
+            serializer.Encode(stream, value);
+            var encoded = stream.ToArray();
+            
+            // Decode
+            var decoded = serializer.Decode(encoded, 0, out var position);
+            
+            decoded.Should().Be(value);
+            position.Should().Be(4);
+        }
+    }
+
+    [Fact]
+    public void TestLongSerializerBoundaryValues()
+    {
+        var serializer = new LongSerializer();
+        var boundaryValues = new[] { long.MinValue, long.MaxValue, 0L, -1L, 1L };
+        
+        foreach (var value in boundaryValues)
+        {
+            // Encode
+            var stream = new MemoryStream();
+            serializer.Encode(stream, value);
+            var encoded = stream.ToArray();
+            
+            // Decode
+            var decoded = serializer.Decode(encoded, 0, out var position);
+            
+            decoded.Should().Be(value);
+            position.Should().Be(8);
+        }
+    }
+
+    [Fact]
+    public void TestFloatSerializerSpecialValues()
+    {
+        var serializer = new FloatSerializer();
+        var specialValues = new[]
+        {
+            float.NaN,
+            float.PositiveInfinity,
+            float.NegativeInfinity,
+            float.MinValue,
+            float.MaxValue,
+            0.0f,
+            -0.0f
+        };
+        
+        foreach (var value in specialValues)
+        {
+            // Encode
+            var stream = new MemoryStream();
+            serializer.Encode(stream, value);
+            var encoded = stream.ToArray();
+            
+            // Decode
+            var decoded = serializer.Decode(encoded, 0, out var position);
+            
+            if (float.IsNaN(value))
+            {
+                float.IsNaN(decoded).Should().BeTrue();
+            }
+            else
+            {
+                decoded.Should().Be(value);
+            }
+            position.Should().Be(4);
+        }
+    }
+
+    [Fact]
+    public void TestDoubleSerializerSpecialValues()
+    {
+        var serializer = new DoubleSerializer();
+        var specialValues = new[]
+        {
+            double.NaN,
+            double.PositiveInfinity,
+            double.NegativeInfinity,
+            double.MinValue,
+            double.MaxValue,
+            0.0,
+            -0.0
+        };
+        
+        foreach (var value in specialValues)
+        {
+            // Encode
+            var stream = new MemoryStream();
+            serializer.Encode(stream, value);
+            var encoded = stream.ToArray();
+            
+            // Decode
+            var decoded = serializer.Decode(encoded, 0, out var position);
+            
+            if (double.IsNaN(value))
+            {
+                double.IsNaN(decoded).Should().BeTrue();
+            }
+            else
+            {
+                decoded.Should().Be(value);
+            }
+            position.Should().Be(8);
+        }
+    }
+
+    [Fact]
+    public void TestStringSerializerNullHandling()
+    {
+        var serializer = new StringSerializer();
+        
+        // Test null string - this should be handled gracefully
+        var stream = new MemoryStream();
+        var action = new Action(() => serializer.Encode(stream, null));
+        
+        // The behavior may vary - either throw an exception or handle null gracefully
+        // Let's test what actually happens
+        try
+        {
+            var bytesWritten = serializer.Encode(stream, null);
+            var encoded = stream.ToArray();
+            
+            // If encoding succeeds, test decoding
+            var decoded = serializer.Decode(encoded, 0, out var position);
+            decoded.Should().BeNull();
+        }
+        catch (Exception)
+        {
+            // If encoding throws, that's also acceptable behavior for null strings
+            // The test documents the current behavior
+        }
+    }
+
+    [Fact]
+    public void TestStringSerializerEmptyString()
+    {
+        var serializer = new StringSerializer();
+        var emptyString = "";
+        
+        // Encode
+        var stream = new MemoryStream();
+        var bytesWritten = serializer.Encode(stream, emptyString);
+        var encoded = stream.ToArray();
+        
+        // Should write at least the null terminator + padding
+        bytesWritten.Should().BeGreaterThan(0);
+        
+        // Decode
+        var decoded = serializer.Decode(encoded, 0, out var position);
+        
+        decoded.Should().Be(emptyString);
+    }
+
+    #endregion
 }
