@@ -1,30 +1,29 @@
 using Newtonsoft.Json;
 
-namespace eDrive.OSC.Serialisation.Json
+namespace eDrive.OSC.Serialisation.Json;
+
+/// <summary>
+///     Serializer for <see cref="long" />
+/// </summary>
+[CustomOscJSonSerializer('h', typeof(long))]
+public class LongSerializer : OscTypeJsonSerializer<long>
 {
     /// <summary>
-    ///     Serializer for <see cref="long" />
+    ///     Initializes a new instance of the <see cref="LongSerializer" /> class.
     /// </summary>
-    [CustomOscJSonSerializer('h', typeof(long))]
-    public class LongSerializer : OscTypeJsonSerializer<long>
+    public LongSerializer()
+        : base('h')
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="LongSerializer" /> class.
-        /// </summary>
-        public LongSerializer()
-            : base('h')
-        {
-        }
+    }
 
-        public override long Decode(JsonReader reader)
-        {
-            var ret = long.Parse(reader.ReadAsString());
-            return ret;
-        }
+    public override long Decode(JsonReader reader)
+    {
+        var ret = long.Parse(reader.ReadAsString());
+        return ret;
+    }
 
-        public override void Encode(JsonWriter output, long value)
-        {
-            output.WriteValue(value);
-        }
+    public override void Encode(JsonWriter output, long value)
+    {
+        output.WriteValue(value);
     }
 }

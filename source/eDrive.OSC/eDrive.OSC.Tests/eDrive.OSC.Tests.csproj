@@ -18,6 +18,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\eDrive.OSC.Network.NamedPipes\eDrive.OSC.Network.NamedPipes.csproj" />
     <ProjectReference Include="..\eDrive.OSC\eDrive.OSC.csproj" />
   </ItemGroup>
 

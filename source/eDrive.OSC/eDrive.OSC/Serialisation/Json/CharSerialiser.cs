@@ -1,29 +1,28 @@
 using Newtonsoft.Json;
 
-namespace eDrive.OSC.Serialisation.Json
+namespace eDrive.OSC.Serialisation.Json;
+
+/// <summary>
+///     Serializer for <see cref="char" />
+/// </summary>
+[CustomOscJSonSerializer('c', typeof(char))]
+public class CharSerializer : OscTypeJsonSerializer<char>
 {
     /// <summary>
-    ///     Serializer for <see cref="char" />
+    ///     Initializes a new instance of the <see cref="CharSerializer" /> class.
     /// </summary>
-    [CustomOscJSonSerializer('c', typeof(char))]
-    public class CharSerializer : OscTypeJsonSerializer<char>
+    public CharSerializer() : base('c')
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="CharSerializer" /> class.
-        /// </summary>
-        public CharSerializer() : base('c')
-        {
-        }
+    }
 
-        public override char Decode(JsonReader reader)
-        {
-            var ret = reader.ReadAsString()[0];
-            return ret;
-        }
+    public override char Decode(JsonReader reader)
+    {
+        var ret = reader.ReadAsString()[0];
+        return ret;
+    }
 
-        public override void Encode(JsonWriter output, char value)
-        {
-            output.WriteValue(value);
-        }
+    public override void Encode(JsonWriter output, char value)
+    {
+        output.WriteValue(value);
     }
 }

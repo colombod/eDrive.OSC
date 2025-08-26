@@ -1,28 +1,27 @@
-namespace eDrive.OSC.Network
+namespace eDrive.OSC.Network;
+
+/// <summary>
+///     Types of transmission.
+/// </summary>
+public enum TransmissionType
 {
     /// <summary>
-    ///     Types of transmission.
+    ///     Transmit to subscribed clients only. Includes heartbeat exchanges.
     /// </summary>
-    public enum TransmissionType
-    {
-        /// <summary>
-        ///     Transmit to subscribed clients only. Includes heartbeat exchanges.
-        /// </summary>
-        Unicast,
+    Unicast,
 
-        /// <summary>
-        ///     Transmit via Udp multicast. No heartbeat exchanges.
-        /// </summary>
-        Multicast,
+    /// <summary>
+    ///     Transmit via Udp multicast. No heartbeat exchanges.
+    /// </summary>
+    Multicast,
 
-        /// <summary>
-        ///     Transmit via Udp broadcast. No heartbeat exchanges.
-        /// </summary>
-        Broadcast,
+    /// <summary>
+    ///     Transmit via Udp broadcast. No heartbeat exchanges.
+    /// </summary>
+    Broadcast,
 
-        /// <summary>
-        ///     Local unicast without subcription or heartbeat exchanges.
-        /// </summary>
-        LocalBroadcast
-    }
+    /// <summary>
+    ///     Local unicast without subcription or heartbeat exchanges.
+    /// </summary>
+    LocalBroadcast
 }

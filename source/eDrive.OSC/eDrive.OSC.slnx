@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="eDrive.OSC.Interfaces/eDrive.OSC.Interfaces.csproj" />
+  <Project Path="eDrive.OSC.Network.NamedPipes/eDrive.OSC.Network.NamedPipes.csproj" Id="855144fa-5800-4bdf-97c1-e55c3b89a151" />
   <Project Path="eDrive.OSC.Network/eDrive.OSC.Network.csproj" />
   <Project Path="eDrive.OSC.Reactive/eDrive.OSC.Reactive.csproj" />
   <Project Path="eDrive.OSC.Tests/eDrive.OSC.Tests.csproj">

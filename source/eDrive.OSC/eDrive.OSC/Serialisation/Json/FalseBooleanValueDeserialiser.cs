@@ -2,30 +2,29 @@ using Newtonsoft.Json;
 
 using System;
 
-namespace eDrive.OSC.Serialisation.Json
+namespace eDrive.OSC.Serialisation.Json;
+
+/// <summary>
+///     Deserialises a <see cref="bool" /> true value from 'T' tag
+/// </summary>
+[CustomOscJSonSerializer('F')]
+public class FalseBooleanValueDeserializer : OscTypeJsonSerializer<bool>
 {
     /// <summary>
-    ///     Deserialises a <see cref="bool" /> true value from 'T' tag
+    ///     Initializes a new instance of the <see cref="FalseBooleanValueDeserializer" /> class.
     /// </summary>
-    [CustomOscJSonSerializer('F')]
-    public class FalseBooleanValueDeserializer : OscTypeJsonSerializer<bool>
+    public FalseBooleanValueDeserializer()
+        : base('F')
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="FalseBooleanValueDeserializer" /> class.
-        /// </summary>
-        public FalseBooleanValueDeserializer()
-            : base('F')
-        {
-        }
+    }
 
-        public override bool Decode(JsonReader reader)
-        {
-            return false;
-        }
+    public override bool Decode(JsonReader reader)
+    {
+        return false;
+    }
 
-        public override void Encode(JsonWriter output, bool value)
-        {
-            throw new NotSupportedException("This serializer can only read");
-        }
+    public override void Encode(JsonWriter output, bool value)
+    {
+        throw new NotSupportedException("This serializer can only read");
     }
 }
