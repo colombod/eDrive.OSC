@@ -1,11 +1,11 @@
 using Newtonsoft.Json;
 
-namespace eDrive.Osc.Serialisation.Json
+namespace eDrive.OSC.Serialisation.Json
 {
     /// <summary>
     ///     Serializer for <see cref="float" />
     /// </summary>
-    [CustomOscJSonSerializer('f', typeof (float))]
+    [CustomOscJSonSerializer('f', typeof(float))]
     public class FloatSerializer : OscTypeJsonSerializer<float>
     {
         /// <summary>
@@ -18,7 +18,7 @@ namespace eDrive.Osc.Serialisation.Json
 
         public override float Decode(JsonReader reader)
         {
-            var ret = (float) (reader.ReadAsDecimal() ?? 0);
+            var ret = (float)(reader.ReadAsDecimal() ?? 0);
             return ret;
         }
 

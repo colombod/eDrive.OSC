@@ -1,12 +1,12 @@
 using System;
 using System.IO;
 
-namespace eDrive.Osc.Serialisation
+namespace eDrive.OSC.Serialisation
 {
     /// <summary>
     ///     Serializer for <see cref="Guid" />
     /// </summary>
-    [CustomOscSerializer('g', typeof (Guid))]
+    [CustomOscSerializer('g', typeof(Guid))]
     public class GuidSerializer : OscTypeSerializer<Guid>
     {
         /// <summary>

@@ -3,10 +3,8 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Reactive.Concurrency;
-using eDrive.Osc;
 
-
-namespace eDrive.Network.NamedPipe
+namespace eDrive.OSC.Network.NamedPipes
 {
     /// <summary>
     ///     Named pipe based stream

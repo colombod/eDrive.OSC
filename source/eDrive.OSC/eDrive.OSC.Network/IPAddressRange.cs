@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Sockets;
 
-namespace eDrive.Network
+namespace eDrive.OSC.Network
 {
     public class IPAddressRange
     {
@@ -11,8 +11,8 @@ namespace eDrive.Network
 
         static IPAddressRange()
         {
-            MulticastRange = new IPAddressRange(new byte[] {224, 0, 0, 0},
-                                                new byte[] {239, 255, 255, 255},
+            MulticastRange = new IPAddressRange(new byte[] { 224, 0, 0, 0 },
+                                                new byte[] { 239, 255, 255, 255 },
                                                 AddressFamily.InterNetwork);
         }
 

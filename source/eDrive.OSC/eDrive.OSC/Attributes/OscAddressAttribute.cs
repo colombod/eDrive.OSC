@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace eDrive.Osc.Attributes
+namespace eDrive.OSC.Attributes
 {
     /// <summary>
     ///     Use this attribute to bind a class to an Osc address pattern.
@@ -17,7 +17,7 @@ namespace eDrive.Osc.Attributes
         public OscAddressAttribute(string address)
         {
             m_address = address;
-            var parts = Address.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
+            var parts = Address.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
             var depth = parts.Length;
             Depth = depth;
         }

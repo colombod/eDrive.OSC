@@ -1,7 +1,6 @@
 using Newtonsoft.Json;
-using eDrive.Osc;
 
-namespace eDrive.Osc.Serialisation.Json
+namespace eDrive.OSC.Serialisation.Json
 {
     /// <summary>
     ///     Encdodes and decodes midi messages

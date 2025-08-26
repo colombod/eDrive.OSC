@@ -1,11 +1,11 @@
 using Newtonsoft.Json;
 
-namespace eDrive.Osc.Serialisation.Json
+namespace eDrive.OSC.Serialisation.Json
 {
     /// <summary>
     ///     Serializer for <see cref="double" />
     /// </summary>
-    [CustomOscJSonSerializer('d', typeof (double))]
+    [CustomOscJSonSerializer('d', typeof(double))]
     public class DoubleSerializer : OscTypeJsonSerializer<double>
     {
         /// <summary>
@@ -23,7 +23,7 @@ namespace eDrive.Osc.Serialisation.Json
             {
                 reader.Read();
 
-                ret = (double) reader.Value;
+                ret = (double)reader.Value;
 
             }
             catch

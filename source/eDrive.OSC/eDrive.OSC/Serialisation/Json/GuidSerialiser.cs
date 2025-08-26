@@ -1,12 +1,13 @@
-using System;
 using Newtonsoft.Json;
 
-namespace eDrive.Osc.Serialisation.Json
+using System;
+
+namespace eDrive.OSC.Serialisation.Json
 {
     /// <summary>
     ///     Serializer for <see cref="Guid" />
     /// </summary>
-    [CustomOscJSonSerializer('g', typeof (Guid))]
+    [CustomOscJSonSerializer('g', typeof(Guid))]
     public class GuidSerializer : OscTypeJsonSerializer<Guid>
     {
         /// <summary>

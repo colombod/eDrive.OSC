@@ -2,11 +2,8 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Reactive.Concurrency;
-using eDrive.Osc;
-using eDrive.Core;
-using eDrive.Network;
 
-namespace eDrive.Network.Udp
+namespace eDrive.OSC.Network.Upd
 {
     public class OscInboundUdpStream : OscInboundStreamBase
     {

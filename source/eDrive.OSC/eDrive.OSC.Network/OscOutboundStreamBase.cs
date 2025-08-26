@@ -1,27 +1,22 @@
-﻿using System;
-using System.Reactive.Concurrency;
-using eDrive.Osc;
-using eDrive.Core;
+﻿using eDrive.OSC.Interfaces;
 
-namespace eDrive.Network
+using System;
+using System.Reactive.Concurrency;
+
+namespace eDrive.OSC.Network
 {
     /// <summary>
     ///     Abstract core class for <see cref="IOscOutboundStream" />
     /// </summary>
-    public abstract class OscOutboundStreamBase : IOscOutboundStream
+    public abstract class OscOutboundStreamBase(IScheduler scheduler) : IOscOutboundStream
     {
-        protected OscOutboundStreamBase(IScheduler scheduler)
-        {
-            Scheduler = scheduler ?? TaskPoolScheduler.Default;
-        }
-
         /// <summary>
         ///     Gets the scheduler.
         /// </summary>
         /// <value>
         ///     The scheduler.
         /// </value>
-        public IScheduler Scheduler { get; private set; }
+        public IScheduler Scheduler { get; private set; } = scheduler ?? TaskPoolScheduler.Default;
 
         public void OnNext(OscPacket value)
         {

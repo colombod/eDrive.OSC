@@ -1,7 +1,6 @@
 ﻿using System;
-using eDrive.Osc;
 
-namespace eDrive.Core
+namespace eDrive.OSC.Interfaces
 {
     /// <summary>
     /// </summary>

@@ -1,13 +1,13 @@
 using System;
 using System.IO;
 
-namespace eDrive.Osc.Serialisation
+namespace eDrive.OSC.Serialisation
 {
     /// <summary>
     ///     This serializer is used to write <see cref="bool" /> values.
     ///     No payload will be serialised only the Tag is used.
     /// </summary>
-    [CustomOscSerializer(typeof (bool))]
+    [CustomOscSerializer(typeof(bool))]
     public class BooleanValueSerializer : OscTypeSerializer<bool>
     {
         /// <summary>

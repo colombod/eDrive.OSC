@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace eDrive.Osc.Attributes
+namespace eDrive.OSC.Attributes
 {
     /// <summary>
     ///     User this attribute to mark a property as part of the Osc Address if the address uses the parameter in its pattern.

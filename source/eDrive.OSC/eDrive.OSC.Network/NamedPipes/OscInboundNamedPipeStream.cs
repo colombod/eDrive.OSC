@@ -1,14 +1,11 @@
-﻿using eDrive.Osc;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.IO.Pipes;
 using System.Linq;
 using System.Reactive.Concurrency;
 
-namespace eDrive.Network.NamedPipe
+namespace eDrive.OSC.Network.NamedPipes
 {
     /// <summary>
     /// </summary>

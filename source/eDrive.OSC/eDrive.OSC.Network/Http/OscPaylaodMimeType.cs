@@ -1,4 +1,4 @@
-﻿namespace eDrive.Network.Http
+﻿namespace eDrive.OSC.Network.Http
 {
     public class OscPaylaodMimeType
     {

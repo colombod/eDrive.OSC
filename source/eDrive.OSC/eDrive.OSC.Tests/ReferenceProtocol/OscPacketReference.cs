@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Net;
 using System.Text;
 
-namespace eDrive.Osc.Tests.ReferenceProtocol
+namespace eDrive.OSC.Tests.ReferenceProtocol
 {
     public abstract class OscPacketReference
     {
@@ -94,7 +94,7 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
                 throw new InvalidCastException();
             }
 
-            return (T) m_data[index];
+            return (T)m_data[index];
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
         public static OscPacketReference FromByteArray(IPEndPoint sourceEndPoint, byte[] data, ref int start, int end)
         {
             return data[start] == '#'
-                       ? (OscPacketReference) OscBundleReference.FromByteArray(sourceEndPoint, data, ref start, end)
+                       ? (OscPacketReference)OscBundleReference.FromByteArray(sourceEndPoint, data, ref start, end)
                        : OscMessageReference.FromByteArray(sourceEndPoint, data, ref start);
         }
 
@@ -142,7 +142,7 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
         /// <returns>The newly deserialized value.</returns>
         public static T ValueFromByteArray<T>(byte[] data, ref int start)
         {
-            var type = typeof (T);
+            var type = typeof(T);
             object value;
 
             switch (type.Name)
@@ -156,7 +156,7 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
                         }
                         value = Encoding.ASCII.GetString(data, start, count);
                         start += count + 1;
-                        start = ((start + 3)/4)*4;
+                        start = ((start + 3) / 4) * 4;
                         break;
                     }
 
@@ -167,7 +167,7 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
 
                         value = buffer;
                         start += buffer.Length + 1;
-                        start = ((start + 3)/4)*4;
+                        start = ((start + 3) / 4) * 4;
                         break;
                     }
 
@@ -201,7 +201,7 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
                     }
             }
 
-            return (T) value;
+            return (T)value;
         }
 
         private static object ByteArrayToNumeric(byte[] data, ref int start, Type type)
@@ -276,13 +276,13 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
                 {
                     case "String":
                         {
-                            data = Encoding.ASCII.GetBytes((string) valueObject);
+                            data = Encoding.ASCII.GetBytes((string)valueObject);
                             break;
                         }
 
                     case "Byte[]":
                         {
-                            var valueData = ((byte[]) valueObject);
+                            var valueData = ((byte[])valueObject);
                             var bytes = new List<byte>();
                             bytes.AddRange(ValueToByteArray(valueData.Length));
                             bytes.AddRange(valueData);
@@ -292,20 +292,20 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
 
                     case "OscTimeTag":
                         {
-                            data = ((OscTimeTag) valueObject).ToByteArray();
+                            data = ((OscTimeTag)valueObject).ToByteArray();
                             break;
                         }
 
                     case "Char":
                         {
-                            data = ValueToByteArray(Convert.ToInt32((char) valueObject));
+                            data = ValueToByteArray(Convert.ToInt32((char)valueObject));
                             break;
                         }
 
                     case "Color":
                         {
-                            var color = (Color) valueObject;
-                            byte[] bytes = {color.R, color.G, color.B, color.A};
+                            var color = (Color)valueObject;
+                            byte[] bytes = { color.R, color.G, color.B, color.A };
 
                             data = bytes;
                             break;
@@ -333,7 +333,7 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
             switch (code)
             {
                 case TypeCode.Int32:
-                    data = BitConverter.GetBytes((int) value);
+                    data = BitConverter.GetBytes((int)value);
                     if (BitConverter.IsLittleEndian != LittleEndianByteOrder)
                     {
                         data = Utility.SwapEndian(data);
@@ -341,7 +341,7 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
                     break;
 
                 case TypeCode.Int64:
-                    data = BitConverter.GetBytes((long) value);
+                    data = BitConverter.GetBytes((long)value);
                     if (BitConverter.IsLittleEndian != LittleEndianByteOrder)
                     {
                         data = Utility.SwapEndian(data);
@@ -349,7 +349,7 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
                     break;
 
                 case TypeCode.Single:
-                    var floatValue = (float) value;
+                    var floatValue = (float)value;
                     // No payload for Infinitum data tag.
                     if (float.IsPositiveInfinity(floatValue) == false)
                     {
@@ -362,7 +362,7 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
                     break;
 
                 case TypeCode.Double:
-                    data = BitConverter.GetBytes((double) value);
+                    data = BitConverter.GetBytes((double)value);
                     if (BitConverter.IsLittleEndian != LittleEndianByteOrder)
                     {
                         data = Utility.SwapEndian(data);
@@ -382,7 +382,7 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
         public static void PadNull(List<byte> data)
         {
             const int zero = 0;
-            var pad = 4 - (data.Count%4);
+            var pad = 4 - (data.Count % 4);
             for (var i = 0; i < pad; i++)
             {
                 data.Add(zero);

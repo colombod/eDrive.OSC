@@ -1,11 +1,11 @@
 using Newtonsoft.Json;
 
-namespace eDrive.Osc.Serialisation.Json
+namespace eDrive.OSC.Serialisation.Json
 {
     /// <summary>
     ///     Serializer for <see cref="char" />
     /// </summary>
-    [CustomOscJSonSerializer('c', typeof (char))]
+    [CustomOscJSonSerializer('c', typeof(char))]
     public class CharSerializer : OscTypeJsonSerializer<char>
     {
         /// <summary>

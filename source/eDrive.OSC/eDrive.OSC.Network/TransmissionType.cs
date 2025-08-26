@@ -1,4 +1,4 @@
-namespace eDrive.Network
+namespace eDrive.OSC.Network
 {
     /// <summary>
     ///     Types of transmission.

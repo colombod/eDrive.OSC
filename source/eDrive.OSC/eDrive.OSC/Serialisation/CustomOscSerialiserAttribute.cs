@@ -1,6 +1,6 @@
 using System;
 
-namespace eDrive.Osc.Serialisation
+namespace eDrive.OSC.Serialisation
 {
     /// <summary>
     ///     Marks classes as custom osc sersialiser

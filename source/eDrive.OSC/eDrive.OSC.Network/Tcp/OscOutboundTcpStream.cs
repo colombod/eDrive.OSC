@@ -1,12 +1,12 @@
-﻿using System;
+﻿using eDrive.OSC.Serialisation;
+
+using System;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Reactive.Concurrency;
-using eDrive.Osc;
-using eDrive.Osc.Serialisation;
 
-namespace eDrive.Network.Tcp
+namespace eDrive.OSC.Network.Tcp
 {
     public class OscOutboundTcpStream : OscOutboundStreamBase
     {

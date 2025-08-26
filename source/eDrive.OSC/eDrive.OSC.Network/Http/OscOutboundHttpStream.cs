@@ -1,12 +1,10 @@
 ﻿using System;
-using System.IO;
 using System.Net.Http;
 using System.Reactive.Concurrency;
 using System.Text;
 using System.Threading.Tasks;
-using eDrive.Osc;
 
-namespace eDrive.Network.Http
+namespace eDrive.OSC.Network.Http
 {
     public class OscOutboundHttpStream : OscOutboundStreamBase
     {
@@ -73,9 +71,9 @@ namespace eDrive.Network.Http
                     {
                         using var content = new ByteArrayContent(postData);
                         content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(Mimetype.Type);
-                        
+
                         var response = await m_httpClient.PostAsync(m_destination, content);
-                        
+
                         if (m_responseStream != null)
                         {
                             await ProcessResponse(response);
@@ -94,7 +92,7 @@ namespace eDrive.Network.Http
             try
             {
                 var contentType = response.Content.Headers.ContentType?.MediaType;
-                
+
                 if (contentType == OscPaylaodMimeType.Json.Type)
                 {
                     var ret = await response.Content.ReadAsStringAsync();

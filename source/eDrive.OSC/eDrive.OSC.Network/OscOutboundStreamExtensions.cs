@@ -1,10 +1,9 @@
-﻿
+﻿using eDrive.OSC.Interfaces;
+
 using System;
 using System.Reactive;
-using eDrive.Osc;
-using eDrive.Core;
 
-namespace eDrive.Network
+namespace eDrive.OSC.Network
 {
     /// <summary>
     ///     Extension for easy creation of  osc method bound streams

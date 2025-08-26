@@ -1,12 +1,11 @@
 using Newtonsoft.Json;
-using eDrive.Osc;
 
-namespace eDrive.Osc.Serialisation.Json
+namespace eDrive.OSC.Serialisation.Json
 {
     /// <summary>
     ///     Serializer for Osc Colour
     /// </summary>
-    [CustomOscJSonSerializer('r', typeof (OscColour))]
+    [CustomOscJSonSerializer('r', typeof(OscColour))]
     public class OscColourSerializer : OscTypeJsonSerializer<OscColour>
     {
         /// <summary>
@@ -20,10 +19,10 @@ namespace eDrive.Osc.Serialisation.Json
         public override OscColour Decode(JsonReader reader)
         {
             reader.Read();
-            var r = (byte) (reader.ReadAsInt32() ?? 0);
-            var g = (byte) (reader.ReadAsInt32() ?? 0);
-            var b = (byte) (reader.ReadAsInt32() ?? 0);
-            var a = (byte) (reader.ReadAsInt32() ?? 0);
+            var r = (byte)(reader.ReadAsInt32() ?? 0);
+            var g = (byte)(reader.ReadAsInt32() ?? 0);
+            var b = (byte)(reader.ReadAsInt32() ?? 0);
+            var a = (byte)(reader.ReadAsInt32() ?? 0);
             reader.Read();
             var ret = new OscColour(r, g, b, a);
 

@@ -1,11 +1,11 @@
 using System.IO;
 
-namespace eDrive.Osc.Serialisation
+namespace eDrive.OSC.Serialisation
 {
     /// <summary>
     ///     Serializer for binary blob.
     /// </summary>
-    [CustomOscSerializer('b', typeof (byte[]))]
+    [CustomOscSerializer('b', typeof(byte[]))]
     public class ByteArraySerializer : OscTypeSerializer<byte[]>
     {
         private static IOscTypeSerializer<int> s_intSer;
@@ -36,7 +36,7 @@ namespace eDrive.Osc.Serialisation
             var buffer = data.CopySubArray(position, length);
 
             position += buffer.Length;
-            position += (4 - (position%4));
+            position += (4 - (position % 4));
 
             return buffer;
         }

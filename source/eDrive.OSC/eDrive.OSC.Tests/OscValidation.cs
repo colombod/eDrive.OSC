@@ -1,7 +1,8 @@
-﻿using eDrive.Osc.Tests.ReferenceProtocol;
+﻿using eDrive.OSC.Tests.ReferenceProtocol;
+
 using FluentAssertions;
 
-namespace eDrive.Osc.Tests
+namespace eDrive.OSC.Tests
 {
     public static class OscValidation
     {
@@ -27,7 +28,7 @@ namespace eDrive.Osc.Tests
             // padded by 4
             (src.Length % 4).Should().Be(0);
             (dst.Length % 4).Should().Be(0);
-            
+
 
             // same length
             src.Length.Should().Be(dst.Length);

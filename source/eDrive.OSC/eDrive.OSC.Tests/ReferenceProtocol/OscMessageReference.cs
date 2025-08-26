@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Net;
 
-namespace eDrive.Osc.Tests.ReferenceProtocol
+namespace eDrive.OSC.Tests.ReferenceProtocol
 {
     /// <summary>
     ///     Represents an Osc Message packet.
@@ -289,7 +289,7 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
                         break;
 
                     case "Single":
-                        typeTag = (float.IsPositiveInfinity((float) (object) value) ? InfinitumTag : FloatTag);
+                        typeTag = (float.IsPositiveInfinity((float)(object)value) ? InfinitumTag : FloatTag);
                         break;
 
                     case "Double":
@@ -317,7 +317,7 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
                         break;
 
                     case "Boolean":
-                        typeTag = ((bool) (object) value ? TrueTag : FalseTag);
+                        typeTag = ((bool)(object)value ? TrueTag : FalseTag);
                         break;
 
                     default:

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace eDrive.Osc.Tests.ReferenceProtocol
+namespace eDrive.OSC.Tests.ReferenceProtocol
 {
     /// <summary>
     ///     Represents an Osc Time Tag.
@@ -30,14 +30,14 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
             }
             else
             {
-                timeStamp = new DateTime(timeStamp.Ticks - (timeStamp.Ticks%TimeSpan.TicksPerMillisecond),
+                timeStamp = new DateTime(timeStamp.Ticks - (timeStamp.Ticks % TimeSpan.TicksPerMillisecond),
                                          timeStamp.Kind);
                 ulong sec;
                 ulong fract;
 
                 ComputeParts(timeStamp, out sec, out fract);
-                SecondsSinceEpoch = (uint) sec;
-                FractionalSecond = (uint) fract;
+                SecondsSinceEpoch = (uint)sec;
+                FractionalSecond = (uint)fract;
 
                 m_timeStamp = timeStamp;
             }
@@ -93,7 +93,7 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
         ///     The delay.
         /// </value>
         public TimeSpan Delay { get; private set; }
-		       
+
         /// <summary>
         ///     Osc Time Epoch (January 1, 1900 00:00:00).
         /// </summary>
@@ -155,8 +155,8 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
                 return true;
             }
 
-            if (((object) lhs == null)
-                || ((object) rhs == null))
+            if (((object)lhs == null)
+                || ((object)rhs == null))
             {
                 return false;
             }
@@ -265,7 +265,7 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
         /// <returns>true if value is an instance of System.DateTime and equals the value of this instance; otherwise, false.</returns>
         public bool Equals(OscTimeTag value)
         {
-            return (object) value != null && m_timeStamp.Equals(value.m_timeStamp);
+            return (object)value != null && m_timeStamp.Equals(value.m_timeStamp);
         }
 
         /// <summary>
@@ -308,15 +308,15 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
             var temp = intpart;
             for (var i = 0; i < 4; i++)
             {
-                data[i] = (byte) (temp%256);
-                temp = temp/256;
+                data[i] = (byte)(temp % 256);
+                temp = temp / 256;
             }
 
             temp = fractpart;
             for (var i = 4; i < 8; i++)
             {
-                data[i] = (byte) (temp%256);
-                temp = temp/256;
+                data[i] = (byte)(temp % 256);
+                temp = temp / 256;
             }
             /*
             // prima del cambio
@@ -341,9 +341,9 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
         {
             if (date != DateTime.MinValue)
             {
-                var milliseconds = (ulong) (date - s_epoch).TotalMilliseconds;
-                intpart = milliseconds/1000;
-                fractpart = ((milliseconds%1000)*0x100000000L)/1000;
+                var milliseconds = (ulong)(date - s_epoch).TotalMilliseconds;
+                intpart = milliseconds / 1000;
+                fractpart = ((milliseconds % 1000) * 0x100000000L) / 1000;
 
                 // todo : guarda questo qui potrei fare casino nell'estrarre le parti, io le parti vorrei tenerele belle e pronte big endian
                 // GR: se si vuole tenerle big endian E al tempo stesso esporre le proprieta' SecondsSinceEpoch e FractionalSecond
@@ -366,7 +366,7 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
 
         private static uint SwapEndianness(ulong x)
         {
-            return (uint) (((x & 0x000000ff) << 24) +
+            return (uint)(((x & 0x000000ff) << 24) +
                            ((x & 0x0000ff00) << 8) +
                            ((x & 0x00ff0000) >> 8) +
                            ((x & 0xff000000) >> 24));
@@ -374,7 +374,7 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
 
         private DateTime GetNetworkTime(byte[] ntpData, int offset = 0)
         {
-            var data = (byte[]) ntpData.Clone();
+            var data = (byte[])ntpData.Clone();
             if (BitConverter.IsLittleEndian)
             {
                 Utility.SwapEndianInPlace(ref data, offset, 8);
@@ -393,7 +393,7 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
 
             if (fractpart != 1)
             {
-                var milliseconds = (long) (((intpart*1000) + ((fractpart*1000)/0x100000000L)));
+                var milliseconds = (long)(((intpart * 1000) + ((fractpart * 1000) / 0x100000000L)));
 
                 // **UTC** time
                 var networkDateTime = s_epoch.AddMilliseconds(milliseconds);

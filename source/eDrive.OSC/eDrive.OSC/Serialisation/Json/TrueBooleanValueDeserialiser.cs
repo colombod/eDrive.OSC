@@ -1,7 +1,8 @@
-using System;
 using Newtonsoft.Json;
 
-namespace eDrive.Osc.Serialisation.Json
+using System;
+
+namespace eDrive.OSC.Serialisation.Json
 {
     /// <summary>
     ///     Deserialises a <see cref="bool" /> true value from 'T' tag

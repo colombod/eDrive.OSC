@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace eDrive.Osc.Serialisation
+namespace eDrive.OSC.Serialisation
 {
     /// <summary>
     ///     Deserialises a <see cref="bool" /> true value from 'T' tag

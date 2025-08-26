@@ -1,6 +1,6 @@
 using System;
 
-namespace eDrive.Osc.Serialisation
+namespace eDrive.OSC.Serialisation
 {
     /// <summary>
     ///     Marks the assembly as containing custom osc serializers

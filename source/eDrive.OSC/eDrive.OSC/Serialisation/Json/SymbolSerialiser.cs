@@ -1,12 +1,11 @@
 using Newtonsoft.Json;
-using eDrive.Osc;
 
-namespace eDrive.Osc.Serialisation.Json
+namespace eDrive.OSC.Serialisation.Json
 {
     /// <summary>
     ///     Deserializers for Symbol Tag
     /// </summary>
-    [CustomOscJSonSerializer('S', typeof (OscSymbol))]
+    [CustomOscJSonSerializer('S', typeof(OscSymbol))]
     public class SymbolSerializer : OscTypeJsonSerializer<OscSymbol>
     {
         /// <summary>
@@ -19,7 +18,7 @@ namespace eDrive.Osc.Serialisation.Json
         public override OscSymbol Decode(JsonReader reader)
         {
             var value = JsonSerializerFactory.StringSerializer.Decode(reader);
-            return new OscSymbol {Value = value};
+            return new OscSymbol { Value = value };
         }
 
         public override void Encode(JsonWriter output, OscSymbol value)

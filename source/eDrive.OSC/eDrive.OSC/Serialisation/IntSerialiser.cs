@@ -1,12 +1,12 @@
 using System;
 using System.IO;
 
-namespace eDrive.Osc.Serialisation
+namespace eDrive.OSC.Serialisation
 {
     /// <summary>
     ///     Serializer for <see cref="int" />.
     /// </summary>
-    [CustomOscSerializer('i', typeof (int))]
+    [CustomOscSerializer('i', typeof(int))]
     public class IntSerializer : OscTypeSerializer<int>
     {
         /// <summary>
@@ -26,7 +26,7 @@ namespace eDrive.Osc.Serialisation
         /// <returns></returns>
         public override int Decode(byte[] data, int start, out int position)
         {
-            const int size = sizeof (int);
+            const int size = sizeof(int);
             position = start + size;
 
             AdjustForEndianInPlace(ref data, ref start, size);

@@ -1,12 +1,12 @@
 using System;
 using System.IO;
 
-namespace eDrive.Osc.Serialisation
+namespace eDrive.OSC.Serialisation
 {
     /// <summary>
     ///     Serializer for <see cref="double" />
     /// </summary>
-    [CustomOscSerializer('d', typeof (double))]
+    [CustomOscSerializer('d', typeof(double))]
     public class DoubleSerializer : OscTypeSerializer<double>
     {
         /// <summary>
@@ -25,7 +25,7 @@ namespace eDrive.Osc.Serialisation
         /// <returns></returns>
         public override double Decode(byte[] data, int start, out int position)
         {
-            const int size = sizeof (double);
+            const int size = sizeof(double);
             position = start + size;
 
             AdjustForEndianInPlace(ref data, ref start, size);

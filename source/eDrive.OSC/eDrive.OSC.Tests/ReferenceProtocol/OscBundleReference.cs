@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Net;
 
-namespace eDrive.Osc.Tests.ReferenceProtocol
+namespace eDrive.OSC.Tests.ReferenceProtocol
 {
     public sealed class OscBundleReference : OscPacketReference
     {
@@ -84,7 +84,7 @@ namespace eDrive.Osc.Tests.ReferenceProtocol
                 var packetBytes in
                     m_data.OfType<OscPacketReference>().Select(packet => packet.ToByteArray()))
             {
-                Assert.IsTrue(packetBytes.Length%4 == 0);
+                Assert.IsTrue(packetBytes.Length % 4 == 0);
 
                 data.AddRange(ValueToByteArray(packetBytes.Length));
                 data.AddRange(packetBytes);

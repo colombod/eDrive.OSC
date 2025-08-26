@@ -1,12 +1,12 @@
 using System;
 using System.IO;
 
-namespace eDrive.Osc.Serialisation
+namespace eDrive.OSC.Serialisation
 {
     /// <summary>
     ///     Serializer for <see cref="char" />
     /// </summary>
-    [CustomOscSerializer('c', typeof (char))]
+    [CustomOscSerializer('c', typeof(char))]
     public class CharSerializer : OscTypeSerializer<char>
     {
         private static IOscTypeSerializer<int> s_intSer;

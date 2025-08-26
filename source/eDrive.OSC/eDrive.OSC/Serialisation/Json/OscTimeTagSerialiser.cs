@@ -1,12 +1,11 @@
 using Newtonsoft.Json;
-using eDrive.Osc;
 
-namespace eDrive.Osc.Serialisation.Json
+namespace eDrive.OSC.Serialisation.Json
 {
     /// <summary>
     ///     Serializer of <see cref="OscTimeTag" />.
     /// </summary>
-    [CustomOscJSonSerializer('t', typeof (OscTimeTag))]
+    [CustomOscJSonSerializer('t', typeof(OscTimeTag))]
     public class OscTimeTagSerializer : OscTypeJsonSerializer<OscTimeTag>
     {
         /// <summary>

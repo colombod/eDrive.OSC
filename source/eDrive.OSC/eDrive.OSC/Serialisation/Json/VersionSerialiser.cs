@@ -1,12 +1,13 @@
-using System;
 using Newtonsoft.Json;
 
-namespace eDrive.Osc.Serialisation.Json
+using System;
+
+namespace eDrive.OSC.Serialisation.Json
 {
     /// <summary>
     ///     Serializer for <see cref="Version" />
     /// </summary>
-    [CustomOscJSonSerializer('v', typeof (Version))]
+    [CustomOscJSonSerializer('v', typeof(Version))]
     public class VersionSerializer : OscTypeJsonSerializer<Version>
     {
         /// <summary>

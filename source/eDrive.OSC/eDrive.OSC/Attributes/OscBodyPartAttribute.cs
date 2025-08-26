@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace eDrive.Osc.Attributes
+namespace eDrive.OSC.Attributes
 {
     /// <summary>
     ///     Use this attribute on properties to specify the position urs value should have in the body of an Osc message

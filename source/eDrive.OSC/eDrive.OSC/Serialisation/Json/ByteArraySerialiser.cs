@@ -1,13 +1,13 @@
-
-using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace eDrive.Osc.Serialisation.Json
+using System.Collections.Generic;
+
+namespace eDrive.OSC.Serialisation.Json
 {
     /// <summary>
     ///     Serializer for binary blob.
     /// </summary>
-    [CustomOscJSonSerializer('b', typeof (byte[]))]
+    [CustomOscJSonSerializer('b', typeof(byte[]))]
     public class ByteArraySerializer : OscTypeJsonSerializer<byte[]>
     {
         /// <summary>
@@ -24,7 +24,7 @@ namespace eDrive.Osc.Serialisation.Json
             var ret = new List<byte>();
             while (reader.TokenType != JsonToken.EndArray)
             {
-                ret.Add((byte) reader.Value);
+                ret.Add((byte)reader.Value);
             }
             return ret.ToArray();
         }

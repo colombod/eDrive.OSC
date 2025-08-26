@@ -1,12 +1,10 @@
 ﻿using System;
-using System.IO;
 using System.Net.Http;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using eDrive.Osc;
 
-namespace eDrive.Network.Http
+namespace eDrive.OSC.Network.Http
 {
     public class OscInboundHttpStream : OscInboundStreamBase
     {
@@ -58,7 +56,7 @@ namespace eDrive.Network.Http
         {
             m_running = true;
             Scheduler.Schedule(PollAndDeliver);
-            
+
         }
 
         public override void Stop()
@@ -105,7 +103,7 @@ namespace eDrive.Network.Http
             try
             {
                 var contentType = response.Content.Headers.ContentType?.MediaType;
-                
+
                 if (contentType == OscPaylaodMimeType.Json.Type)
                 {
                     var ret = await response.Content.ReadAsStringAsync();

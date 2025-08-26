@@ -1,22 +1,25 @@
-﻿using System;
+﻿using eDrive.OSC.Serialisation;
+
+using FluentAssertions;
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using eDrive.Osc.Serialisation;
-using FluentAssertions;
+
 using Xunit;
 
-namespace eDrive.Osc.Tests
+namespace eDrive.OSC.Tests
 {
-   
+
     public class SerializersTests
     {
         private class UnknownType
         {
         }
 
-        public  SerializersTests()
+        public SerializersTests()
         {
             Serialisation.SerializerFactory.LoadSerializersFromAssembly(typeof(OscMessage).Assembly);
         }
@@ -97,7 +100,7 @@ namespace eDrive.Osc.Tests
             var stream = new MemoryStream();
             serializer.Encode(stream, new NilSerializer.Nil()).Should().Be(0);
             stream.ToArray().Length.Should().Be(0);
-           
+
             stream = new MemoryStream();
             serializer.Encode(stream, null).Should().Be(0);
             stream.ToArray().Length.Should().Be(0);
@@ -125,7 +128,7 @@ namespace eDrive.Osc.Tests
 
         private static OscSymbol GetSymbolExpectedData(out byte[] expectedData)
         {
-            var value = new OscSymbol {Value = "foo"}; // a dummy value.
+            var value = new OscSymbol { Value = "foo" }; // a dummy value.
 
             expectedData = Encoding.ASCII.GetBytes(value.Value);
 
@@ -152,7 +155,7 @@ namespace eDrive.Osc.Tests
             // NB: here we are assuming the correct behaviour of these serializers,
             // maybe specific tests should be added as well.
             var memoryStream = new MemoryStream();
-            SerializerFactory.GetSerializer(typeof (int)).Encode(memoryStream, 1);
+            SerializerFactory.GetSerializer(typeof(int)).Encode(memoryStream, 1);
             GetArrayData(memoryStream);
             var arrayData = memoryStream.ToArray();
 
@@ -167,7 +170,7 @@ namespace eDrive.Osc.Tests
             // maybe specific tests should be added as well.
             var memoryStream = new MemoryStream();
             GetArrayData(memoryStream);
-            SerializerFactory.GetSerializer(typeof (int)).Encode(memoryStream, 1);
+            SerializerFactory.GetSerializer(typeof(int)).Encode(memoryStream, 1);
             var arrayData = memoryStream.ToArray();
 
             return headerData.Concat(arrayData).ToArray();
@@ -181,7 +184,7 @@ namespace eDrive.Osc.Tests
             // maybe specific tests should be added as well.
             var memoryStream = new MemoryStream();
             GetArrayData(memoryStream);
-            SerializerFactory.GetSerializer(typeof (byte[])).Encode(memoryStream, CreateTestBlob());
+            SerializerFactory.GetSerializer(typeof(byte[])).Encode(memoryStream, CreateTestBlob());
             var arrayData = memoryStream.ToArray();
 
             return headerData.Concat(arrayData).ToArray();
@@ -197,7 +200,7 @@ namespace eDrive.Osc.Tests
                                       .GetBytes(typeTag);
 
             var padding =
-                new byte[4 - (typeTagData.Length%4)];
+                new byte[4 - (typeTagData.Length % 4)];
 
             return addressData
                 .Concat(typeTagData)
@@ -210,9 +213,9 @@ namespace eDrive.Osc.Tests
             // NB: here we are assuming the correct behaviour of these serializers,
             // maybe specific tests should be added as well.
 
-            SerializerFactory.GetSerializer(typeof (int)).Encode(memoryStream, 1);
-            SerializerFactory.GetSerializer(typeof (float)).Encode(memoryStream, 2f);
-            SerializerFactory.GetSerializer(typeof (string)).Encode(memoryStream, "foo");
+            SerializerFactory.GetSerializer(typeof(int)).Encode(memoryStream, 1);
+            SerializerFactory.GetSerializer(typeof(float)).Encode(memoryStream, 2f);
+            SerializerFactory.GetSerializer(typeof(string)).Encode(memoryStream, "foo");
         }
 
         private static byte[] CreateTestBlob()
@@ -224,7 +227,7 @@ namespace eDrive.Osc.Tests
             blob[3] = 0;
             return blob;
         }
-        
+
         private static void AssertCorrectArray(IList<object> actual)
         {
             actual.Should().NotBeNull();
@@ -247,11 +250,11 @@ namespace eDrive.Osc.Tests
 
             var actualData = stream1.ToArray().Take(expectedData.Length);
             actualData.Should().BeEquivalentTo(expectedData);
-            
+
 
 
             var stream2 = new MemoryStream();
-            serializer.Encode(stream2, (object) value);
+            serializer.Encode(stream2, (object)value);
 
             actualData = stream2.ToArray().Take(expectedData.Length);
             actualData.Should().BeEquivalentTo(expectedData);
@@ -267,8 +270,8 @@ namespace eDrive.Osc.Tests
             pos.Should().Be(size);
         }
 
-		
-		
+
+
         [Fact]
         public void TestArrayDeserialisation()
         {
@@ -330,21 +333,21 @@ namespace eDrive.Osc.Tests
                 .Which
                 .TypeTag.Should().Be(typeTag);
 
-            
+
 
             var actual = msg.Data[0] as object[]; // the heterogeneous array.
 
             AssertCorrectArray(actual);
 
             var expectedBlob = CreateTestBlob();
-            var actualBlob = (byte[]) msg.Data[1];
+            var actualBlob = (byte[])msg.Data[1];
             actualBlob.Should().BeEquivalentTo(expectedBlob);
         }
 
         [Fact]
         public void TestArraySerialisation()
         {
-            var data = new object[] {1, 2f, "foo"};
+            var data = new object[] { 1, 2f, "foo" };
             var msg = new OscMessage("/test", data);
 
             var expected = CreateExpectedDataArray();
@@ -356,7 +359,7 @@ namespace eDrive.Osc.Tests
         public void TestArraySerialisation2()
         {
             var msg = new OscMessage("/test", 1); // the first argument is an integer 
-            msg.Append(new object[] {1, 2f, "foo"});
+            msg.Append(new object[] { 1, 2f, "foo" });
 
             var expected = CreateExpectedDataArray2();
             msg.TypeTag.Should().Be(",i[ifs]");
@@ -366,7 +369,7 @@ namespace eDrive.Osc.Tests
         [Fact]
         public void TestArraySerialisation3()
         {
-            var msg = new OscMessage("/test", new object[] {1, 2f, "foo"});
+            var msg = new OscMessage("/test", new object[] { 1, 2f, "foo" });
             msg.Append(1); // the last argument is an integer.
 
             var expected = CreateExpectedDataArray3();
@@ -377,7 +380,7 @@ namespace eDrive.Osc.Tests
         [Fact]
         public void TestArraySerialisation4()
         {
-            var msg = new OscMessage("/test", new object[] {1, 2f, "foo"});
+            var msg = new OscMessage("/test", new object[] { 1, 2f, "foo" });
 
             var blob = CreateTestBlob();
             msg.Append(blob); // the last argument is a blob.
@@ -390,7 +393,7 @@ namespace eDrive.Osc.Tests
         [Fact]
         public void TestBooleanSerializer()
         {
-            AssertSerializerType(new BooleanValueSerializer(), typeof (bool), ' ');
+            AssertSerializerType(new BooleanValueSerializer(), typeof(bool), ' ');
         }
 
         [Fact]
@@ -399,8 +402,8 @@ namespace eDrive.Osc.Tests
             var serializer = new BooleanValueSerializer();
 
             int pos;
-           var action = new Action( () => serializer.Decode(new byte[1], 0, out pos));
-           action.Should().Throw<NotSupportedException>();
+            var action = new Action(() => serializer.Decode(new byte[1], 0, out pos));
+            action.Should().Throw<NotSupportedException>();
         }
 
         [Fact]
@@ -423,7 +426,7 @@ namespace eDrive.Osc.Tests
         [Fact]
         public void TestCharSerializer()
         {
-            AssertSerializerType(new CharSerializer(), typeof (char), 'c');
+            AssertSerializerType(new CharSerializer(), typeof(char), 'c');
         }
 
         [Fact]
@@ -454,7 +457,7 @@ namespace eDrive.Osc.Tests
         [Fact]
         public void TestDoubleSerializer()
         {
-            AssertSerializerType(new DoubleSerializer(), typeof (double), 'd');
+            AssertSerializerType(new DoubleSerializer(), typeof(double), 'd');
         }
 
         [Fact]
@@ -498,7 +501,7 @@ namespace eDrive.Osc.Tests
         [Fact]
         public void TestFalseSerializer()
         {
-            AssertSerializerType(new FalseBooleanValueDeserializer(), typeof (bool), 'F');
+            AssertSerializerType(new FalseBooleanValueDeserializer(), typeof(bool), 'F');
         }
 
         [Fact]
@@ -514,14 +517,14 @@ namespace eDrive.Osc.Tests
         public void TestFalseSerializerEncode()
         {
             var serializer = new FalseBooleanValueDeserializer();
-            var action = new Action( () => serializer.Encode(new MemoryStream(), true));
+            var action = new Action(() => serializer.Encode(new MemoryStream(), true));
             action.Should().Throw<NotSupportedException>();
         }
 
         [Fact]
         public void TestFloatSerializer()
         {
-            AssertSerializerType(new FloatSerializer(), typeof (float), 'f');
+            AssertSerializerType(new FloatSerializer(), typeof(float), 'f');
         }
 
         [Fact]
@@ -545,7 +548,7 @@ namespace eDrive.Osc.Tests
         [Fact]
         public void TestIntSerializer()
         {
-            AssertSerializerType(new IntSerializer(), typeof (int), 'i');
+            AssertSerializerType(new IntSerializer(), typeof(int), 'i');
         }
 
         [Fact]
@@ -569,7 +572,7 @@ namespace eDrive.Osc.Tests
         [Fact]
         public void TestLongSerializer()
         {
-            AssertSerializerType(new LongSerializer(), typeof (long), 'h');
+            AssertSerializerType(new LongSerializer(), typeof(long), 'h');
         }
 
         [Fact]
@@ -595,10 +598,10 @@ namespace eDrive.Osc.Tests
         {
             var value = new object[2];
             value[0] = "foo";
-            value[1] = new object[] {3, "boo"};
+            value[1] = new object[] { 3, "boo" };
 
             var success = false;
-			OscMessage msg;
+            OscMessage msg;
             try
             {
                 msg = new OscMessage("/test", value);
@@ -607,7 +610,7 @@ namespace eDrive.Osc.Tests
             {
                 e.Message.Should().Be("Nested arrays are not supported.");
                 success = true;
-				msg = null;
+                msg = null;
             }
 
             success.Should().BeTrue();
@@ -617,7 +620,7 @@ namespace eDrive.Osc.Tests
         [Fact]
         public void TestNilSerializer()
         {
-            AssertSerializerType(new NilSerializer(), typeof (NilSerializer.Nil), 'N');
+            AssertSerializerType(new NilSerializer(), typeof(NilSerializer.Nil), 'N');
         }
 
         [Fact]
@@ -646,7 +649,7 @@ namespace eDrive.Osc.Tests
         [Fact]
         public void TestOscColourSerializer()
         {
-            AssertSerializerType(new OscColourSerializer(), typeof (OscColour), 'r');
+            AssertSerializerType(new OscColourSerializer(), typeof(OscColour), 'r');
         }
 
         [Fact]
@@ -682,7 +685,7 @@ namespace eDrive.Osc.Tests
         [Fact]
         public void TestOscMidiSerializer()
         {
-            AssertSerializerType(new OscMidiSerializer(), typeof (OscMidiMessage), 'm');
+            AssertSerializerType(new OscMidiSerializer(), typeof(OscMidiMessage), 'm');
         }
 
         [Fact]
@@ -709,14 +712,14 @@ namespace eDrive.Osc.Tests
         [Fact]
         public void TestOscSerializerExceptionWhenUnsupportedType()
         {
-			OscMessage msg = null;
+            OscMessage msg = null;
             try
             {
                 msg = new OscMessage("/test", new UnknownType());
             }
             catch (OscSerializerException e)
             {
-				msg = null;
+                msg = null;
                 e.InnerException.Should().BeOfType<KeyNotFoundException>();
                 e.Message.Should().Be($"Unsupported type: {typeof(UnknownType)}");
 
@@ -728,7 +731,7 @@ namespace eDrive.Osc.Tests
         [Fact]
         public void TestStringSerializer()
         {
-            AssertSerializerType(new StringSerializer(), typeof (string), 's');
+            AssertSerializerType(new StringSerializer(), typeof(string), 's');
         }
 
         [Fact]
@@ -754,7 +757,7 @@ namespace eDrive.Osc.Tests
         [Fact]
         public void TestSymbolDeserializer()
         {
-            AssertSerializerType(new SymbolSerializer(), typeof (OscSymbol), 'S');
+            AssertSerializerType(new SymbolSerializer(), typeof(OscSymbol), 'S');
         }
 
         [Fact]
@@ -824,7 +827,7 @@ namespace eDrive.Osc.Tests
         [Fact]
         public void TestTrueSerializer()
         {
-            AssertSerializerType(new TrueBooleanValueDeserializer(), typeof (bool), 'T');
+            AssertSerializerType(new TrueBooleanValueDeserializer(), typeof(bool), 'T');
         }
 
         [Fact]
@@ -840,8 +843,8 @@ namespace eDrive.Osc.Tests
         public void TestTrueSerializerEncode()
         {
             var serializer = new TrueBooleanValueDeserializer();
-           var action = new Action(() => serializer.Encode(new MemoryStream(), true));
-           action.Should().Throw<NotSupportedException>();
+            var action = new Action(() => serializer.Encode(new MemoryStream(), true));
+            action.Should().Throw<NotSupportedException>();
         }
 
         [Fact]

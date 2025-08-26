@@ -2,12 +2,8 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Reactive.Concurrency;
-using eDrive.Osc;
-using eDrive.Network;
-using eDrive.Core;
 
-
-namespace eDrive.Network.Udp
+namespace eDrive.OSC.Network.Upd
 {
     /// <summary>
     ///     Upd stream for udp communication

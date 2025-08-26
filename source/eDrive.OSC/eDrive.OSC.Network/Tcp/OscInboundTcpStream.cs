@@ -1,13 +1,11 @@
-﻿using System;
+﻿using eDrive.OSC.Serialisation;
+
+using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Reactive.Concurrency;
-using eDrive.Osc;
-using eDrive.Core;
-using eDrive.Osc.Serialisation;
 
-
-namespace eDrive.Network.Tcp
+namespace eDrive.OSC.Network.Tcp
 {
     public class OscInboundTcpStream : OscInboundStreamBase
     {
@@ -51,14 +49,14 @@ namespace eDrive.Network.Tcp
         {
             var client = m_listener.EndAcceptSocket(ar);
             var state = new TcpConnectionState
-                            {
-                                Client = client,
-                                Scheduler = Scheduler,
-                                Stream = this,
-                                Buffer = new byte[4],
-                                ToRead = 4,
-                                Offset = 0
-                            };
+            {
+                Client = client,
+                Scheduler = Scheduler,
+                Stream = this,
+                Buffer = new byte[4],
+                ToRead = 4,
+                Offset = 0
+            };
             // start the io completion listening
 
             BeginReadHeader(state);

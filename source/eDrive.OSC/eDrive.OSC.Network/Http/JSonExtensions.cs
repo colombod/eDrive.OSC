@@ -1,12 +1,13 @@
-﻿using System;
+﻿using eDrive.OSC.Serialisation.Json;
+
+using Newtonsoft.Json;
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Newtonsoft.Json;
-using eDrive.Osc;
-using eDrive.Osc.Serialisation.Json;
 
-namespace eDrive.Network.Http
+namespace eDrive.OSC.Network.Http
 {
     public static class JsonExtensions
     {
@@ -24,11 +25,11 @@ namespace eDrive.Network.Http
         private static OscPacket CreateFromJson(JsonReader reader)
         {
             OscPacket ret = null;
-           
+
             {
                 while (reader.TokenType != JsonToken.StartObject)
                 {
-                    var done =   reader.Read(); // read obejct start
+                    var done = reader.Read(); // read obejct start
                     if (!done)
                     {
                         break;
@@ -107,7 +108,7 @@ namespace eDrive.Network.Http
         {
             reader.Read(); // property timetag
             reader.Read();
-            var tag = (ulong) Convert.ChangeType(reader.Value, typeof (ulong));
+            var tag = (ulong)Convert.ChangeType(reader.Value, typeof(ulong));
 
             var ret = new OscBundle(new OscTimeTag(tag));
 
@@ -163,7 +164,7 @@ namespace eDrive.Network.Http
                             }
                         }
                     }
-                   
+
                 }
                 else
                 {

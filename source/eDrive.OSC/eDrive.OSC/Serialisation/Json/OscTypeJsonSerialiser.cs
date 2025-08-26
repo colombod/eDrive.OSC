@@ -1,8 +1,8 @@
-using System;
 using Newtonsoft.Json;
-using eDrive.Osc.Serialisation;
 
-namespace eDrive.Osc.Serialisation.Json
+using System;
+
+namespace eDrive.OSC.Serialisation.Json
 {
     /// <summary>
     ///     This class can be used to create serialisation strategies for types.
@@ -13,7 +13,7 @@ namespace eDrive.Osc.Serialisation.Json
                                                      IOscTypeJsonSerializer
     {
         private readonly char m_tag;
-        private readonly Type m_type = typeof (T);
+        private readonly Type m_type = typeof(T);
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="OscTypeJsonSerializer{T}" /> class.
@@ -66,7 +66,7 @@ namespace eDrive.Osc.Serialisation.Json
         /// </returns>
         public void Encode(JsonWriter output, object value)
         {
-            Encode(output, (T) value);
+            Encode(output, (T)value);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace eDrive.Osc.Serialisation.Json
         /// <returns></returns>
         public char GetTag(object value)
         {
-            return value == null ? m_tag : GetTag((T) value);
+            return value == null ? m_tag : GetTag((T)value);
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace eDrive.Osc.Serialisation.Json
             {
                 return false;
             }
-            return Equals((OscTypeSerializer<T>) obj);
+            return Equals((OscTypeSerializer<T>)obj);
         }
 
         /// <summary>

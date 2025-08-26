@@ -1,21 +1,21 @@
-﻿
+﻿using eDrive.OSC.Serialisation;
+using eDrive.OSC.Serialisation.Json;
+
 using System;
 using System.Net;
-using eDrive.Network;
-using eDrive.Osc.Serialisation;
-using eDrive.Osc.Serialisation.Json;
-namespace eDrive.Osc
+
+namespace eDrive.OSC.Network
 {
     /// <summary>
     ///     Osc Network endpoint
     /// </summary>
     public class OscEndPoint
     {
-		static OscEndPoint()
-		{
-			SerializerFactory.LoadSerializer(typeof(EndPointSerializer));
-			JsonSerializerFactory.LoadSerializer (typeof(EndPointJsonSerializer));
-		}
+        static OscEndPoint()
+        {
+            SerializerFactory.LoadSerializer(typeof(EndPointSerializer));
+            JsonSerializerFactory.LoadSerializer(typeof(EndPointJsonSerializer));
+        }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="OscEndPoint" /> class.

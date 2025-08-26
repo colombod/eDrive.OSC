@@ -1,13 +1,14 @@
-using System;
 using Newtonsoft.Json;
 
-namespace eDrive.Osc.Serialisation.Json
+using System;
+
+namespace eDrive.OSC.Serialisation.Json
 {
     /// <summary>
     ///     This serializer is used to write <see cref="bool" /> values.
     ///     No payload will be serialised only the Tag is used.
     /// </summary>
-    [CustomOscJSonSerializer(typeof (bool))]
+    [CustomOscJSonSerializer(typeof(bool))]
     public class BooleanValueSerializer : OscTypeJsonSerializer<bool>
     {
         /// <summary>
