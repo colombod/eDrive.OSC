@@ -2,7 +2,7 @@
 
 [![NuGet](https://img.shields.io/nuget/v/eDrive.OSC.Network.NamedPipes.svg)](https://www.nuget.org/packages/eDrive.OSC.Network.NamedPipes/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/colombod/eDrive.OSC)
+
 
 Windows Named Pipes transport implementation for OSC communication. Provides high-performance, local inter-process communication (IPC) capabilities for OSC applications running on the same Windows machine.
 
@@ -73,17 +73,17 @@ Named Pipes provide direct process-to-process communication on Windows:
 
 ```mermaid
 graph LR
-    subgraph "Process A"
+    subgraph ProcessA [Process A]
         A1[OSC Application]
         A2[OscOutboundNamedPipeStream]
     end
     
-    subgraph "Windows Kernel"
+    subgraph WindowsKernel [Windows Kernel]
         NP[Named Pipe]
     end
     
-    subgraph "Process B"
-        B1[OscInboundNamedPipeStream] 
+    subgraph ProcessB [Process B]
+        B1[OscInboundNamedPipeStream]
         B2[OSC Application]
     end
     

@@ -432,20 +432,20 @@ public async Task ReactiveOscPipeline_ProcessesRealTimeData()
 
 ```mermaid
 graph TD
-    A[OSC Transport] --> B[ToObservable()]
-    B --> C[Filter/Where]
-    C --> D[Transform/Select]
-    D --> E[Aggregate/Scan]
+    A[OSC Transport] --> B[ToObservable]
+    B --> C[Filter Where]
+    C --> D[Transform Select]
+    D --> E[Aggregate Scan]
     E --> F[Time Operators]
     F --> G[Subscribe]
     
-    H[Multiple Sources] --> I[Merge/Combine]
+    H[Multiple Sources] --> I[Merge Combine]
     I --> C
     
-    J[Error Handling] --> K[Retry/Catch]
+    J[Error Handling] --> K[Retry Catch]
     K --> G
     
-    L[Backpressure] --> M[Buffer/Throttle]
+    L[Backpressure] --> M[Buffer Throttle]
     M --> F
 ```
 

@@ -227,7 +227,7 @@ graph LR
     D --> E[Deserialize]
     E --> F[Process Message]
     
-    G[Create Bundle] --> H[Add Messages/Bundles]
+    G[Create Bundle] --> H[Add Messages Bundles]
     H --> I[Set TimeTag]
     I --> C
 ```
