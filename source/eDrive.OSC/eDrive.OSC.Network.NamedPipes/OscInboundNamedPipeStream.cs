@@ -1,11 +1,13 @@
 ﻿using System.Diagnostics;
 using System.IO.Pipes;
 using System.Reactive.Concurrency;
+using System.Runtime.Versioning;
 
 namespace eDrive.OSC.Network.NamedPipes;
 
 /// <summary>
 /// </summary>
+[SupportedOSPlatform("windows")]
 public class OscInboundNamedPipeStream : OscInboundStreamBase
 {
     private readonly List<AsynchReader> m_clients;
