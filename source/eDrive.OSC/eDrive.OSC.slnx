@@ -1,0 +1,127 @@
+<Solution>
+  <Project Path="eDrive.OSC.Interfaces/eDrive.OSC.Interfaces.csproj" />
+  <Project Path="eDrive.OSC.Network/eDrive.OSC.Network.csproj" />
+  <Project Path="eDrive.OSC.Reactive/eDrive.OSC.Reactive.csproj" />
+  <Project Path="eDrive.OSC.Tests/eDrive.OSC.Tests.csproj">
+    <Build Solution="Release|*" Project="false" />
+  </Project>
+  <Project Path="eDrive.OSC/eDrive.OSC.csproj" />
+  <Properties Name="MonoDevelopProperties">
+    <Property Name="$0.NameConventionPolicy" Value="$2" />
+    <Property Name="$0.StandardHeader" Value="$1" />
+    <Property Name="$0.VersionControlPolicy" Value="$25" />
+    <Property Name="$1.IncludeInNewFiles" Value="False" />
+    <Property Name="$1.Text" Value="@\n${FileName}\n \nAuthor:\n      ${AuthorName} &lt;${AuthorEmail}&gt;\n\nCopyright (c) ${Year} ${CopyrightHolder}\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the &quot;Software&quot;), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE." />
+    <Property Name="$10.AffectedEntity" Value="CustomEventArgs" />
+    <Property Name="$10.IncludeInstanceMembers" Value="True" />
+    <Property Name="$10.IncludeStaticEntities" Value="True" />
+    <Property Name="$10.Name" Value="Event Arguments" />
+    <Property Name="$10.NamingStyle" Value="PascalCase" />
+    <Property Name="$10.RequiredSuffixes" Value="$11" />
+    <Property Name="$10.VisibilityMask" Value="Public" />
+    <Property Name="$11.String" Value="EventArgs" />
+    <Property Name="$12.AffectedEntity" Value="CustomExceptions" />
+    <Property Name="$12.IncludeInstanceMembers" Value="True" />
+    <Property Name="$12.IncludeStaticEntities" Value="True" />
+    <Property Name="$12.Name" Value="Exceptions" />
+    <Property Name="$12.NamingStyle" Value="PascalCase" />
+    <Property Name="$12.RequiredSuffixes" Value="$13" />
+    <Property Name="$12.VisibilityMask" Value="VisibilityMask" />
+    <Property Name="$13.String" Value="Exception" />
+    <Property Name="$14.AffectedEntity" Value="Methods" />
+    <Property Name="$14.IncludeInstanceMembers" Value="True" />
+    <Property Name="$14.IncludeStaticEntities" Value="True" />
+    <Property Name="$14.Name" Value="Methods" />
+    <Property Name="$14.NamingStyle" Value="PascalCase" />
+    <Property Name="$14.VisibilityMask" Value="Protected, Public" />
+    <Property Name="$15.AffectedEntity" Value="ReadonlyField" />
+    <Property Name="$15.IncludeInstanceMembers" Value="False" />
+    <Property Name="$15.IncludeStaticEntities" Value="True" />
+    <Property Name="$15.Name" Value="Static Readonly Fields" />
+    <Property Name="$15.NamingStyle" Value="PascalCase" />
+    <Property Name="$15.VisibilityMask" Value="Protected, Public" />
+    <Property Name="$16.AffectedEntity" Value="Field" />
+    <Property Name="$16.IncludeInstanceMembers" Value="True" />
+    <Property Name="$16.IncludeStaticEntities" Value="True" />
+    <Property Name="$16.Name" Value="Fields" />
+    <Property Name="$16.NamingStyle" Value="PascalCase" />
+    <Property Name="$16.VisibilityMask" Value="Protected, Public" />
+    <Property Name="$17.AffectedEntity" Value="ReadonlyField" />
+    <Property Name="$17.IncludeInstanceMembers" Value="True" />
+    <Property Name="$17.IncludeStaticEntities" Value="False" />
+    <Property Name="$17.Name" Value="ReadOnly Fields" />
+    <Property Name="$17.NamingStyle" Value="PascalCase" />
+    <Property Name="$17.VisibilityMask" Value="Protected, Public" />
+    <Property Name="$18.AffectedEntity" Value="ConstantField" />
+    <Property Name="$18.IncludeInstanceMembers" Value="True" />
+    <Property Name="$18.IncludeStaticEntities" Value="True" />
+    <Property Name="$18.Name" Value="Constant Fields" />
+    <Property Name="$18.NamingStyle" Value="PascalCase" />
+    <Property Name="$18.VisibilityMask" Value="Protected, Public" />
+    <Property Name="$19.AffectedEntity" Value="Property" />
+    <Property Name="$19.IncludeInstanceMembers" Value="True" />
+    <Property Name="$19.IncludeStaticEntities" Value="True" />
+    <Property Name="$19.Name" Value="Properties" />
+    <Property Name="$19.NamingStyle" Value="PascalCase" />
+    <Property Name="$19.VisibilityMask" Value="Protected, Public" />
+    <Property Name="$2.Rules" Value="$3" />
+    <Property Name="$20.AffectedEntity" Value="Event" />
+    <Property Name="$20.IncludeInstanceMembers" Value="True" />
+    <Property Name="$20.IncludeStaticEntities" Value="True" />
+    <Property Name="$20.Name" Value="Events" />
+    <Property Name="$20.NamingStyle" Value="PascalCase" />
+    <Property Name="$20.VisibilityMask" Value="Protected, Public" />
+    <Property Name="$21.AffectedEntity" Value="EnumMember" />
+    <Property Name="$21.IncludeInstanceMembers" Value="True" />
+    <Property Name="$21.IncludeStaticEntities" Value="True" />
+    <Property Name="$21.Name" Value="Enum Members" />
+    <Property Name="$21.NamingStyle" Value="PascalCase" />
+    <Property Name="$21.VisibilityMask" Value="VisibilityMask" />
+    <Property Name="$22.AffectedEntity" Value="Parameter" />
+    <Property Name="$22.IncludeInstanceMembers" Value="True" />
+    <Property Name="$22.IncludeStaticEntities" Value="True" />
+    <Property Name="$22.Name" Value="Parameters" />
+    <Property Name="$22.NamingStyle" Value="CamelCase" />
+    <Property Name="$22.VisibilityMask" Value="VisibilityMask" />
+    <Property Name="$23.AffectedEntity" Value="TypeParameter" />
+    <Property Name="$23.IncludeInstanceMembers" Value="True" />
+    <Property Name="$23.IncludeStaticEntities" Value="True" />
+    <Property Name="$23.Name" Value="Type Parameters" />
+    <Property Name="$23.NamingStyle" Value="PascalCase" />
+    <Property Name="$23.RequiredPrefixes" Value="$24" />
+    <Property Name="$23.VisibilityMask" Value="VisibilityMask" />
+    <Property Name="$24.String" Value="T" />
+    <Property Name="$25.inheritsSet" Value="Mono" />
+    <Property Name="$3.NamingRule" Value="$23" />
+    <Property Name="$4.AffectedEntity" Value="Namespace" />
+    <Property Name="$4.IncludeInstanceMembers" Value="True" />
+    <Property Name="$4.IncludeStaticEntities" Value="True" />
+    <Property Name="$4.Name" Value="Namespaces" />
+    <Property Name="$4.NamingStyle" Value="PascalCase" />
+    <Property Name="$4.VisibilityMask" Value="VisibilityMask" />
+    <Property Name="$5.AffectedEntity" Value="Class, Struct, Enum, Delegate" />
+    <Property Name="$5.IncludeInstanceMembers" Value="True" />
+    <Property Name="$5.IncludeStaticEntities" Value="True" />
+    <Property Name="$5.Name" Value="Types" />
+    <Property Name="$5.NamingStyle" Value="PascalCase" />
+    <Property Name="$5.VisibilityMask" Value="Public" />
+    <Property Name="$6.AffectedEntity" Value="Interface" />
+    <Property Name="$6.IncludeInstanceMembers" Value="True" />
+    <Property Name="$6.IncludeStaticEntities" Value="True" />
+    <Property Name="$6.Name" Value="Interfaces" />
+    <Property Name="$6.NamingStyle" Value="PascalCase" />
+    <Property Name="$6.RequiredPrefixes" Value="$7" />
+    <Property Name="$6.VisibilityMask" Value="Public" />
+    <Property Name="$7.String" Value="I" />
+    <Property Name="$8.AffectedEntity" Value="CustomAttributes" />
+    <Property Name="$8.IncludeInstanceMembers" Value="True" />
+    <Property Name="$8.IncludeStaticEntities" Value="True" />
+    <Property Name="$8.Name" Value="Attributes" />
+    <Property Name="$8.NamingStyle" Value="PascalCase" />
+    <Property Name="$8.RequiredSuffixes" Value="$9" />
+    <Property Name="$8.VisibilityMask" Value="Public" />
+    <Property Name="$9.String" Value="Attribute" />
+    <Property Name="Policies" Value="$0" />
+    <Property Name="StartupItem" Value="eDrive.OSC\eDrive.OSC.csproj" />
+  </Properties>
+</Solution>
