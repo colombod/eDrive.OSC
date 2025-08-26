@@ -1,4 +1,16 @@
-﻿namespace eDrive.OSC.Tests;
+﻿using eDrive.OSC.Serialisation;
+
+using FluentAssertions;
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+
+using Xunit;
+
+namespace eDrive.OSC.Tests;
 
 public class SerializersTests
 {
