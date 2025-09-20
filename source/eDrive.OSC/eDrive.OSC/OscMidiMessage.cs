@@ -3,8 +3,38 @@
 namespace eDrive.OSC;
 
 /// <summary>
-///     Wraps a midi message
+///     Represents a MIDI message that can be transmitted through OSC packets for musical device control.
+///     This class encapsulates standard MIDI protocol data in a format suitable for OSC transmission.
 /// </summary>
+/// <remarks>
+///     <para>
+///     OSC MIDI messages follow the standard MIDI protocol format but are encapsulated for transmission
+///     over OSC networks. This enables remote control of MIDI devices, software synthesizers, and
+///     Digital Audio Workstations (DAWs) through OSC communication.
+///     </para>
+///     <para>
+///     A MIDI message consists of:
+///     <list type="bullet">
+///         <item><description><strong>Port ID:</strong> Identifies the MIDI port/channel (0-15)</description></item>
+///         <item><description><strong>Status Byte:</strong> Defines the message type (Note On/Off, Control Change, etc.)</description></item>
+///         <item><description><strong>Data Byte 1:</strong> First parameter (note number, controller number, etc.)</description></item>
+///         <item><description><strong>Data Byte 2:</strong> Second parameter (velocity, controller value, etc.)</description></item>
+///     </list>
+///     </para>
+///     <para>
+///     Common usage examples:
+///     <code>
+///     // Note On message: Channel 1, Middle C (60), Velocity 100
+///     var noteOn = new OscMidiMessage(0, 0x90, 60, 100);
+///     
+///     // Control Change: Channel 1, Modulation Wheel (1), Value 64
+///     var modWheel = new OscMidiMessage(0, 0xB0, 1, 64);
+///     
+///     // Send via OSC
+///     var oscMsg = new OscMessage("/midi", noteOn);
+///     </code>
+///     </para>
+/// </remarks>
 public class OscMidiMessage
 {
     private byte m_portId;

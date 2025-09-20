@@ -7,12 +7,32 @@ using System.IO;
 namespace eDrive.OSC;
 
 /// <summary>
-///     Represents an Osc Message packet.
+///     Represents an OSC message packet that encapsulates a method call with typed arguments.
+///     OSC messages are the primary means of communication in the OSC protocol, containing
+///     an address pattern that identifies the target method and optional typed arguments.
 /// </summary>
+/// <remarks>
+///     <para>
+///     OSC messages follow the format: address + type_tags + arguments
+///     </para>
+///     <para>
+///     Example usage:
+///     <code>
+///     // Create a message to control synthesizer frequency
+///     var msg = new OscMessage("/synth/osc/1/frequency", 440.0f);
+///     
+///     // Create a message with multiple parameters
+///     var msg = new OscMessage("/mixer/channel/1");
+///     msg.Append(0.8f);  // volume
+///     msg.Append(true);  // mute
+///     </code>
+///     </para>
+/// </remarks>
 public class OscMessage : OscPacket
 {
     /// <summary>
-    ///     The prefix required by Osc address patterns.
+    ///     The mandatory prefix for all OSC address patterns.
+    ///     All valid OSC addresses must begin with this forward slash character.
     /// </summary>
     protected const string AddressPrefix = "/";
 
@@ -20,10 +40,20 @@ public class OscMessage : OscPacket
     private string m_typeTag;
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="OscMessage" /> class.
+    ///     Initializes a new OSC message with the specified address and a single argument.
     /// </summary>
-    /// <param name="address">The Osc address pattern.</param>
-    /// <param name="value">A value to append to the message.</param>
+    /// <param name="address">
+    ///     The OSC address pattern (e.g., "/synth/frequency", "/mixer/volume").
+    ///     Must start with "/" and follow OSC address conventions.
+    /// </param>
+    /// <param name="value">
+    ///     The initial argument to include in the message. Can be any OSC-compatible type
+    ///     such as int, float, string, bool, byte[], etc.
+    /// </param>
+    /// <remarks>
+    ///     This constructor is convenient for creating messages with a single argument.
+    ///     Additional arguments can be added using the <see cref="OscPacket.Append{T}"/> method.
+    /// </remarks>
     public OscMessage(string address, object value)
         : this(address)
     {
@@ -31,9 +61,18 @@ public class OscMessage : OscPacket
     }
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="OscMessage" /> class.
+    ///     Initializes a new OSC message with the specified address and no arguments.
     /// </summary>
-    /// <param name="address">The Osc address pattern.</param>
+    /// <param name="address">
+    ///     The OSC address pattern (e.g., "/start", "/stop", "/reset").
+    ///     Must start with "/" as required by the OSC specification.
+    /// </param>
+    /// <exception cref="ArgumentException">Thrown when the address doesn't start with "/".</exception>
+    /// <remarks>
+    ///     This creates an empty message that can have arguments added later using
+    ///     <see cref="OscPacket.Append{T}"/>. Some OSC messages (like events or triggers)
+    ///     don't require arguments and use only the address for identification.
+    /// </remarks>
     public OscMessage(string address)
         : base(address)
     {
@@ -43,30 +82,62 @@ public class OscMessage : OscPacket
     }
 
     /// <summary>
-    ///     Specifies if the packet is an Osc bundle.
+    ///     Gets a value indicating whether this packet represents an OSC bundle.
+    ///     Always returns <c>false</c> for messages, as opposed to <see cref="OscBundle"/> objects.
     /// </summary>
+    /// <value>Always <c>false</c> for <see cref="OscMessage"/> instances.</value>
+    /// <remarks>
+    ///     This property enables polymorphic handling of <see cref="OscPacket"/> objects
+    ///     where you need to distinguish between individual messages and bundles containing
+    ///     multiple messages.
+    /// </remarks>
     public override bool IsBundle
     {
         get { return false; }
     }
 
     /// <summary>
-    ///     Gets the type tag.
+    ///     Gets the OSC type tag string that describes the argument types in this message.
     /// </summary>
     /// <value>
-    ///     The type tag.
+    ///     A string where each character represents the type of one argument.
+    ///     Common type tags include: 'i' (int), 'f' (float), 's' (string), 'b' (blob), 'T'/'F' (bool).
     /// </value>
+    /// <remarks>
+    ///     <para>
+    ///     The type tag string is automatically maintained as arguments are added to the message.
+    ///     It's used during serialization to ensure proper encoding and during deserialization
+    ///     to correctly interpret the binary data.
+    ///     </para>
+    ///     <para>
+    ///     Example: A message with an int and a float would have TypeTag = ",if"
+    ///     (the comma prefix is part of the OSC specification).
+    ///     </para>
+    /// </remarks>
     public string TypeTag
     {
         get { return m_typeTag; }
     }
 
     /// <summary>
-    ///     Gets or sets a value indicating whether this instance is event.
+    ///     Gets or sets a value indicating whether this message represents an event (trigger) 
+    ///     rather than a method call with return value expectations.
     /// </summary>
     /// <value>
-    ///     <c>true</c> if this instance is event; otherwise, <c>false</c>.
+    ///     <c>true</c> if this message is an event/trigger that doesn't expect a response;
+    ///     <c>false</c> if this message is a method call that may have a return value.
     /// </value>
+    /// <remarks>
+    ///     <para>
+    ///     Event messages are fire-and-forget communications typically used for notifications,
+    ///     triggers, or state changes where no response is expected. Setting this to true
+    ///     affects the type tag string by appending an event marker.
+    ///     </para>
+    ///     <para>
+    ///     This distinction helps receiving applications understand whether to process
+    ///     the message as a command requiring response or as a notification.
+    ///     </para>
+    /// </remarks>
     public bool IsEvent
     {
         get { return m_isEvent; }
